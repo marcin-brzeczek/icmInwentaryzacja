@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey1"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" >
+
+
+
+    <Button
+        android:id="@+id/btnOpenFile"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape_grey3"
+        android:text="Wczytaj plik csv"
+        android:textColor="@color/white"
+        android:textSize="17dp" >
+    </Button>
+
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/cell_shape_grey2" >
+
+        <RelativeLayout
+            android:id="@+id/layoutLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp" >
+
+            <ImageView
+                android:id="@+id/imageLogin"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:alpha="1"
+                android:src="@drawable/ic_person_black_24dp"
+                android:tint="#fff"/>
+
+            <EditText
+                android:id="@+id/etLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@+id/imageLogin"
+                android:hint="Spisujący"
+                android:inputType="textPersonName"
+                android:minWidth="170dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/white"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+        <!--<ImageView-->
+        <!--android:id="@+id/imageErrorLogin"-->
+        <!--android:layout_width="25dp"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:alpha="1"-->
+        <!--android:src="@drawable/ic_error_black_24dp"-->
+        <!--android:tint="@color/red"/>-->
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutLogo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/btnOpenFile"
+        android:layout_below="@+id/relativeLayout1"
+        android:background="@drawable/centered_background_logo">
+    </LinearLayout>
+</RelativeLayout>

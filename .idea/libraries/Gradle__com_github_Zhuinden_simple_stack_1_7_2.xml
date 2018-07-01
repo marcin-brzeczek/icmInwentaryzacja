@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.Zhuinden:simple-stack-1.7.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/simple-stack-1.7.2.aar/d429ad0fc4b6dc157a300b85b4cd4e43/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/simple-stack-1.7.2.aar/d429ad0fc4b6dc157a300b85b4cd4e43/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Zhuinden/simple-stack/1.7.2/59d9074dde4a4d0a62e509f0f47c251fb4d119d9/simple-stack-1.7.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

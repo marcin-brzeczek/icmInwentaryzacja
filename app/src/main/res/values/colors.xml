@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <color name="blue400">#42a5f5</color>
+        <color name="blue200">#90caf9</color>
+        <color name="teal400">#26a69a</color>
+        <color name="teal200">#80cbc4</color>
+        <color name="white">#FFFFFF</color>
+        <color name="black">#000</color>
+        <color name="indigo500">#3f51b5</color>
+        <color name="blue500">#2196f3</color>
+        <color name="blue700">#1976d2</color>
+        <color name="greyBlue">#4d6680</color>
+        <color name="greyBlueDark">#19334d</color>
+        <color name="red200">#ef9a9a</color>
+        <color name="lightgreen200">#c5e1a5</color>
+        <color name="lightgreen400">#9ccc65</color>
+        <color name="darkGrey">#49504b</color>
+        <color name="grey">#bdbdbd</color>
+        <color name="green600">#43a047</color>
+        <color name="navigationBarColor">#000000</color>
+        <color name="colorPrimary">#125688</color>
+        <color name="colorPrimaryDark">#125688</color>
+        <color name="textColorPrimary">#4d6680</color>
+        <color name="windowBackground">#4d6680</color>
+        <color name="colorAccent">#c8e8ff</color>
+        <color name="lightGrey">#9E9E9E</color>
+        <color name="red">#db270f</color>
+        <color name="clearWhite">#B3FFFFFF</color>
+        <color name="greyText">#404244</color>
+        <!-- odcienie szarości od jasnego do ciemnego -->
+        <color name="grey1">#C1C4C7</color>
+        <color name="grey2">#888D91</color>
+        <color name="grey3">#444C53</color>
+        <color name="grey4">#252C32</color>
+        <color name="colorYellowLight">#CCA31F</color>
+        <color name="colorYellowLight2">#F7F7C1</color>
+        <color name="colorYellowLight3">#FFCC00</color>
+
+
+</resources>

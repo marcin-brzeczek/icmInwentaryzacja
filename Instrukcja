@@ -1,0 +1,28 @@
+
+1. Nie musi być żadnego logowania tylko pole aby można było wpisać jak nazywa się osoba spisująca.
+2. Wystarczy skanowanie po Kodzie, Kod pomocniczy, czyli dopuszczamy w pliku 2 kody dla każdej pozycji.
+3. Plik wynikowy jest OK.
+Batek
+
+W dniu 17.06.2018 o 13:05, Marcin Brzeczek pisze:
+Witam,
+
+Bartosz bo ja wznowiłem pracę nad tą icmInwentaryzacją offline bo odwlekłem znowu na rzecz icmDostawcy i icmHandlowca :/
+Chciałem podsumować i  tak naprawdę tutaj nie musimy wybierać lokalizacji jak jest to obecnej incmInwetaryzacji??
+I chyba nie będziemy skanować po partii i serii ??
+Czy tu ma być skanowanie po kodzie pomocniczym ??bo jest taka kolumna w pliku importowanych .csv
+I chyba wystarczą tutaj tylko ekrany jak rozpisałem poniżej ?
+
+Logowanie:
+- Zapis użytkownika do bazy i wyświetlanie go w tym rozsuwanym hamburger menu w ekranie skanowania pozycji.
+Użytkownik potrzebny żeby było wiadomo kto dokonywał inwentaryzacji.
+
+Skanowanie:
+- Ekran skanowania i tam właśnie to hamburger menu gdzie można:
+a) przejść do ekranu pozycji SPIS lub BRAK,
+b) można wylogować z tego menu  podejrzeć kto jest obecnie zalogowany,
+c)  eksportować do pliku .csv,
+d) zamknąć aplikację.
+
+LISTA SPIS i LISTA BRAK
+To tak samo jak w obecnej icmInwentaryzacji

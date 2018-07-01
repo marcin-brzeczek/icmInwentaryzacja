@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/grey1"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtNameLokalization"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/cell_shape_grey3"
+            android:gravity="center"
+            android:text="Lokalizacja Testowa 1"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtNameLokalization"
+            android:layout_marginTop="85dp"
+            android:background="@drawable/cell_shape_grey2">
+
+            <RelativeLayout
+                android:id="@+id/layoutLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:id="@+id/txtScanEan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:alpha="1"
+                    android:text="EAN:     "
+                    android:textColor="@color/grey3"
+                    android:textSize="17dp"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageEan"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:alpha="1"
+                android:src="@drawable/scan_ean"/>
+
+            <EditText
+                android:id="@+id/editTextEAN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/layoutLogin"
+                android:hint="Zeskanuj kod EAN"
+                android:inputType="textPersonName"
+                android:maxLength="13"
+                android:singleLine="true"
+                android:textColor="@color/greyText"
+                android:textColorHint="@color/white"
+                android:textSize="16dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/relativeLayout1"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/cell_shape_grey2"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/layoutLoginPart"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:id="@+id/txtPart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:alpha="1"
+                    android:src="@drawable/scan_ean"
+                    android:text="Partia:"
+                    android:textColor="@color/grey3"
+                    android:textSize="17dp"/>
+
+                <EditText
+                    android:id="@+id/editTextPart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/txtPart"
+                    android:hint="Skanuj/Wybierz"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textColor="@color/greyText"
+                    android:textColorHint="@color/white"
+                    android:textSize="16dp">
+
+                    <requestFocus/>
+                </EditText>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imagePartlist"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:alpha="1"
+                android:onClick="OnClickImgPart"
+                android:src="@drawable/menu_litem_list"
+                android:tint="@color/grey1"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutSeries"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/cell_shape_grey2"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/layoutLoginSeries"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:id="@+id/txtSeries"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:alpha="1"
+                    android:src="@drawable/scan_ean"
+                    android:text="Seria: "
+                    android:textColor="@color/grey3"
+                    android:textSize="17dp"/>
+
+                <EditText
+                    android:id="@+id/editTextSeries"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/txtSeries"
+                    android:hint="Skanuj/Wybierz"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textColor="@color/greyText"
+                    android:textColorHint="@color/white"
+                    android:textSize="16dp"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageSerieslist"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:alpha="1"
+                android:onClick="OnClickImgSeries"
+                android:src="@drawable/menu_litem_list"
+                android:tint="@color/grey1"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutBtns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnSearchPosition"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/cell_shape_grey3"
+                android:onClick="onClickBtnSearchPosition"
+                android:text="Szukaj"
+                android:textColor="#fff"
+                android:textSize="17dp"/>
+
+            <Button
+                android:id="@+id/btnNewPosition"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/cell_shape_grey3"
+                android:onClick="onClickBtnNewPosition"
+                android:text="Nowa pozycja"
+                android:textColor="#fff"
+                android:textSize="17dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,119 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: "de.mannodermaus.android-junit5"
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    implementation  'net.danlew:android.joda:2.9.9.3'
+
+    testImplementation junit5()
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.0.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.0.0"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    testImplementation("org.jetbrains.spek:spek-api:$spek_version") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+
+    testImplementation("org.jetbrains.spek:spek-junit-platform-engine:$spek_version") {
+        exclude group: 'org.junit.platform'
+        exclude group: 'org.jetbrains.kotlin'
+    }
+
+    testImplementation "org.junit.platform:junit-platform-runner:1.0.0"
+
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile 'nz.bradcampbell:paperparcel:2.0.4'
+    compile 'nz.bradcampbell:paperparcel-kotlin:2.0.4'
+    kapt 'nz.bradcampbell:paperparcel-compiler:2.0.4'
+}
+
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
+}
+
+afterEvaluate {
+    /* Patch needed by Spek lib to locate compiled test classes */
+    android.buildTypes.each {
+        def name = it.name
+
+        def copyTestClassesTask = project.task(type: Copy, "copyKotlin${name.capitalize()}UnitTestClasses") {
+            from "build/tmp/kotlin-classes/${name}UnitTest"
+            into "build/intermediates/classes/test/${name}"
+        }
+
+        def cleanTempSdkClassesTask = project.task(type: Copy, "cleanTmp.copyKotlin${name.capitalize()}Classes") {
+            def relativeSource = "build/tmp/kotlin-classes/${name}"
+            def relativeDestination = "build/intermediates/classes/${name}"
+
+            from relativeSource
+            into relativeDestination
+
+            eachFile {
+                exclude()
+
+                logger.info "Processing: ${it.name}"
+
+                def sourceFile = new File("${project.projectDir.absolutePath}/${relativeSource}/${it.sourcePath}")
+                def destinationFile = new File("${project.projectDir.absolutePath}/${relativeDestination}/${it.path}")
+
+                logger.debug " -> Src: ${sourceFile.absolutePath}"
+                logger.debug " -> Dst: ${destinationFile.absolutePath}"
+
+                if (sourceFile.exists() && destinationFile.exists()) {
+                    sourceFile.delete()
+                    logger.info "   Removed: ${it.name}"
+                }
+            }
+
+            outputs.upToDateWhen { false }
+        }
+
+        def copySdkClassesTask = project.task(type: Copy, "copyKotlin${name.capitalize()}Classes") {
+            from "build/tmp/kotlin-classes/${name}"
+            into "build/intermediates/classes/${name}"
+
+            duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
+            finalizedBy cleanTempSdkClassesTask
+        }
+
+        if (project.tasks.findByName("compile${name.capitalize()}UnitTestKotlin") != null) {
+            project.tasks.getByName("compile${name.capitalize()}UnitTestKotlin").finalizedBy copyTestClassesTask
+            project.tasks.getByName("compile${name.capitalize()}UnitTestKotlin").finalizedBy copySdkClassesTask
+        }
+    }
+}

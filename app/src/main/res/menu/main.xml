@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.example.icminwertaryzacja.MainActivity">
+
+
+    <item
+        android:id="@+id/settings"
+        android:title="Ustawienia"
+        />
+    <item
+        android:id="@+id/sendData"
+        android:title="Wyślij dane"
+        />
+    <item
+        android:id="@+id/listEmpty"
+        android:title="Lista BRAK"
+        />
+    <item
+        android:id="@+id/listDesc"
+        android:title="Lista SPIS"
+        />
+    <item
+        android:id="@+id/logout"
+        android:title="Wyloguj"
+        />
+    <item
+        android:id="@+id/exit"
+        android:title="Zakończ"
+        />
+</menu>
