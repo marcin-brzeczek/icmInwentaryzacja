@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
@@ -27,6 +28,9 @@ import com.income.icminwentaryzacja.backstack.BackPressedHandler
 import com.income.icminwentaryzacja.backstack.BackstackService
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import com.income.icminwentaryzacja.backstack.FragmentStateChanger
+import com.income.icminwentaryzacja.fragments.login.LoginFragment
+import com.income.icminwentaryzacja.fragments.login.LoginRoute
+import com.income.icminwentaryzacja.fragments.positions_list.ListRoute
 import org.jetbrains.annotations.Contract
 import javax.inject.Inject
 
@@ -42,7 +46,9 @@ abstract class ActivityBase : AppCompatActivity(), StateChanger, HasFragmentInje
     private lateinit var fragmentStateChanger: FragmentStateChanger
     private lateinit var backPressHandler: BackPressedHandler
 
-    @Inject internal lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    @Inject
+    internal lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
     override fun fragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,31 +125,4 @@ abstract class ActivityBase : AppCompatActivity(), StateChanger, HasFragmentInje
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
     }
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        menu.findItem(R.id.settings).setVisible(false)
-        menu.findItem(R.id.sendData).setVisible(false)
-        menu.findItem(R.id.listEmpty).setVisible(false)
-        menu.findItem(R.id.listDesc).setVisible(false)
-        return true
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.getItemId()
-        if (id == R.id.exit) {
-            finish()
-            return true
-        }
-        if (id == R.id.logout) {
-            BackstackService.get(this.baseContext).goBack()
-//            this.finishAffinity()
-//            /* powrót do pierwszej aktywności */
-//            val intent = Intent(this, LoginActivity::class.java)
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//            startActivity(intent)
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-}
+ }

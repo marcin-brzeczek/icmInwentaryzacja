@@ -4,26 +4,29 @@
       tools:context="com.example.icminwertaryzacja.MainActivity">
 
 
-    <item
-        android:id="@+id/settings"
-        android:title="Ustawienia"
-        />
+    <!--<item-->
+        <!--android:id="@+id/settings"-->
+        <!--android:title="Ustawienia"-->
+        <!--/>-->
     <item
         android:id="@+id/sendData"
         android:title="Wyślij dane"
+        android:visible="false"
         />
     <item
         android:id="@+id/listEmpty"
         android:title="Lista BRAK"
+        android:visible="false"
         />
     <item
         android:id="@+id/listDesc"
         android:title="Lista SPIS"
+        android:visible="false"
         />
-    <item
-        android:id="@+id/logout"
-        android:title="Wyloguj"
-        />
+    <!--<item-->
+        <!--android:id="@+id/logout"-->
+        <!--android:title="Wyloguj"-->
+        <!--/>-->
     <item
         android:id="@+id/exit"
         android:title="Zakończ"

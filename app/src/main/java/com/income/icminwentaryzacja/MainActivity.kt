@@ -7,6 +7,8 @@
 //import android.view.Menu
 //import android.view.MenuItem
 //import android.widget.Toast
+//import com.income.icminwentaryzacja.database.AppDatabase
+//import com.income.icminwentaryzacja.database.dto.Item
 //import com.raizlabs.android.dbflow.config.FlowManager
 //import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper
 //import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
