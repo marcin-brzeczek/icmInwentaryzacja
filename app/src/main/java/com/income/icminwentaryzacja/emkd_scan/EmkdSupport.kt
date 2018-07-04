@@ -15,7 +15,7 @@ import com.symbol.emdk.barcode.ScannerException
 import com.symbol.emdk.barcode.ScannerResults
 
 
-class EMDK_5_Support @Throws(Exception::class)
+class EmdkSupport @Throws(Exception::class)
 
 private constructor(private val _ctx: Context) : EMDKListener, StatusListener, DataListener {
     private var _emdkManager: EMDKManager? = null
@@ -213,16 +213,16 @@ private constructor(private val _ctx: Context) : EMDKListener, StatusListener, D
 
     companion object {
 
-        var emdkSupport: EMDK_5_Support? = null
+        var emdkSupport: EmdkSupport? = null
             private set
 
 
         @Throws(Exception::class)
-        fun initEmdkSupport(ctx: Context): EMDK_5_Support {
+        fun initEmdkSupport(ctx: Context): EmdkSupport {
             if (emdkSupport == null)
-                emdkSupport = EMDK_5_Support(ctx)
+                emdkSupport = EmdkSupport(ctx)
 
-            return emdkSupport as EMDK_5_Support
+            return emdkSupport as EmdkSupport
         }
     }
 }

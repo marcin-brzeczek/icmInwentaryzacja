@@ -92,12 +92,12 @@ class LoginFragment : FragmentBase() {
             }.build().execute()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
           READ_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     try {
-                        readFileContent(data.data)
+                        readFileContent(data?.data)
                     } catch (e: IOException) {
                         Toast.makeText(activity.baseContext, "Error read text" + e.toString(), Toast.LENGTH_SHORT).show()
                     }
