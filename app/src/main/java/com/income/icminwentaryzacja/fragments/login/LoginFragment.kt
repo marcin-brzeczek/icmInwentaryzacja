@@ -13,6 +13,7 @@ import com.income.icminwentaryzacja.database.AppDatabase
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.User
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
+import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminwentaryzacja.utilities.inflate
 import com.raizlabs.android.dbflow.config.FlowManager
@@ -48,15 +49,11 @@ class LoginFragment : FragmentBase() {
     private fun readFileContent(uri: Uri?): String {
 
         val inputStream = activity.contentResolver.openInputStream(uri)
-        val reader = LineNumberReader(InputStreamReader(
-            inputStream))
+        val reader = LineNumberReader(InputStreamReader(inputStream))
         val stringBuilder = StringBuilder()
-
         reader.readLine() // read first line - the headers of columns
 
         var currentline = reader.readLine()
-
-
         while (currentline != null && reader.lineNumber > 1) {
 
 //            if (!currentline.contains("LokalizacjaStara")) {
@@ -92,19 +89,20 @@ class LoginFragment : FragmentBase() {
             }.build().execute()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-          READ_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-                        readFileContent(data.data)
-                    } catch (e: IOException) {
-                        Toast.makeText(activity.baseContext, "Error read text" + e.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                }
+            READ_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK)
+                    data?.data?.let { readFileContent(it) }
             }
         }
     }
+
+//    private fun showAlertDialog() {
+//        val fm = activity.fragmentManager
+//        val alertDialog = ProgressDialogFragment()
+//        alertDialog.show(fm, "fragment_alert")
+//    }
 }
 
 

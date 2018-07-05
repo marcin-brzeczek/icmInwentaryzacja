@@ -7,8 +7,8 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin" >
 
-        <ListView
-            android:id="@+id/lvPositions"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_items"
             android:layout_marginTop="80dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -16,7 +16,7 @@
             android:layout_above="@+id/rlSumList"
             android:dividerHeight="5dp"
             android:fadingEdge="none" >
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
 
     <RelativeLayout
         android:id="@+id/rlSumList"

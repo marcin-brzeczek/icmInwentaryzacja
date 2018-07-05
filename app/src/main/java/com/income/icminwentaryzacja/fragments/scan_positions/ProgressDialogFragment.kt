@@ -8,9 +8,9 @@ import com.income.icminwentaryzacja.R
 
 
 class ProgressDialogFragment : DialogFragment() {
-  override  fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
-        setCancelable(false)
+        isCancelable = false
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
