@@ -1,7 +1,7 @@
 package com.income.icminwentaryzacja.emkd_scan
 
 import android.content.Context
-import com.income.icminwentaryzacja.emkd_scan.EMDK_5_Support.Companion.initEmdkSupport
+import com.income.icminwentaryzacja.emkd_scan.EmdkSupport.Companion.initEmdkSupport
 
 
 object EmdkWrapper {
@@ -26,19 +26,19 @@ object EmdkWrapper {
     @Throws(Exception::class)
     fun registerScannerListener(onReadScan: OnScannerRead) {
         if (checkEmdk())
-            EMDK_5_Support.emdkSupport?.registerScannerListener(onReadScan)
+            EmdkSupport.emdkSupport?.registerScannerListener(onReadScan)
     }
 
     @Throws(Exception::class)
     fun unregisterScannerListener() {
         if (checkEmdk())
-            EMDK_5_Support.emdkSupport?.unregisterScannerListeners()
+            EmdkSupport.emdkSupport?.unregisterScannerListeners()
     }
 
     @Throws(Exception::class)
     fun deinitEmkd() {
         if (checkEmdk())
-            EMDK_5_Support.emdkSupport?.onClosed()
+            EmdkSupport.emdkSupport?.onClosed()
     }
 }
 

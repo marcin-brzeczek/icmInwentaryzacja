@@ -9,6 +9,8 @@ import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.emkd_scan.EmdkWrapper
 import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
+import com.income.icminwentaryzacja.emkd_scan.ScanWrapper
+import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
@@ -22,7 +24,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_scan_positions, container, false).apply {
             try {
-                EmdkWrapper.initEmdk(activity.baseContext)
+                ScanWrapper.initScanner(activity.baseContext, ScannerType.CIPHERLAB)
             } catch (e: Exception) {
                 exceptionMessage("Błąd w inicjalizacji  Skanera: " + e.message)
             }
@@ -32,7 +34,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     override fun onResume() {
         super.onResume()
         try {
-            EmdkWrapper.registerScannerListener(this)
+            ScanWrapper.registerScannerListener(this)
         } catch (e: Exception) {
             exceptionMessage("Błąd w trakcie rejestracji Skanera: " + e.message)
         }
@@ -41,7 +43,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     public override fun onPause() {
         super.onPause()
         try {
-            EmdkWrapper.unregisterScannerListener()
+            ScanWrapper.unregisterScannerListener()
         } catch (e: Exception) {
             exceptionMessage("Błąd w trakcie wyrejestrowania Skanera: " + e.message)
         }
@@ -50,7 +52,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     override fun onDestroyView() {
         super.onDestroyView()
         try {
-            EmdkWrapper.deinitEmkd()
+            ScanWrapper.deinitScanner()
         } catch (e: Exception) {
             exceptionMessage("Nie można zwolnić obiektu Skanera: " + e.message)
         }

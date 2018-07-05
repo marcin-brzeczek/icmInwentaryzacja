@@ -89,7 +89,7 @@ class LoginFragment : FragmentBase() {
             }.build().execute()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             READ_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK)
