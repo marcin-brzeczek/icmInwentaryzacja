@@ -86,7 +86,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         item?.let {
             sectionName.visibility = View.VISIBLE
             sectionAmount.visibility = View.VISIBLE
-            etName.setText(it.code)
+            tvName.setText(it.name)
             tvAmount.setText((++it.endNumber).toString())
             tvLokalization.setText(it.oldLocation)
 //            it.endNumber = ++it.endNumber

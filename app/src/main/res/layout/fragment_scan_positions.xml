@@ -81,7 +81,7 @@
         <RelativeLayout
             android:id="@+id/sectionName"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/relativeLayout1"
             android:layout_marginTop="22dp"
@@ -91,7 +91,7 @@
             <RelativeLayout
                 android:id="@+id/layoutLoginPart"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="20dp">
@@ -108,16 +108,19 @@
                     android:textSize="17dp"/>
 
                 <TextView
-                    android:id="@+id/etName"
+                    android:id="@+id/tvName"
+                    android:padding="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:gravity="start|center_vertical"
                     android:layout_marginStart="10dp"
+                    android:minLines="2"
                     android:layout_toRightOf="@+id/txtNameLabel"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"
+                    android:inputType="textMultiLine"
+                    android:text="Nazwa Testowa"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="16dp">
