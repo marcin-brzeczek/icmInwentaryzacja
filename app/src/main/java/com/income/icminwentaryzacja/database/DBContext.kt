@@ -15,4 +15,6 @@ class DBContext @Inject constructor() {
     val users: From<User>
         get() = SQLite.select().from(User::class.java)
 
+    val isEmpty :Boolean
+    get() = !items.hasData()
 }

@@ -7,26 +7,6 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin" >
 
-
-
-    <Button
-        android:id="@+id/btnOpenFile"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="1"
-        android:background="@drawable/cell_shape_grey3"
-        android:text="Wczytaj plik csv"
-        android:textColor="@color/white"
-        android:textSize="17dp" >
-    </Button>
-
-
-
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
@@ -88,8 +68,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@+id/btnOpenFile"
+        android:layout_above="@+id/btnGoToFile"
         android:layout_below="@+id/relativeLayout1"
         android:background="@drawable/centered_background_logo">
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnOpenFile"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/cell_shape_grey3"
+        android:text="Wczytaj plik csv"
+        android:textColor="@color/white"
+        android:textSize="17dp" >
+    </Button>
+
+
+
+
+
+
 </RelativeLayout>

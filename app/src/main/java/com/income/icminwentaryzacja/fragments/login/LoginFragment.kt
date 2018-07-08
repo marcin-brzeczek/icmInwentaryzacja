@@ -10,18 +10,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.AppDatabase
+import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.User
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
-import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminwentaryzacja.utilities.inflate
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
 import kotlinx.android.synthetic.main.fragment_login.view.*
-import java.io.IOException
 import java.io.InputStreamReader
 import java.io.LineNumberReader
+import javax.inject.Inject
 
 const val READ_REQUEST_CODE = 99
 
@@ -29,15 +29,27 @@ class LoginFragment : FragmentBase() {
 
     private val items = mutableListOf<Item>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.fragment_login, container) {
+    @Inject
+    lateinit var dbContext: DBContext
 
-            btnOpenFile.setOnClickListener {
-                selectCSVFile()
-                User(etLogin.text.toString()).save()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+            inflater.inflate(R.layout.fragment_login, container) {
+                val isEmptyDatabase: Boolean = dbContext.isEmpty
+                val buttonTitle: String = if (isEmptyDatabase) "Wczytaj plik CSV" else "Otwórz istniejącą bazę"
+                btnOpenFile.setText(buttonTitle)
+
+                btnOpenFile.setOnClickListener {
+                    if (isEmptyDatabase) {
+                        btnOpenFile.setText("Wczytaj plik CSV")
+                        selectCSVFile()
+                    } else {
+                        btnOpenFile.setText("Otwórz istniejącą bazę")
+                        navigateTo(ScanPositionsRoute())
+                    }
+                    User(etLogin.text.toString()).save()
+                }
+                setHasOptionsMenu(true)
             }
-            setHasOptionsMenu(true)
-        }
 
     fun selectCSVFile() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
@@ -61,12 +73,12 @@ class LoginFragment : FragmentBase() {
 
 //            stringBuilder.append(currentline + "\n")
             val item = Item()
-            item.code = arrayLine[0]
-            item.supportCode = arrayLine[1]
-            item.shortName = arrayLine[2]
-            item.Name = arrayLine[3]
-            item.oldLocation = arrayLine[4]
-            item.startNumber = arrayLine[5].toDouble()
+            item.code = arrayLine[1]
+            item.supportCode = arrayLine[2]
+            item.shortName = arrayLine[3]
+            item.name = arrayLine[4]
+            item.oldLocation = arrayLine[5]
+            item.startNumber = arrayLine[6].toDouble()
 //            item.endNumber = arrayLine[7].toDouble()
             items.add(item)
 
@@ -81,19 +93,29 @@ class LoginFragment : FragmentBase() {
 
     fun storage() {
         FlowManager.getDatabase(AppDatabase::class.java)
-            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-            .error { transaction, error -> }
-            .success {
-                navigateTo(ScanPositionsRoute())
-            }.build().execute()
+                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+                .error { transaction, error -> }
+                .success {
+                    navigateTo(ScanPositionsRoute())
+                }.build().execute()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             READ_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK)
-                    data?.data?.let { readFileContent(it) }
+                if (resultCode == Activity.RESULT_OK) {
+
+                    data?.data?.let {
+
+                        if (!it.path.contains(".csv")) {
+                            Toast.makeText(activity.baseContext, "Wybrany plik nie jest formatu csv!", Toast.LENGTH_SHORT).show()
+                            return
+                        } else {
+                            readFileContent(it)
+                        }
+                    }
+                }
             }
         }
     }
@@ -103,6 +125,7 @@ class LoginFragment : FragmentBase() {
 //        val alertDialog = ProgressDialogFragment()
 //        alertDialog.show(fm, "fragment_alert")
 //    }
+
 }
 
 

@@ -14,26 +14,24 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtNameLokalization"
+            android:id="@+id/tvLokalization"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textView1"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="85dp"
             android:background="@drawable/cell_shape_grey3"
             android:gravity="center"
             android:text="Lokalizacja Testowa 1"
             android:textColor="@color/white"
-            android:textSize="18dp"
-            android:visibility="gone"/>
+            android:textSize="18dp"/>
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/txtNameLokalization"
-            android:layout_marginTop="85dp"
+            android:layout_below="@+id/tvLokalization"
+            android:layout_marginTop="20dp"
             android:background="@drawable/cell_shape_grey2">
 
             <RelativeLayout
@@ -81,7 +79,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/relativeLayout2"
+            android:id="@+id/sectionName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
@@ -99,55 +97,42 @@
                 android:layout_marginLeft="20dp">
 
                 <TextView
-                    android:id="@+id/txtPart"
+                    android:id="@+id/txtNameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:alpha="1"
                     android:src="@drawable/scan_ean"
-                    android:text="Partia:"
+                    android:text="Nazwa:"
                     android:textColor="@color/grey3"
                     android:textSize="17dp"/>
 
-                <EditText
-                    android:id="@+id/editTextPart"
+                <TextView
+                    android:id="@+id/etName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toRightOf="@+id/txtPart"
-                    android:hint="Skanuj/Wybierz"
+                    android:layout_toRightOf="@+id/txtNameLabel"
                     android:inputType="textPersonName"
                     android:singleLine="true"
-                    android:textColor="@color/greyText"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     android:textSize="16dp">
 
                     <requestFocus/>
-                </EditText>
+                </TextView>
             </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imagePartlist"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:alpha="1"
-                android:onClick="OnClickImgPart"
-                android:src="@drawable/menu_litem_list"
-                android:tint="@color/grey1"/>
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/relativeLayoutSeries"
+            android:id="@+id/sectionAmount"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/relativeLayout2"
+            android:layout_below="@+id/sectionName"
             android:layout_marginTop="19dp"
             android:background="@drawable/cell_shape_grey2"
             android:visibility="gone">
@@ -161,44 +146,31 @@
                 android:layout_marginLeft="20dp">
 
                 <TextView
-                    android:id="@+id/txtSeries"
+                    android:id="@+id/tvAmountLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:alpha="1"
                     android:src="@drawable/scan_ean"
-                    android:text="Seria: "
+                    android:text="Ilość Zeskanowana: "
                     android:textColor="@color/grey3"
                     android:textSize="17dp"/>
 
-                <EditText
-                    android:id="@+id/editTextSeries"
+                <TextView
+                    android:id="@+id/tvAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toRightOf="@+id/txtSeries"
-                    android:hint="Skanuj/Wybierz"
+                    android:layout_toRightOf="@+id/tvAmountLabel"
                     android:inputType="textPersonName"
                     android:singleLine="true"
-                    android:textColor="@color/greyText"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     android:textSize="16dp"/>
             </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageSerieslist"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:alpha="1"
-                android:onClick="OnClickImgSeries"
-                android:src="@drawable/menu_litem_list"
-                android:tint="@color/grey1"/>
         </RelativeLayout>
 
         <LinearLayout
