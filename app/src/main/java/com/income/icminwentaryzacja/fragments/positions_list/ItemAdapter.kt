@@ -3,12 +3,13 @@ package com.income.icminwentaryzacja.fragments.positions_list
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.positions_list.holder.GenericViewHolder
 import com.income.icminwentaryzacja.fragments.positions_list.viewmodel.ViewModel
 
 
 class ItemAdapter(val items: List<ViewModel>,
-              val typeFactory: ITypesFactory)
+              val typeFactory: ITypesFactory, val fragmentType: FragmentType)
     : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
 
     override fun getItemCount(): Int {
@@ -16,7 +17,7 @@ class ItemAdapter(val items: List<ViewModel>,
     }
 
     override fun onBindViewHolder(holder: GenericViewHolder<ViewModel>?, position: Int) {
-        holder?.bind(items[position])
+        holder?.bind(items[position], fragmentType)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): GenericViewHolder<ViewModel> {

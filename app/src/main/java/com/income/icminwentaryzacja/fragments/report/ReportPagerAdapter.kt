@@ -6,7 +6,7 @@ import android.content.Context
 import android.support.v13.app.FragmentPagerAdapter
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
-import com.income.icminwentaryzacja.fragments.positions_list.ListFragment
+import com.income.icminwentaryzacja.fragments.positions_list.EmptyListFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
 
 
@@ -23,7 +23,7 @@ class ReportPagerAdapter(fragmentManager: FragmentManager, context: Context) : F
     override fun getItem(position: Int): Fragment = when (position) {
 
         LOGIN_POSITION -> LoginFragment()
-        LIST_POSITION -> ListFragment()
+        LIST_POSITION -> EmptyListFragment()
         SCAN_POSISITON -> ScanPositionsFragment()
 
         else -> throw IndexOutOfBoundsException()

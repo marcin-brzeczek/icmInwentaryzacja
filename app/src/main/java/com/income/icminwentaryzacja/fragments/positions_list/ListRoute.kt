@@ -11,7 +11,7 @@ import paperparcel.PaperParcel
     @field:Transient
     override val isBottomNavigationVisible = false
 
-        override fun createFragment() = ListFragment()
+        override fun createFragment() = EmptyListFragment()
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
             PaperParcelListRoute.writeToParcel(this, parcel, flags)

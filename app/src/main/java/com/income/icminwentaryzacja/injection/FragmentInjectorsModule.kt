@@ -1,7 +1,7 @@
 package com.income.icminwentaryzacja.injection
 
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
-import com.income.icminwentaryzacja.fragments.positions_list.ListFragment
+import com.income.icminwentaryzacja.fragments.positions_list.EmptyListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
@@ -17,7 +17,7 @@ internal abstract class FragmentInjectorsModule {
 
 
     @ContributesAndroidInjector internal abstract fun contributeLoginFragment(): LoginFragment
-    @ContributesAndroidInjector internal abstract fun contributeLoginInputFragment(): ListFragment
+    @ContributesAndroidInjector internal abstract fun contributeLoginInputFragment(): EmptyListFragment
     @ContributesAndroidInjector internal abstract fun contributeReportFragment(): ReportFragment
     @ContributesAndroidInjector internal abstract fun contributeScanPositionsFragment(): ScanPositionsFragment
 
