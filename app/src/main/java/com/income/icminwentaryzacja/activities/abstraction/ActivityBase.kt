@@ -1,17 +1,12 @@
 package com.income.icminwentaryzacja.activities.abstraction
 
-import android.app.Activity
 import android.app.Fragment
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -28,9 +23,6 @@ import com.income.icminwentaryzacja.backstack.BackPressedHandler
 import com.income.icminwentaryzacja.backstack.BackstackService
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import com.income.icminwentaryzacja.backstack.FragmentStateChanger
-import com.income.icminwentaryzacja.fragments.login.LoginFragment
-import com.income.icminwentaryzacja.fragments.login.LoginRoute
-import com.income.icminwentaryzacja.fragments.positions_list.ListRoute
 import org.jetbrains.annotations.Contract
 import javax.inject.Inject
 

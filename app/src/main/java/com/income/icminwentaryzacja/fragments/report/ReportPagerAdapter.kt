@@ -6,7 +6,7 @@ import android.content.Context
 import android.support.v13.app.FragmentPagerAdapter
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
-import com.income.icminwentaryzacja.fragments.positions_list.EmptyListFragment
+import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
 
 

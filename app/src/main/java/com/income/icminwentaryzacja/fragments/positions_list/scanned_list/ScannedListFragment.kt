@@ -1,4 +1,4 @@
-package com.income.icminwentaryzacja.fragments.positions_list
+package com.income.icminwentaryzacja.fragments.positions_list.scanned_list
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -9,8 +9,12 @@ import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
-import com.income.icminwentaryzacja.fragments.positions_list.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.TypesFactoryImpl
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemAdapter
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
 import kotlinx.android.synthetic.main.fragment_empty_list.rv_items
+import kotlinx.android.synthetic.main.fragment_scan_list.tvSumScannedItems
+import kotlinx.android.synthetic.main.fragment_scan_list.view.*
 import javax.inject.Inject
 
 class ScannedListFragment : FragmentBase() {
@@ -26,7 +30,8 @@ class ScannedListFragment : FragmentBase() {
     override fun onStart() {
         super.onStart()
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
-        rv_items.adapter = ItemAdapter(databaseContext.items.queryList().map { ItemViewModel(it) }, TypesFactoryImpl(), FragmentType.ScannedListFragment)
+        rv_items.adapter = ItemAdapter(databaseContext.items.queryList().filter { it.endNumber > 0 }.map { ItemViewModel(it, activity.baseContext) }, TypesFactoryImpl(), FragmentType.ScannedListFragment)
+        tvSumScannedItems.text = databaseContext.items.queryList().filter { it.endNumber > 0 }.sumByDouble { item -> item.endNumber  }.toString()
     }
 }
 

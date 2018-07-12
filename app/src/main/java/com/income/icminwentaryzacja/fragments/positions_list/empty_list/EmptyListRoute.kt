@@ -1,12 +1,11 @@
-package com.income.icminwentaryzacja.fragments.positions_list
+package com.income.icminwentaryzacja.fragments.positions_list.empty_list
 
 import android.os.Parcel
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import paperparcel.PaperParcel
 
-
 @PaperParcel
-    data class ListRoute(val tag: String = ListRoute::javaClass.name) : BaseRoute() {
+    data class EmptyListRoute(val tag: String = EmptyListRoute::javaClass.name) : BaseRoute() {
 
     @field:Transient
     override val isBottomNavigationVisible = false
@@ -14,12 +13,12 @@ import paperparcel.PaperParcel
         override fun createFragment() = EmptyListFragment()
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
-            PaperParcelListRoute.writeToParcel(this, parcel, flags)
+            PaperParcelEmptyListRoute.writeToParcel(this, parcel, flags)
         }
 
         companion object {
             @JvmField
-            val CREATOR = PaperParcelListRoute.CREATOR
+            val CREATOR = PaperParcelEmptyListRoute.CREATOR
         }
     }
 

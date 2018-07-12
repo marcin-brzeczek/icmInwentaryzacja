@@ -1,15 +1,15 @@
-package com.income.icminwentaryzacja.fragments.positions_list
+package com.income.icminwentaryzacja.fragments.positions_list.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.income.icminwentaryzacja.fragments.FragmentType
-import com.income.icminwentaryzacja.fragments.positions_list.holder.GenericViewHolder
-import com.income.icminwentaryzacja.fragments.positions_list.viewmodel.ViewModel
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.holder.GenericViewHolder
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ViewModel
 
 
 class ItemAdapter(val items: List<ViewModel>,
-              val typeFactory: ITypesFactory, val fragmentType: FragmentType)
+                  val typeFactory: ITypesFactory, val fragmentType: FragmentType)
     : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
 
     override fun getItemCount(): Int {

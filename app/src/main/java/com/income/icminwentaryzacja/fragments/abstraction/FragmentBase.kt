@@ -10,7 +10,8 @@ import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.backstack.BackstackService
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import com.income.icminwentaryzacja.backstack.ROUTE_ARGUMENTS_KEY
-import com.income.icminwentaryzacja.fragments.positions_list.ListRoute
+import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
+import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
 import dagger.android.AndroidInjection
 
@@ -27,7 +28,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         onResumeListeners.forEach { it.invoke(this) }
     }
 
-
     override fun addOnResumeListener(action: FragmentBase.() -> Unit) {
         onResumeListeners.add(action)
     }
@@ -35,7 +35,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     override fun removeOnResumeListener(action: FragmentBase.() -> Unit) {
         onResumeListeners.remove(action)
     }
-
 
     fun navigateBack() {
         BackstackService.get(activity).goBack()
@@ -64,7 +63,8 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.exit -> activity.finish()
-            R.id.listEmpty -> navigateTo(ListRoute())
+            R.id.listEmpty -> navigateTo(EmptyListRoute())
+            R.id.listDesc -> navigateTo(ScannedListRoute())
         }
         return super.onOptionsItemSelected(item)
     }
