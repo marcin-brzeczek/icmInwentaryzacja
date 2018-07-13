@@ -3,6 +3,7 @@ package com.income.icminwentaryzacja.backstack
 import android.content.Context
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
+import com.income.icminwentaryzacja.fragments.report.ReportRoute
 import com.zhuinden.simplestack.Backstack
 import com.zhuinden.simplestack.BackstackDelegate
 import com.zhuinden.simplestack.HistoryBuilder
@@ -40,7 +41,7 @@ class BackPressedHandler(private val backStackDelegate: BackstackDelegate) : Bac
             return true
         }
         val lastElementKey = history[history.size - 1] as BaseRoute
-        if (history.size == 1 && lastElementKey.isBottomNavigationElement) {
+        if (history.size == 1 ) {
             return shouldExit(context)
         }
         backstackHistoryChange(lastElementKey)
@@ -48,10 +49,10 @@ class BackPressedHandler(private val backStackDelegate: BackstackDelegate) : Bac
     }
 
     private fun backstackHistoryChange(lastElementRoute: BaseRoute) {
-        if (lastElementRoute.isBottomNavigationElement) {
+//        if (lastElementRoute.isBottomNavigationElement) {
 //            backStackDelegate.backstack.setHistory(HistoryBuilder.single(ReportRoute()), StateChange.REPLACE)
-        } else {
+//        } else {
             backStackDelegate.backstack.goBack()
         }
-    }
+//    }
 }

@@ -8,9 +8,6 @@ import paperparcel.PaperParcel
 @PaperParcel
     data class ScanPositionsRoute(val tag: String = ScanPositionsRoute::javaClass.name) : BaseRoute() {
 
-    @field:Transient
-    override val isBottomNavigationVisible = false
-
         override fun createFragment() = ScanPositionsFragment()
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {

@@ -30,7 +30,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_scan_positions, container, false).apply {
             try {
-                ScanWrapper.initScanner(activity.baseContext, ScannerType.ZEBRA)
+                ScanWrapper.initScanner(activity.baseContext, ScannerType.CIPHERLAB)
             } catch (e: Exception) {
                 exceptionMessage("Błąd w inicjalizacji  Skanera: " + e.message)
             }

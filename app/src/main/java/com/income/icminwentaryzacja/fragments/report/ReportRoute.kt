@@ -6,11 +6,6 @@ import paperparcel.PaperParcel
 
 @PaperParcel
 data class ReportRoute(val tag: String = ReportRoute::javaClass.name) : BaseRoute() {
-    @field:Transient
-    override val isBottomNavigationElement = true
-
-    @field:Transient
-    override val isBottomNavigationVisible = true
 
     override fun createFragment() = ReportFragment()
 

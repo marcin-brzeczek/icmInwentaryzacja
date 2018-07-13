@@ -7,9 +7,6 @@ import paperparcel.PaperParcel
 @PaperParcel
     data class ScannedListRoute(val tag: String = ScannedListRoute::javaClass.name) : BaseRoute() {
 
-    @field:Transient
-    override val isBottomNavigationVisible = false
-
         override fun createFragment() = ScannedListFragment()
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {

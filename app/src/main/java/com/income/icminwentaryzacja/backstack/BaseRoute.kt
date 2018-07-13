@@ -14,12 +14,6 @@ const val ROUTE_RETURN_ARGUMENTS_KEY = "RETURN_ARGUMENTS_KEY"
  * You can later retrieve fragment specific route in fragment to gain access to the data. */
 abstract class BaseRoute : ParcelableLite {
 
-    @field:Transient
-    open val isBottomNavigationElement = false
-
-    @field:Transient
-    open val isBottomNavigationVisible = false
-
     /** Property used to distinguish each fragment in an route */
     val fragmentTag get() = toString()
 

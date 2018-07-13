@@ -7,9 +7,6 @@ import paperparcel.PaperParcel
 @PaperParcel
     data class EmptyListRoute(val tag: String = EmptyListRoute::javaClass.name) : BaseRoute() {
 
-    @field:Transient
-    override val isBottomNavigationVisible = false
-
         override fun createFragment() = EmptyListFragment()
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {

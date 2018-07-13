@@ -8,9 +8,6 @@ import paperparcel.PaperParcel
 @PaperParcel
     data class LoginRoute(val tag: String = LoginRoute::javaClass.name) : BaseRoute() {
 
-    @field:Transient
-    override val isBottomNavigationVisible = false
-
         override fun createFragment() = LoginFragment()
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
