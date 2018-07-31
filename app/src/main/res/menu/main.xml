@@ -4,13 +4,13 @@
       tools:context="com.example.icminwertaryzacja.MainActivity">
 
 
-    <!--<item-->
+    <!--<item_row-->
         <!--android:id="@+id/settings"-->
         <!--android:title="Ustawienia"-->
         <!--/>-->
     <item
-        android:id="@+id/sendData"
-        android:title="Wyślij dane"
+        android:id="@+id/exportToCSV"
+        android:title="Zapisz w pliku CSV"
         android:visible="false"
         />
     <item
@@ -23,7 +23,7 @@
         android:title="Lista SPIS"
         android:visible="false"
         />
-    <!--<item-->
+    <!--<item_row-->
         <!--android:id="@+id/logout"-->
         <!--android:title="Wyloguj"-->
         <!--/>-->

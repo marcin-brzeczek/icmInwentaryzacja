@@ -3,7 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/grey1"
+              android:background="@color/greyLight"
               android:orientation="vertical"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin">
@@ -192,10 +192,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/cell_shape_grey3"
                 android:onClick="onClickBtnSearchPosition"
                 android:text="Szukaj"
-                android:textColor="#fff"
                 android:textSize="17dp"/>
 
             <Button
@@ -205,10 +203,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/cell_shape_grey3"
                 android:onClick="onClickBtnNewPosition"
                 android:text="Nowa pozycja"
-                android:textColor="#fff"
                 android:textSize="17dp"/>
         </LinearLayout>
     </RelativeLayout>

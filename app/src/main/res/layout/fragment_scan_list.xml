@@ -14,8 +14,8 @@
             android:layout_height="match_parent"
             android:divider="@android:color/transparent"
             android:layout_above="@+id/rlSumList"
-            android:dividerHeight="5dp"
-            android:fadingEdge="none" >
+            android:dividerHeight="10dp"
+            android:fadingEdge="horizontal" >
         </android.support.v7.widget.RecyclerView>
 
     <RelativeLayout

@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey1"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin" >
+                android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="@color/greyLight">
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -71,6 +71,12 @@
         android:layout_above="@+id/btnGoToFile"
         android:layout_below="@+id/relativeLayout1"
         android:background="@drawable/centered_background_logo">
+
+        <Button
+            android:id="@+id/bProgressDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="progress dialog test"/>
     </LinearLayout>
 
     <Button
@@ -82,9 +88,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/cell_shape_grey3"
         android:text="Wczytaj plik csv"
-        android:textColor="@color/white"
         android:textSize="17dp" >
     </Button>
 

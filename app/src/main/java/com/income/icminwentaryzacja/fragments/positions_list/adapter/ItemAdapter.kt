@@ -8,9 +8,7 @@ import com.income.icminwentaryzacja.fragments.positions_list.adapter.holder.Gene
 import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ViewModel
 
 
-class ItemAdapter(val items: List<ViewModel>,
-                  val typeFactory: ITypesFactory, val fragmentType: FragmentType)
-    : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
+class ItemAdapter(val items: MutableList<ViewModel>, val typeFactory: ITypesFactory, val fragmentType: FragmentType) : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
 
     override fun getItemCount(): Int {
         return items.count()
@@ -30,5 +28,11 @@ class ItemAdapter(val items: List<ViewModel>,
 
     override fun getItemViewType(position: Int): Int {
         return items[position].type(typeFactory)
+    }
+
+    fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, items.size)
     }
 }

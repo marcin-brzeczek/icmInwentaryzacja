@@ -1,5 +1,6 @@
 package com.income.icminwentaryzacja.fragments.positions_list.adapter.holder
 
+import android.annotation.TargetApi
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.view.View
@@ -15,6 +16,7 @@ import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemStatus
 
 class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
 
+    @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun bind(itemVM: ItemViewModel, fragmentType: FragmentType) {
 
@@ -28,14 +30,14 @@ class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
 
             ScannedListFragment -> {
 
-                val background = (itemView.findViewById(R.id.layoutSheetsItems) as RelativeLayout)
                 (itemView.findViewById(R.id.tvName) as TextView).setText(itemVM.item.name)
-                (itemView.findViewById(R.id.tvAmountPos) as TextView).setText(itemVM.item.endNumber.toString())
+                val tvAmount = (itemView.findViewById(R.id.tvAmountPos) as TextView)
+                tvAmount.setText(itemVM.item.endNumber.toString())
 
                 when (itemVM.getStatus()) {
-                    ItemStatus.Brak-> background.background = itemVM.context.getDrawable(R.drawable.background_red)
-                    ItemStatus.Nadwyzka-> background.background = itemVM.context.getDrawable(R.drawable.background_blue)
-                    ItemStatus.Zgodny-> background.background = itemVM.context.getDrawable(R.drawable.background_teal)
+                    ItemStatus.Brak -> tvAmount.setTextColor(itemVM.context.getColor(R.color.red200))
+                    ItemStatus.Nadwyzka -> tvAmount.setTextColor(itemVM.context.getColor(R.color.blue400))
+                    ItemStatus.Zgodny -> tvAmount.setTextColor(itemVM.context.getColor(R.color.teal400))
                 }
             }
         }

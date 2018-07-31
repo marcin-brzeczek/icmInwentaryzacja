@@ -22,9 +22,6 @@ import javax.inject.Inject
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
-    @Inject
-    lateinit var dbContext: DBContext
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -89,7 +86,6 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             tvName.setText(it.name)
             tvAmount.setText((++it.endNumber).toString())
             tvLokalization.setText(it.oldLocation)
-//            it.endNumber = ++it.endNumber
             it.save()
         }
     }

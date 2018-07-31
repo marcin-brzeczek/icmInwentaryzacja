@@ -24,12 +24,14 @@
         <color name="textColorPrimary">#4d6680</color>
         <color name="windowBackground">#4d6680</color>
         <color name="colorAccent">#c8e8ff</color>
-        <color name="lightGrey">#9E9E9E</color>
+        <color name="lightGrey">#EEEEEE</color>
         <color name="red">#db270f</color>
         <color name="clearWhite">#B3FFFFFF</color>
         <color name="greyText">#404244</color>
         <!-- odcienie szarości od jasnego do ciemnego -->
+
         <color name="grey1">#C1C4C7</color>
+        <color name="greyLight">#F5F5F5</color>
         <color name="grey2">#888D91</color>
         <color name="grey3">#444C53</color>
         <color name="grey4">#252C32</color>

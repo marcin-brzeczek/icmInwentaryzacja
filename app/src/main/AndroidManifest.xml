@@ -3,6 +3,9 @@
           package="com.income.icminwentaryzacja">
 
     <uses-permission android:name="com.symbol.emdk.permission.EMDK"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
 
     <application
         android:name="com.income.icminwentaryzacja.InitApp"
@@ -24,8 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--<activity android:name="com.income.icminwentaryzacja.SecondActivity">-->
-        <!--</activity>-->
     </application>
 
 </manifest>

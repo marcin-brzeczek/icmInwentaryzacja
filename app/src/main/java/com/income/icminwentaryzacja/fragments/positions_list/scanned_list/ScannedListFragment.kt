@@ -2,6 +2,7 @@ package com.income.icminwentaryzacja.fragments.positions_list.scanned_list
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,17 @@ import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.IOnReloadAdapterListener
 import com.income.icminwentaryzacja.fragments.positions_list.adapter.TypesFactoryImpl
 import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemAdapter
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemSwipeHelper
 import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
 import kotlinx.android.synthetic.main.fragment_empty_list.rv_items
-import kotlinx.android.synthetic.main.fragment_scan_list.tvSumScannedItems
+import kotlinx.android.synthetic.main.fragment_scan_list.*
 import kotlinx.android.synthetic.main.fragment_scan_list.view.*
 import javax.inject.Inject
 
-class ScannedListFragment : FragmentBase() {
+class ScannedListFragment : FragmentBase(), IOnReloadAdapterListener {
 
     @Inject
     lateinit var databaseContext: DBContext
@@ -29,9 +32,21 @@ class ScannedListFragment : FragmentBase() {
 
     override fun onStart() {
         super.onStart()
+        loadAdapter()
+    }
+
+    override fun reload() {
+        loadAdapter()
+    }
+
+    fun loadAdapter() {
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
-        rv_items.adapter = ItemAdapter(databaseContext.items.queryList().filter { it.endNumber > 0 }.map { ItemViewModel(it, activity.baseContext) }, TypesFactoryImpl(), FragmentType.ScannedListFragment)
-        tvSumScannedItems.text = databaseContext.items.queryList().filter { it.endNumber > 0 }.sumByDouble { item -> item.endNumber  }.toString()
+        val itemAdapter = ItemAdapter(databaseContext?.items.queryList().filter { it.endNumber > 0 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList(), TypesFactoryImpl(), FragmentType.ScannedListFragment)
+        rv_items.adapter = itemAdapter
+        val itemTouchHelper = ItemTouchHelper(ItemSwipeHelper(itemAdapter, activity, this))
+        itemTouchHelper.attachToRecyclerView(rv_items)
+        tvSumScannedItems.text = databaseContext.items.queryList().filter { it.endNumber > 0 }.sumByDouble { item -> item.endNumber }.toString()
+        itemAdapter.notifyDataSetChanged()
     }
 }
 

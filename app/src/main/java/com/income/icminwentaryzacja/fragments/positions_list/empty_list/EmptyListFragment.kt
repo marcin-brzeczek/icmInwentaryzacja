@@ -29,7 +29,7 @@ class EmptyListFragment : FragmentBase() {
     override fun onStart() {
         super.onStart()
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
-        rv_items.adapter = ItemAdapter(databaseContext.items.queryList().map { ItemViewModel(it, activity.baseContext) }, TypesFactoryImpl(), FragmentType.EmptyListFragment)
+        rv_items.adapter = ItemAdapter(databaseContext.items.queryList().map { ItemViewModel(it, activity.baseContext) }.toMutableList(), TypesFactoryImpl(), FragmentType.EmptyListFragment)
     }
 }
 

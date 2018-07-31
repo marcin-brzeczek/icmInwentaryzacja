@@ -39,6 +39,9 @@ data class Item(
     var endNumber: Double = 0.0,
 
     @Column
+    var itemState: String ="skaner",
+
+    @Column
     var user: String = "")  : BaseModel(), ParcelableLite
 {
 
