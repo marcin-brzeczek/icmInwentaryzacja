@@ -7,13 +7,51 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin" >
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvLokalization"
+        android:background="@drawable/cell_shape_grey2">
+
+
+        <ImageView
+            android:id="@+id/imageEan"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:alpha="1"
+            android:src="@drawable/scan_ean"/>
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:layout_toRightOf="@+id/layoutLogin"
+            android:hint="Szukaj pozycji po kodzie"
+            android:inputType="textPersonName"
+            android:maxLength="13"
+            android:singleLine="true"
+            android:textColor="@color/greyText"
+            android:textColorHint="@color/white"
+            android:textSize="16dp"/>
+    </RelativeLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_items"
-            android:layout_marginTop="80dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@android:color/transparent"
             android:layout_above="@+id/rlSumList"
+            android:layout_below="@+id/relativeLayout1"
+            android:layout_marginTop="10dp"
             android:dividerHeight="10dp"
             android:fadingEdge="horizontal" >
         </android.support.v7.widget.RecyclerView>

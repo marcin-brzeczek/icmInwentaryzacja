@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
-import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
@@ -14,14 +13,8 @@ import com.income.icminwentaryzacja.emkd_scan.ScanWrapper
 import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
-import kotlinx.android.synthetic.main.fragment_scan_positions.view.*
-
-import javax.inject.Inject
-
-
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -31,10 +24,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             } catch (e: Exception) {
                 exceptionMessage("Błąd w inicjalizacji  Skanera: " + e.message)
             }
-                btnNewPosition.setOnClickListener(View.OnClickListener {  })
-            btnSearchPosition.setOnClickListener(View.OnClickListener {  })
         }
-
     }
 
     override fun onResume() {
@@ -67,7 +57,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     override fun onReadData(data: String) {
         editTextEAN.setText(data)
         val enterSuffix = "\n"
-        val finishData = if(data.contains(enterSuffix)) data.removeSuffix(enterSuffix) else data
+        val finishData = if (data.contains(enterSuffix)) data.removeSuffix(enterSuffix) else data
         getPositionByCode(finishData)
     }
 
@@ -81,14 +71,12 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     private fun getPositionByCode(codew: String) {
         val item: Item? = dbContext.items.where(Item_Table.code.eq(codew)).querySingle()
         item?.let {
-            sectionName.visibility = View.VISIBLE
-            sectionAmount.visibility = View.VISIBLE
+            sectionLogo.visibility = View.GONE
+            sectionScann.visibility = View.VISIBLE
             tvName.setText(it.name)
             tvAmount.setText((++it.endNumber).toString())
             tvLokalization.setText(it.oldLocation)
             it.save()
-        }
+        } ?: showNewPositionDialog(editTextEAN.text.toString())
     }
 }
-
-

@@ -21,8 +21,10 @@ import com.income.icminwentaryzacja.database.AppDatabase
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
+import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
+import com.income.icminwentaryzacja.fragments.scan_positions.NewPositionDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
@@ -161,11 +163,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     }
 
     /***********Zapis pliku CSV do telefonu*/
-
     fun saveDocPosToFile() {
-//        if (!dbContext.items.queryList().contains(it))
-//            Toast.makeText(activity.baseContext, "Najpierw zeskanuj pozycje", Toast.LENGTH_LONG).show()
-//            return
         saveDocPosToFile(preparePosToSave())
     }
 
@@ -227,6 +225,10 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm")
         val date = Date()
         return dateFormat.format(date)
+    }
+
+    fun showNewPositionDialog(code: String) {
+        NewPositionDialogFragment({ navigateTo(NewItemRoute(Item(code = code))) }).show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     inner class saveAsyncCSV() : AsyncTask<Void, Void, Boolean>() {

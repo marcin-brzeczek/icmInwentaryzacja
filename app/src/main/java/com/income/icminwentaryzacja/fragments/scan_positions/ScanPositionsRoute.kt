@@ -4,7 +4,6 @@ import android.os.Parcel
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import paperparcel.PaperParcel
 
-
 @PaperParcel
     data class ScanPositionsRoute(val tag: String = ScanPositionsRoute::javaClass.name) : BaseRoute() {
 

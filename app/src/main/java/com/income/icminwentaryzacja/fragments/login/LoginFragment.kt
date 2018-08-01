@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.income.icminwentaryzacja.R
-import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.database.dto.User
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
-import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminwentaryzacja.utilities.inflate
 import kotlinx.android.synthetic.main.fragment_login.view.*
@@ -23,11 +21,6 @@ class LoginFragment : FragmentBase() {
                 val isEmptyDatabase: Boolean = dbContext.isEmpty
                 val buttonTitle: String = if (isEmptyDatabase) "Wczytaj plik CSV" else "Otwórz istniejącą bazę"
                 btnOpenFile.setText(buttonTitle)
-
-                val progressDialogFragment = ProgressDialogFragment()
-                val ft = (activity as MainActivity).fragmentManager
-
-                bProgressDialog.setOnClickListener{   progressDialogFragment.show(ft, "dialog")}
 
                 btnOpenFile.setOnClickListener {
                     if (isEmptyDatabase) {
