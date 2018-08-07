@@ -2,27 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/greyLight"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-    android:background="@color/greyLight">
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginTop="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="162dp"
-        android:src="@drawable/icm_invent_logo_size_200"/>
+        android:src="@drawable/icminventory_icon"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="80dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/cell_shape_grey2" >
+
+        android:background="@drawable/cell_shape_grey2">
 
         <RelativeLayout
             android:id="@+id/layoutLogin"
@@ -30,7 +31,7 @@
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp" >
+            android:layout_marginLeft="20dp">
 
             <ImageView
                 android:id="@+id/imageLogin"
@@ -56,7 +57,7 @@
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="@color/white"
-                android:textSize="20dp" />
+                android:textSize="20dp"/>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -70,6 +71,6 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:text="Wczytaj plik csv"
-        android:textSize="17dp" >
+        android:textSize="17dp">
     </Button>
 </RelativeLayout>

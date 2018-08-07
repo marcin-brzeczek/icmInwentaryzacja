@@ -31,7 +31,7 @@
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/grey2</item>
         <item name="colorPrimaryDark">@color/grey2</item>
-        <item name="colorAccent">#3498db</item>
+        <item name="colorAccent">@color/blue200</item>
     </style>
 
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">

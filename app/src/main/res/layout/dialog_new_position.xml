@@ -7,7 +7,7 @@
     >
 
     <TextView
-        android:id="@+id/tvProgress"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:padding="5dp"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvProgress"
+        android:layout_below="@id/tvTitle"
         android:orientation="horizontal"
         android:layout_marginTop="40dp">
 

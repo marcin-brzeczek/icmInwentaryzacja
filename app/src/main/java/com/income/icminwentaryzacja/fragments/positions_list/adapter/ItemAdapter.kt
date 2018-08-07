@@ -3,12 +3,14 @@ package com.income.icminwentaryzacja.fragments.positions_list.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.positions_list.adapter.holder.GenericViewHolder
+import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
 import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ViewModel
 
 
-class ItemAdapter(val items: MutableList<ViewModel>, val typeFactory: ITypesFactory, val fragmentType: FragmentType) : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
+class ItemAdapter(var items: MutableList<ViewModel>, val typeFactory: ITypesFactory, val fragmentType: FragmentType) : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
 
     override fun getItemCount(): Int {
         return items.count()
@@ -34,5 +36,10 @@ class ItemAdapter(val items: MutableList<ViewModel>, val typeFactory: ITypesFact
         items.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, items.size)
+    }
+
+    fun setListItem(items: MutableList<ViewModel>) {
+        this.items = items
+        notifyDataSetChanged()
     }
 }

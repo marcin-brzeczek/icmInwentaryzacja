@@ -18,30 +18,28 @@
 
 
         <ImageView
-            android:id="@+id/imageEan"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:id="@+id/imgSearch"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:alpha="1"
-            android:src="@drawable/scan_ean"/>
+            android:src="@android:drawable/ic_search_category_default"/>
 
         <EditText
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
-            android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingLeft="10dp"
-            android:layout_toRightOf="@+id/layoutLogin"
-            android:hint="Szukaj pozycji po kodzie"
+            android:layout_toRightOf="@+id/imgSearch"
+            android:hint="Wpisz nazwę"
             android:inputType="textPersonName"
-            android:maxLength="13"
             android:singleLine="true"
-            android:textColor="@color/greyText"
-            android:textColorHint="@color/white"
-            android:textSize="16dp"/>
+           android:layout_marginRight="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/clearWhite"
+            android:textSize="18dp"/>
     </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -55,6 +53,17 @@
             android:dividerHeight="10dp"
             android:fadingEdge="horizontal" >
         </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="180dp"
+        android:indeterminate="false"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/rlSumList"

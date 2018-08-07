@@ -12,6 +12,6 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/icm_inw_napis_logo" />
+        android:src="@drawable/icminwentory_title" />
 
 </FrameLayout>

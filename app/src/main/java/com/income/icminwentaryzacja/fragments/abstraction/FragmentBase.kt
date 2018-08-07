@@ -24,10 +24,7 @@ import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
-import com.income.icminwentaryzacja.fragments.scan_positions.NewPositionDialogFragment
-import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
-import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
-import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
+import com.income.icminwentaryzacja.fragments.scan_positions.*
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
 import dagger.android.AndroidInjection
@@ -81,8 +78,8 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 menu.findItem(R.id.exportToCSV).setVisible(true)
                 menu.findItem(R.id.listEmpty).setVisible(true)
                 menu.findItem(R.id.listDesc).setVisible(true)
+                menu.findItem(R.id.exit).setVisible(false)
             }
-            is ListFragment -> menu.findItem(R.id.exportToCSV).setVisible(true)
         }
     }
 
@@ -91,13 +88,12 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             R.id.exit -> activity.finish()
             R.id.listEmpty -> navigateTo(EmptyListRoute())
             R.id.listDesc -> navigateTo(ScannedListRoute())
-            R.id.exportToCSV -> saveAsyncCSV().execute()
+            R.id.exportToCSV -> InfoDialogFragment({ saveAsyncCSV().execute() }, getString(R.string.saving_file_info)).show((activity as MainActivity).fragmentManager, "dialog")
         }
         return super.onOptionsItemSelected(item)
     }
 
     /********** Wybranie i  czytanie z pliku csv z telefonu */
-
     fun selectCSVFile() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -205,7 +201,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             }
         }
 
-        val file = File(path + "/Export_pozycje" + date.replace(":", "_") + ".csv")
+        val file = File(path + "/Export_pozycje_" + date.replace(":", "_") + ".csv")
         val out: FileOutputStream
         val myOutWriter: OutputStreamWriter
         try {
@@ -227,8 +223,8 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         return dateFormat.format(date)
     }
 
-    fun showNewPositionDialog(code: String) {
-        NewPositionDialogFragment({ navigateTo(NewItemRoute(Item(code = code))) }).show((activity as MainActivity).fragmentManager, "dialog")
+    fun showNewPositionDialog(codePos: String) {
+        NewPositionDialogFragment({ navigateTo(NewItemRoute(codePos)) }).show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     inner class saveAsyncCSV() : AsyncTask<Void, Void, Boolean>() {
@@ -246,7 +242,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
         override fun onPostExecute(result: Boolean?) {
             progressDialogFragment.dismiss()
-            Toast.makeText(activity.baseContext, " Zapisano jako plik: Export_pozycje", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity.baseContext, "Zapisano", Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -10,7 +10,7 @@
     <application
         android:name="com.income.icminwentaryzacja.InitApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icminventory_icon"
         android:theme="@style/MyMaterialTheme"
         android:label="">
         <uses-library
@@ -20,7 +20,7 @@
         <activity
             android:name="com.income.icminwentaryzacja.activities.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:logo="@drawable/icm_inw_napis_logo">
+            android:logo="@drawable/icminwentory_title">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN"/>
 

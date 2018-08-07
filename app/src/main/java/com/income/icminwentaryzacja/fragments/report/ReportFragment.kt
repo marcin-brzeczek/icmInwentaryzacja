@@ -8,7 +8,6 @@ import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import kotlinx.android.synthetic.main.fragment_report.*
 
-
 class ReportFragment : FragmentBase(), IOnReselectListener {
 
     private val _pagerAdapter: ReportPagerAdapter by lazy { ReportPagerAdapter(childFragmentManager, activity) }
@@ -23,6 +22,5 @@ class ReportFragment : FragmentBase(), IOnReselectListener {
     override fun onReselect() {
         view_pager.setCurrentItem(0, true)
         (_pagerAdapter.getItem(view_pager.currentItem) as? IOnReselectListener)?.run { onReselect() }
-
     }
 }
