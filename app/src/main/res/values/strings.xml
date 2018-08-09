@@ -9,6 +9,8 @@
     <string name="header_of_exported_file">Id;Kod;KodPomocniczy;NazwaSkrocona;Nazwa;LokalizacjaStara;IloscPoczatkowa;IloscKoncowa;Przetworzona;Spisujacy;</string>
     <string name="saving_file_info">Plik zostanie zapisany jako: Export_pozycje.csv</string>
     <string name="fill_value">Uzupełnij wartość</string>
+    <string name="incorrect_file_format">Wybrany plik nie jest formatu csv!</string>
+    <string name="saved">Zapisano</string>
 
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>

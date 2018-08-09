@@ -18,3 +18,5 @@ val FragmentBase.key: Any?
     get() = arguments.get("KEY")
 
 val FragmentBase.route: BaseRoute? get() = arguments.get("KEY") as? BaseRoute
+
+fun FragmentBase.toast(message: CharSequence, duration: Int =  Toast.LENGTH_SHORT) = Toast.makeText(activity, message, duration).show()

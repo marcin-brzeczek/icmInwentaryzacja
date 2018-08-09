@@ -2,16 +2,13 @@ package com.income.icminwentaryzacja.fragments.abstraction
 
 import android.app.Activity
 import android.app.Fragment
-import android.app.ListFragment
 import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.backstack.BackstackService
@@ -24,11 +21,19 @@ import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
-import com.income.icminwentaryzacja.fragments.scan_positions.*
+import com.income.icminwentaryzacja.fragments.scan_positions.InfoDialogFragment
+import com.income.icminwentaryzacja.fragments.scan_positions.NewPositionDialogFragment
+import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
+import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
+import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
 import dagger.android.AndroidInjection
-import java.io.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStreamReader
+import java.io.LineNumberReader
+import java.io.OutputStreamWriter
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -75,10 +80,10 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         menuInflater.inflate(R.menu.main, menu)
         when (this) {
             is ScanPositionsFragment -> {
-                menu.findItem(R.id.exportToCSV).setVisible(true)
-                menu.findItem(R.id.listEmpty).setVisible(true)
-                menu.findItem(R.id.listDesc).setVisible(true)
-                menu.findItem(R.id.exit).setVisible(false)
+                menu.findItem(R.id.exportToCSV).isVisible = true
+                menu.findItem(R.id.listEmpty).isVisible = true
+                menu.findItem(R.id.listDesc).isVisible = true
+                menu.findItem(R.id.exit).isVisible = false
             }
         }
     }
@@ -128,15 +133,14 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     fun storage() {
 
-
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    navigateTo(ScanPositionsRoute())
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                navigateTo(ScanPositionsRoute())
 
-                }.build().execute()
+            }.build().execute()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -147,7 +151,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                     data?.data?.let {
 
                         if (!it.path.contains(".csv")) {
-                            Toast.makeText(activity.baseContext, "Wybrany plik nie jest formatu csv!", Toast.LENGTH_SHORT).show()
+                            toast(getString(R.string.incorrect_file_format))
                             return
                         } else {
                             readFileContent(it)
@@ -197,7 +201,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             try {
                 folder.mkdir()
             } catch (e: Exception) {
-                Toast.makeText(activity.baseContext, e.toString(), Toast.LENGTH_LONG).show()
+                toast(e.toString())
             }
         }
 
@@ -210,11 +214,9 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             myOutWriter.append(content)
             myOutWriter.close()
             out.close()
-
         } catch (e: Exception) {
-            Toast.makeText(activity.baseContext, e.toString(), Toast.LENGTH_LONG).show()
+            toast(e.toString())
         }
-
     }
 
     fun getTodaysDate(): String {
@@ -242,7 +244,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
         override fun onPostExecute(result: Boolean?) {
             progressDialogFragment.dismiss()
-            Toast.makeText(activity.baseContext, "Zapisano", Toast.LENGTH_LONG).show()
+            toast(getString(R.string.saved))
         }
     }
 }
