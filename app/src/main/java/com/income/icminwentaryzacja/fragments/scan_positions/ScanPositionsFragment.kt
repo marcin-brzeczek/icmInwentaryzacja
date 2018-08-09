@@ -12,7 +12,9 @@ import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
 import com.income.icminwentaryzacja.emkd_scan.ScanWrapper
 import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
+import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
+import kotlinx.android.synthetic.main.fragment_scan_positions.view.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
@@ -24,6 +26,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             } catch (e: Exception) {
                 exceptionMessage("Błąd w inicjalizacji  Skanera: " + e.message)
             }
+            addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
         }
     }
 
