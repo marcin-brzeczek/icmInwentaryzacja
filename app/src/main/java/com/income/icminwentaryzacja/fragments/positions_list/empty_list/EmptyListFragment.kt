@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
+import com.income.icminwentaryzacja.cache.LocationCache.locationName
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.fragments.FragmentType
@@ -18,7 +19,6 @@ import com.income.icminwentaryzacja.fragments.adapter.SearchEngine
 import com.income.icminwentaryzacja.fragments.adapter.TypesFactoryImpl
 import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ViewModel
-import com.income.icminwentaryzacja.fragments.scan_positions.LOCATION_NAME
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,7 +33,6 @@ class EmptyListFragment : FragmentBase() {
     private lateinit var searchEngine: SearchEngine
     private lateinit var disposable: Disposable
     private lateinit var _adapter: ItemAdapter
-    private lateinit var locationName: String
 
     @Inject
     lateinit var databaseContext: DBContext
@@ -45,7 +44,6 @@ class EmptyListFragment : FragmentBase() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        locationName = arguments.getString(LOCATION_NAME)
     }
 
     override fun onStart() {
@@ -107,7 +105,7 @@ class EmptyListFragment : FragmentBase() {
 
     private fun showResult(result: MutableList<ViewModel>) {
         if (result.isEmpty()) {
-            Toast.makeText(activity, "Nie znaleziono dopasowania", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, getString(R.string.not_match), Toast.LENGTH_SHORT).show()
             _adapter.setListItem(emptyList<ViewModel>().toMutableList())
         } else {
             _adapter.setListItem(result)

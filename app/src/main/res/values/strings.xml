@@ -3,8 +3,6 @@
     <string name="app_name">icmInventory</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="exit_message">To leave the application, click again</string>
     <string name="header_of_exported_file">Id;Kod;KodPomocniczy;NazwaSkrocona;Nazwa;LokalizacjaStara;IloscPoczatkowa;IloscKoncowa;Przetworzona;Spisujacy;</string>
@@ -13,8 +11,37 @@
     <string name="saved">Saved</string>
     <string name="start_new_inventory">Start new inventory</string>
     <string name="continue_current_inventory">Continue the current inventory</string>
+    <string name="login">Login</string>
+    <string name="error_init_scanner">Error while init scanner:</string>
+    <string name="not_match">Not match</string>
+    <string name="error_unregistry_scanner">Error unregistry scanner</string>
+    <string name="error_registry_scanner">Error registry scanner</string>
+    <string name="cant_release_scanner">Can't release scanner</string>
+    <string name="item_code">item code</string>
+    <string name="Unit">Unit:</string>
+    <string name="save">Save</string>
+    <string name="sum">Sum</string>
+    <string name="scan_code">Scan code</string>
+    <string name="scan_ean">Scan code EAN</string>
+    <string name="name">Name:</string>
+    <string name="scanned_amount">Scanned amount:</string>
+    <string name="no_tem_for_code">No item for this code. Would you like create new item?</string>
+    <string name="amount">Amount:</string>
+    <string name="code">Code:</string>
+    <string name="entry_list">Entry list</string>
+    <string name="scanned_list">Scanned item list</string>
+    <string name="change_location">Change location</string>
+    <string name="end_app">End app</string>
+    <string name="Information">Information</string>
+    <string name="save_in_csv_file">Save file in csv format</string>
+    <string name="choose_location">Choose location</string>
+    <string name="enter_name">Enter name</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+    <string name="enter_code">Enter code</string>
+    <string name="saving_to_csv">Saving csv file...</string>
+
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
-
     </string-array>
 </resources>

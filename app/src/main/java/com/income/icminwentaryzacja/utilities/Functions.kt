@@ -1,6 +1,8 @@
 package com.income.icminwentaryzacja.utilities
 
+import android.content.Context
 import android.widget.EditText
+import com.income.icminwentaryzacja.R
 
 
 object Functions {
@@ -32,6 +34,6 @@ inline fun executeUnless(predicate: () -> Boolean, block: () -> Unit) {
 
 inline fun withoutNullOrBlank(vararg items: String?) = items.filterNot { it.isNullOrBlank() }
 
-inline fun displayError(vararg inputTexts: EditText) {
-    inputTexts.filter { it.text.isEmpty() }.forEach { it.requestFocus(); it.text.clear(); it.error = "Uzupełnij wartość!" }
+inline fun displayError(vararg inputTexts: EditText, context:Context) {
+    inputTexts.filter { it.text.isEmpty() }.forEach { it.requestFocus(); it.text.clear(); it.error = context.resources.getString(R.string.fill_value) }
 }

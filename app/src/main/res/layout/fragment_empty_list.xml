@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/imgSearch"
-            android:hint="Wpisz nazwę"
+            android:hint="@string/enter_name"
             android:inputType="textPersonName"
             android:singleLine="true"
            android:layout_marginRight="10dp"
@@ -79,7 +79,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
-            android:text="Suma sztuk"
+            android:text="@string/sum"
             android:textColor="@color/grey3"
             android:textSize="18dp"
             android:textStyle="bold" />

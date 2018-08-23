@@ -3,7 +3,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_marginTop="60dp"
               android:background="@color/greyLight"
               android:orientation="vertical"
               android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,6 +10,7 @@
 
     <RelativeLayout
         android:id="@+id/sectionLogo"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -30,7 +30,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/imgScann"
             android:gravity="center"
-            android:text="Zeskanuj Kod"
+            android:text="@string/scan_code"
             android:textColor="@color/grey3"
             android:textSize="26dp"
             android:textStyle="bold"/>
@@ -54,7 +54,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_marginTop="80dp">
 
         <TextView
             android:id="@+id/tvLokalization"
@@ -63,7 +64,6 @@
             android:layout_alignParentLeft="true"
             android:background="@drawable/cell_shape_grey3"
             android:gravity="center"
-            android:text="Lokalizacja Testowa 1"
             android:textColor="@color/white"
             android:textSize="18dp"/>
 
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/layoutLogin"
-                android:hint="Zeskanuj kod EAN"
+                android:hint="@string/scan_ean"
                 android:inputType="textPersonName"
                 android:maxLength="13"
                 android:singleLine="true"
@@ -145,7 +145,7 @@
                     android:layout_centerVertical="true"
                     android:alpha="1"
                     android:src="@drawable/scan_ean"
-                    android:text="Nazwa:"
+                    android:text="@string/name"
                     android:textColor="@color/grey1"
                     android:textSize="17dp"/>
 
@@ -162,7 +162,6 @@
                     android:inputType="textMultiLine"
                     android:minLines="2"
                     android:padding="5dp"
-                    android:text="Nazwa Testowa"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     android:textStyle="bold">
@@ -197,7 +196,7 @@
                     android:layout_centerVertical="true"
                     android:alpha="1"
                     android:src="@drawable/scan_ean"
-                    android:text="Ilość Zeskanowana: "
+                    android:text="@string/scanned_amount"
                     android:textColor="@color/grey1"
                     android:textSize="17dp"/>
 

@@ -6,7 +6,7 @@ import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationFrag
 import paperparcel.PaperParcel
 
 @PaperParcel
-data class ChooseLocationRoute(val code: String? = null, val tag: String = ChooseLocationRoute::javaClass.name) : BaseRoute() {
+data class ChooseLocationRoute( val tag: String = ChooseLocationRoute::javaClass.name) : BaseRoute() {
 
     override fun createFragment() = ChooseLocationFragment()
 

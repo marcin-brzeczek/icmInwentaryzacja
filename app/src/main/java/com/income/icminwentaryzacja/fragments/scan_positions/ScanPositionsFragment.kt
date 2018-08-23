@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.MainActivity
+import com.income.icminwentaryzacja.cache.LocationCache.locationName
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
@@ -23,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_scan_positions.view.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
-     var locationName: String=""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -31,26 +31,14 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             try {
                 ScanWrapper.initScanner(activity.baseContext, ScannerType.CIPHERLAB)
             } catch (e: Exception) {
-                exceptionMessage("Błąd w inicjalizacji  Skanera: " + e.message)
+                exceptionMessage(context.getString(R.string.error_init_scanner) + e.message)
             }
         }
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        locationName = arguments.getString(LOCATION_NAME)
         addNewItem.setOnClickListener { navigateTo(NewItemRoute(locationName =locationName)) }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.exit -> activity.finish()
-            R.id.listEmpty -> navigateTo(EmptyListRoute(locationName))
-            R.id.listDesc -> navigateTo(ScannedListRoute(locationName))
-            R.id.exportToCSV -> requestPermissionOrSaveCSV()
-            R.id.changeLocation -> navigateTo(ChooseLocationRoute())
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
@@ -58,7 +46,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         try {
             ScanWrapper.registerScannerListener(this)
         } catch (e: Exception) {
-            exceptionMessage("Błąd w trakcie rejestracji Skanera: " + e.message)
+            exceptionMessage(getString(R.string.error_registry_scanner) + e.message)
         }
     }
 
@@ -67,7 +55,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         try {
             ScanWrapper.unregisterScannerListener()
         } catch (e: Exception) {
-            exceptionMessage("Błąd w trakcie wyrejestrowania Skanera: " + e.message)
+            exceptionMessage(getString(R.string.error_unregistry_scanner) + e.message)
         }
     }
 
@@ -76,7 +64,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         try {
             ScanWrapper.deinitScanner()
         } catch (e: Exception) {
-            exceptionMessage("Nie można zwolnić obiektu Skanera: " + e.message)
+            exceptionMessage(getString(R.string.cant_release_scanner) + e.message)
         }
     }
 
@@ -106,7 +94,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         } ?: showNewPositionDialog(editTextEAN.text.toString())
     }
     fun showNewPositionDialog(codePos: String) {
-        NewPositionDialogFragment({ navigateTo(NewItemRoute(codePos, locationName)) }).show((activity as MainActivity).fragmentManager, "dialog")
+        NewPositionDialogFragment({ navigateTo(NewItemRoute(code = codePos, locationName = locationName)) }).show((activity as MainActivity).fragmentManager, "dialog")
     }
 
 }

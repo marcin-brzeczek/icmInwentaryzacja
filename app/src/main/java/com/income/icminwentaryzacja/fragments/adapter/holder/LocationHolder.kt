@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.backstack.BackstackService
+import com.income.icminwentaryzacja.cache.LocationCache
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.FragmentType.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.adapter.viewmodel.LocationViewModel
@@ -23,7 +24,8 @@ class LocationHolder(view: View) : GenericViewHolder<LocationViewModel>(view) {
             ChooseLocationFragment -> {
                 (itemView.findViewById(R.id.tvName) as TextView).apply {
                     setText(itemVM.item.name)
-                    setOnClickListener {    BackstackService.get(itemView.context).goTo(ScanPositionsRoute(locationName = itemVM.item.name))}
+                    setOnClickListener {    BackstackService.get(itemView.context).goTo(ScanPositionsRoute())
+                        LocationCache.locationName = itemVM.item.name}
                 }
             }
         }

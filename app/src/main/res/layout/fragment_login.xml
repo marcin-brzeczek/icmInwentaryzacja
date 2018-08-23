@@ -50,7 +50,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_toRightOf="@+id/imageLogin"
-                android:hint="Spisujący"
+                android:hint="@string/login"
                 android:inputType="textPersonName"
                 android:minWidth="170dp"
                 android:singleLine="true"

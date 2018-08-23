@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Trwa zapis do pliku csv..."
+        android:text="@string/saving_to_csv"
         android:textSize="20dp"/>
 
     <ProgressBar

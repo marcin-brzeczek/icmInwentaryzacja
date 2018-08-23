@@ -3,15 +3,17 @@ package com.income.icminwentaryzacja.fragments.positions_list.scanned_list
 import android.os.Bundle
 import android.os.Parcel
 import com.income.icminwentaryzacja.backstack.BaseRoute
-import com.income.icminwentaryzacja.fragments.scan_positions.LOCATION_NAME
 import paperparcel.PaperParcel
+
+const val SCANNED_LIST_LOCATION = "scanned_list_location"
+
 
 @PaperParcel
 data class ScannedListRoute(val locationName : String, val tag: String = ScannedListRoute::javaClass.name) : BaseRoute() {
 
     override fun createFragment() = ScannedListFragment().apply {
         arguments = (arguments ?: Bundle()).apply {
-            putString(LOCATION_NAME, locationName)
+            putString(SCANNED_LIST_LOCATION, locationName)
         }
     }
 

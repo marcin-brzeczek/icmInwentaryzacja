@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
+import android.os.Parcelable
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.Menu
@@ -20,6 +21,7 @@ import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.backstack.BackstackService
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import com.income.icminwentaryzacja.backstack.ROUTE_ARGUMENTS_KEY
+import com.income.icminwentaryzacja.cache.LocationCache
 import com.income.icminwentaryzacja.database.AppDatabase
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
@@ -28,7 +30,9 @@ import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationRout
 import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListFragment
+import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListFragment
+import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import com.income.icminwentaryzacja.fragments.scan_positions.InfoDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.NewPositionDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
@@ -53,6 +57,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     var saveCurrentInventory = false
 
     private val items = mutableListOf<Item>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -105,6 +110,8 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             R.id.exit -> activity.finish()
             R.id.exportToCSV -> requestPermissionOrSaveCSV()
             R.id.changeLocation -> navigateTo(ChooseLocationRoute())
+            R.id.listEmpty -> navigateTo(EmptyListRoute(LocationCache.locationName))
+            R.id.listDesc -> navigateTo(ScannedListRoute(LocationCache.locationName))
         }
         return super.onOptionsItemSelected(item)
     }

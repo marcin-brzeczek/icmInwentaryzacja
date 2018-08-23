@@ -4,30 +4,30 @@
 
     <item
         android:id="@+id/info"
-        android:title="Informacje"
+        android:title="@string/Information"
         />
     <item
         android:id="@+id/exportToCSV"
-        android:title="Zapisz w pliku CSV"
+        android:title="@string/save_in_csv_file"
         android:visible="false"
         />
     <item
         android:id="@+id/listEmpty"
-        android:title="Lista BRAK"
+        android:title="@string/entry_list"
         android:visible="false"
         />
     <item
         android:id="@+id/listDesc"
-        android:title="Lista SPIS"
+        android:title="@string/scanned_list"
         android:visible="false"
         />
     <item
         android:id="@+id/changeLocation"
-        android:title="Zmień lokalizację"
+        android:title="@string/change_location"
         android:visible="false"
         />
     <item
         android:id="@+id/exit"
-        android:title="Zakończ"
+        android:title="@string/end_app"
         />
 </menu>

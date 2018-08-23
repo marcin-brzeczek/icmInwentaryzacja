@@ -40,7 +40,7 @@ class LoginFragment : FragmentBase() {
 
     private fun validateInput() = alsoUnless({ etLogin.text.isNotBlank() && etLogin.text.isNotEmpty() }) {
         etLogin.text.clear()
-        displayError(etLogin)
+        displayError(etLogin, context = activity.baseContext)
     }
 
     private fun loadOrOpenDatabase(isEmptyDatabase: Boolean) {

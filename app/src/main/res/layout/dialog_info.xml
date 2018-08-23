@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:padding="5dp"
-        android:text="Brak pozycji o takim kodzie. Utworzyć nową?"
+        android:text="@string/no_tem_for_code"
         android:textSize="20dp"/>
 
 
