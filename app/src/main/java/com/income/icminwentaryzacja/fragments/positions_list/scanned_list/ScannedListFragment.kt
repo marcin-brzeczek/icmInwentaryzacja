@@ -8,16 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.DBContext
+import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.IOnReloadAdapterListener
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.TypesFactoryImpl
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemAdapter
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemSwipeHelper
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.adapter.IOnReloadAdapterListener
+import com.income.icminwentaryzacja.fragments.adapter.TypesFactoryImpl
+import com.income.icminwentaryzacja.fragments.adapter.ItemAdapter
+import com.income.icminwentaryzacja.fragments.adapter.ItemSwipeHelper
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.scan_positions.LOCATION_NAME
 import kotlinx.android.synthetic.main.fragment_empty_list.rv_items
 import kotlinx.android.synthetic.main.fragment_scan_list.*
-import kotlinx.android.synthetic.main.fragment_scan_list.view.*
 import javax.inject.Inject
 
 class ScannedListFragment : FragmentBase(), IOnReloadAdapterListener {
@@ -25,9 +26,15 @@ class ScannedListFragment : FragmentBase(), IOnReloadAdapterListener {
     @Inject
     lateinit var databaseContext: DBContext
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_scan_list, container, false)
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+       val locationName = arguments.getString(LOCATION_NAME)
     }
 
     override fun onStart() {
@@ -41,7 +48,7 @@ class ScannedListFragment : FragmentBase(), IOnReloadAdapterListener {
 
     fun loadAdapter() {
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
-        val itemAdapter = ItemAdapter(databaseContext?.items.queryList().filter { it.endNumber > 0 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList(), TypesFactoryImpl(), FragmentType.ScannedListFragment)
+        val itemAdapter = ItemAdapter(databaseContext.items.where(Item_Table.oldLocation.eq(arguments.getString(LOCATION_NAME))).queryList().filter { it.endNumber > 0 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList(), TypesFactoryImpl(), FragmentType.ScannedListFragment)
         rv_items.adapter = itemAdapter
         val itemTouchHelper = ItemTouchHelper(ItemSwipeHelper(itemAdapter, activity, this))
         itemTouchHelper.attachToRecyclerView(rv_items)
@@ -49,6 +56,3 @@ class ScannedListFragment : FragmentBase(), IOnReloadAdapterListener {
         itemAdapter.notifyDataSetChanged()
     }
 }
-
-
-

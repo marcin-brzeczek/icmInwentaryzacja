@@ -10,13 +10,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.DBContext
+import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemAdapter
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.SearchEngine
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.TypesFactoryImpl
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ViewModel
+import com.income.icminwentaryzacja.fragments.adapter.ItemAdapter
+import com.income.icminwentaryzacja.fragments.adapter.SearchEngine
+import com.income.icminwentaryzacja.fragments.adapter.TypesFactoryImpl
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ViewModel
+import com.income.icminwentaryzacja.fragments.scan_positions.LOCATION_NAME
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,12 +28,12 @@ import kotlinx.android.synthetic.main.fragment_empty_list.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
 class EmptyListFragment : FragmentBase() {
 
     private lateinit var searchEngine: SearchEngine
     private lateinit var disposable: Disposable
     private lateinit var _adapter: ItemAdapter
+    private lateinit var locationName: String
 
     @Inject
     lateinit var databaseContext: DBContext
@@ -41,9 +43,14 @@ class EmptyListFragment : FragmentBase() {
         return inflater.inflate(R.layout.fragment_empty_list, container, false)
     }
 
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        locationName = arguments.getString(LOCATION_NAME)
+    }
+
     override fun onStart() {
         super.onStart()
-        val viewModels = databaseContext.items.queryList().map { ItemViewModel(it, activity.baseContext) }
+        val viewModels = databaseContext.items.where(Item_Table.oldLocation.eq(locationName)).queryList().map { ItemViewModel(it, activity.baseContext) }
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
         _adapter = ItemAdapter(viewModels.toMutableList(), TypesFactoryImpl(), FragmentType.EmptyListFragment)
         rv_items.adapter = _adapter

@@ -1,18 +1,16 @@
-package com.income.icminwentaryzacja.fragments.positions_list.adapter.holder
+package com.income.icminwentaryzacja.fragments.adapter.holder
 
 import android.annotation.TargetApi
 import android.os.Build
+import com.income.icminwentaryzacja.R
+import com.income.icminwentaryzacja.fragments.FragmentType
 import android.support.annotation.RequiresApi
 import android.view.View
 import android.widget.TextView
-import com.income.icminwentaryzacja.R
-import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.FragmentType.EmptyListFragment
 import com.income.icminwentaryzacja.fragments.FragmentType.ScannedListFragment
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
-import android.widget.RelativeLayout
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemStatus
-
+import com.income.icminwentaryzacja.fragments.adapter.ItemStatus
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ItemViewModel
 
 class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
 
@@ -23,13 +21,11 @@ class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
         when (fragmentType) {
 
             EmptyListFragment -> {
-
                 (itemView.findViewById(R.id.tvName) as TextView).setText(itemVM.item.name)
                 (itemView.findViewById(R.id.tvAmountPos) as TextView).setText(itemVM.item.startNumber.toString())
             }
 
             ScannedListFragment -> {
-
                 (itemView.findViewById(R.id.tvName) as TextView).setText(itemVM.item.name)
                 val tvAmount = (itemView.findViewById(R.id.tvAmountPos) as TextView)
                 tvAmount.setText(itemVM.item.endNumber.toString())

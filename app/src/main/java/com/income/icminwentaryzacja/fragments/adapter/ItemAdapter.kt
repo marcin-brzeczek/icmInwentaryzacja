@@ -1,13 +1,11 @@
-package com.income.icminwentaryzacja.fragments.positions_list.adapter
+package com.income.icminwentaryzacja.fragments.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.fragments.FragmentType
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.holder.GenericViewHolder
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ViewModel
+import com.income.icminwentaryzacja.fragments.adapter.holder.GenericViewHolder
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ViewModel
 
 
 class ItemAdapter(var items: MutableList<ViewModel>, val typeFactory: ITypesFactory, val fragmentType: FragmentType) : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {

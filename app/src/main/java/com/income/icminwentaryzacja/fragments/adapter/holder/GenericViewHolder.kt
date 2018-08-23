@@ -1,4 +1,4 @@
-package com.income.icminwentaryzacja.fragments.positions_list.adapter.holder
+package com.income.icminwentaryzacja.fragments.adapter.holder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

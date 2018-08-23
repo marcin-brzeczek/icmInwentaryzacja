@@ -1,5 +1,6 @@
 package com.income.icminwentaryzacja.utilities
 
+import android.widget.EditText
 
 
 object Functions {
@@ -30,3 +31,7 @@ inline fun executeUnless(predicate: () -> Boolean, block: () -> Unit) {
 
 
 inline fun withoutNullOrBlank(vararg items: String?) = items.filterNot { it.isNullOrBlank() }
+
+inline fun displayError(vararg inputTexts: EditText) {
+    inputTexts.filter { it.text.isEmpty() }.forEach { it.requestFocus(); it.text.clear(); it.error = "Uzupełnij wartość!" }
+}

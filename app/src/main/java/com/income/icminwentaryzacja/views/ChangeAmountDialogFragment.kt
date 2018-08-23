@@ -5,17 +5,13 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.dto.Item
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.IOnReloadAdapterListener
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemAdapter
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.adapter.IOnReloadAdapterListener
 
 @SuppressLint("ValidFragment")
 class ChangeAmountDialogFragment(val item: Item, val onReloadAdapterListener: IOnReloadAdapterListener) : DialogFragment() {

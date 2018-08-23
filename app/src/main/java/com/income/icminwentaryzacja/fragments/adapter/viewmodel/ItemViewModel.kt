@@ -1,10 +1,10 @@
-package com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel
+package com.income.icminwentaryzacja.fragments.adapter.viewmodel
 
 import android.content.Context
 import com.income.icminwentaryzacja.database.dto.Item
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.IStatusResult
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.ITypesFactory
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.ItemStatus
+import com.income.icminwentaryzacja.fragments.adapter.IStatusResult
+import com.income.icminwentaryzacja.fragments.adapter.ITypesFactory
+import com.income.icminwentaryzacja.fragments.adapter.ItemStatus
 
 class ItemViewModel(val item: Item, val context: Context) : ViewModel(), IStatusResult {
 

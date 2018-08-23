@@ -1,4 +1,4 @@
-package com.income.icminwentaryzacja.fragments.positions_list.adapter
+package com.income.icminwentaryzacja.fragments.adapter
 
 import android.app.Activity
 import android.graphics.*
@@ -7,7 +7,7 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.database.dto.Item
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminwentaryzacja.views.ChangeAmountDialogFragment
 
 class ItemSwipeHelper(var adapter: ItemAdapter, var activity: Activity, var reloadListenr: IOnReloadAdapterListener, dragDirs: Int = 0, swipeDirs: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {

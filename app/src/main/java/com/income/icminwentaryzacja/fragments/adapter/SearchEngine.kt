@@ -1,7 +1,7 @@
-package com.income.icminwentaryzacja.fragments.positions_list.adapter
+package com.income.icminwentaryzacja.fragments.adapter
 
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ItemViewModel
-import com.income.icminwentaryzacja.fragments.positions_list.adapter.viewmodel.ViewModel
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ViewModel
 import java.util.*
 
 class SearchEngine(private val items: List<ViewModel>) {

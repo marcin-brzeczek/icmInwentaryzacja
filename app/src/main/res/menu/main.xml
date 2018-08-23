@@ -1,13 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.icminwertaryzacja.MainActivity">
 
-
-    <!--<item_row-->
-        <!--android:id="@+id/settings"-->
-        <!--android:title="Ustawienia"-->
-        <!--/>-->
+    <item
+        android:id="@+id/info"
+        android:title="Informacje"
+        />
     <item
         android:id="@+id/exportToCSV"
         android:title="Zapisz w pliku CSV"
@@ -23,10 +21,11 @@
         android:title="Lista SPIS"
         android:visible="false"
         />
-    <!--<item_row-->
-        <!--android:id="@+id/logout"-->
-        <!--android:title="Wyloguj"-->
-        <!--/>-->
+    <item
+        android:id="@+id/changeLocation"
+        android:title="Zmień lokalizację"
+        android:visible="false"
+        />
     <item
         android:id="@+id/exit"
         android:title="Zakończ"

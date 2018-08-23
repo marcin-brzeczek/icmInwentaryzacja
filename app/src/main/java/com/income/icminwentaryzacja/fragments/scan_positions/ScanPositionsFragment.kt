@@ -2,21 +2,28 @@ package com.income.icminwentaryzacja.fragments.scan_positions
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
+import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
 import com.income.icminwentaryzacja.emkd_scan.ScanWrapper
 import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
+import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationRoute
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
+import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
+import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 import kotlinx.android.synthetic.main.fragment_scan_positions.view.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
+
+     var locationName: String=""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -26,8 +33,24 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             } catch (e: Exception) {
                 exceptionMessage("Błąd w inicjalizacji  Skanera: " + e.message)
             }
-            addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
         }
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        locationName = arguments.getString(LOCATION_NAME)
+        addNewItem.setOnClickListener { navigateTo(NewItemRoute(locationName =locationName)) }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.exit -> activity.finish()
+            R.id.listEmpty -> navigateTo(EmptyListRoute(locationName))
+            R.id.listDesc -> navigateTo(ScannedListRoute(locationName))
+            R.id.exportToCSV -> requestPermissionOrSaveCSV()
+            R.id.changeLocation -> navigateTo(ChooseLocationRoute())
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
@@ -72,7 +95,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     private fun getPositionByCode(codew: String) {
-        val item: Item? = dbContext.items.where(Item_Table.code.eq(codew)).querySingle()
+        val item: Item? = dbContext.items.where(Item_Table.code.eq(codew)).and(Item_Table.oldLocation.eq(locationName)).querySingle()
         item?.let {
             sectionLogo.visibility = View.GONE
             sectionScann.visibility = View.VISIBLE
@@ -82,4 +105,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             it.save()
         } ?: showNewPositionDialog(editTextEAN.text.toString())
     }
+    fun showNewPositionDialog(codePos: String) {
+        NewPositionDialogFragment({ navigateTo(NewItemRoute(codePos, locationName)) }).show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
 }

@@ -11,18 +11,17 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_below="@+id/relativeLayout1"
-        android:layout_marginTop="80dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:src="@drawable/icminventory_icon"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="80dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-
+        android:layout_marginTop="80dp"
         android:background="@drawable/cell_shape_grey2">
 
         <RelativeLayout
@@ -62,7 +61,19 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btnOpenFile"
+        android:id="@+id/btnExportFileAndStartNewInventory"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@+id/btnStartNewInventoryOrContinue"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/start_new_inventory"
+        android:textSize="17dp">
+    </Button>
+
+    <Button
+        android:id="@+id/btnStartNewInventoryOrContinue"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
@@ -70,7 +81,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:text="Wczytaj plik csv"
+        android:text="@string/continue_current_inventory"
         android:textSize="17dp">
     </Button>
 </RelativeLayout>
