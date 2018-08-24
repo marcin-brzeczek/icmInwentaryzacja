@@ -62,6 +62,7 @@ abstract class ActivityBase : AppCompatActivity(), StateChanger, HasFragmentInje
 
         val toolbar = findViewById(R.id.toolbarMenu) as Toolbar
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
     }
 

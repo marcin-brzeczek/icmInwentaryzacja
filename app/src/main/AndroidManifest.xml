@@ -11,7 +11,7 @@
         android:name="com.income.icminwentaryzacja.InitApp"
         android:allowBackup="true"
         android:icon="@drawable/icminventory_icon"
-        android:label=""
+        android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme">
         <uses-library
             android:name="com.symbol.emdk"
@@ -20,8 +20,9 @@
         <activity
             android:name="com.income.icminwentaryzacja.activities.MainActivity"
             android:logo="@drawable/icminwentory_title"
-            android:windowSoftInputMode="adjustResize|stateHidden">
-            <intent-filter android:label="@string/app_name">
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:label="@string/app_name">
+            <intent-filter >
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
