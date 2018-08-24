@@ -125,6 +125,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     }
 
     private fun readFileContent(uri: Uri?): String {
+
         val inputStream = activity.contentResolver.openInputStream(uri)
         val reader = LineNumberReader(InputStreamReader(inputStream))
         val stringBuilder = StringBuilder()
@@ -170,7 +171,12 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                             toast(getString(R.string.incorrect_file_format))
                             return
                         } else {
-                            readFileContent(it)
+                            try {
+                                readFileContent(it)
+                            } catch (e: Exception) {
+                                toast(getString(R.string.incorrect_file))
+                                e.printStackTrace()
+                            }
                         }
                     }
                 }

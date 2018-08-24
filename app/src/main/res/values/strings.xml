@@ -16,7 +16,7 @@
     <string name="not_match">Not match</string>
     <string name="error_unregistry_scanner">Error unregistry scanner</string>
     <string name="error_registry_scanner">Error registry scanner</string>
-    <string name="cant_release_scanner">Can't release scanner</string>
+    <string name="cant_release_scanner">Can\'t release scanner</string>
     <string name="item_code">item code</string>
     <string name="Unit">Unit:</string>
     <string name="save">Save</string>
@@ -40,6 +40,7 @@
     <string name="yes">YES</string>
     <string name="enter_code">Enter code</string>
     <string name="saving_to_csv">Saving csv file...</string>
+    <string name="incorrect_file">The file is incompatible with the requirements</string>
 
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
