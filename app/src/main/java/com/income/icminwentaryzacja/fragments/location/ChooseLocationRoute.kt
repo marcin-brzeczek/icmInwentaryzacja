@@ -1,8 +1,7 @@
-package com.income.icminwentaryzacja.fragments.choose_location
+package com.income.icminwentaryzacja.fragments.location
 
 import android.os.Parcel
 import com.income.icminwentaryzacja.backstack.BaseRoute
-import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationFragment
 import paperparcel.PaperParcel
 
 @PaperParcel

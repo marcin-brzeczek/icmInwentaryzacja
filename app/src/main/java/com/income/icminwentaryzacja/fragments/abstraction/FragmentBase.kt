@@ -9,13 +9,11 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
-import android.os.Parcelable
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.backstack.BackstackService
@@ -25,18 +23,21 @@ import com.income.icminwentaryzacja.cache.LocationCache
 import com.income.icminwentaryzacja.database.AppDatabase
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
-import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationFragment
-import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationRoute
+import com.income.icminwentaryzacja.database.dto.Location
+import com.income.icminwentaryzacja.fragments.ModeCSV
+import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
+import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
+import com.income.icminwentaryzacja.fragments.login.LoginFragment
+import com.income.icminwentaryzacja.fragments.login.LoginRoute
 import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
-import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import com.income.icminwentaryzacja.fragments.scan_positions.InfoDialogFragment
-import com.income.icminwentaryzacja.fragments.scan_positions.NewPositionDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
+import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.sql.language.Delete
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
@@ -54,10 +55,12 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     lateinit var dbContext: DBContext
 
     private var onResumeListeners = mutableSetOf<((FragmentBase) -> Unit)>()
-    var saveCurrentInventory = false
+    var modeOfSavingCSV: ModeCSV = ModeCSV.ExportOrOpenNew
 
     private val items = mutableListOf<Item>()
 
+    /*TODO lepiej lokalizacje wybraną trzymać właściowości globalnej niż w singletonie*/
+    var currentLocation = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -96,22 +99,42 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 menu.findItem(R.id.exportToCSV).isVisible = true
                 menu.findItem(R.id.listEmpty).isVisible = true
                 menu.findItem(R.id.listDesc).isVisible = true
-                menu.findItem(R.id.exit).isVisible = false
                 menu.findItem(R.id.changeLocation).isVisible = true
             }
+
             is ChooseLocationFragment -> menu.findItem(R.id.exit).isVisible = false
-            is ScannedListFragment -> menu.findItem(R.id.changeLocation).isVisible = true
-            is EmptyListFragment -> menu.findItem(R.id.changeLocation).isVisible = true
+
+            is LoginFragment -> {
+                menu.findItem(R.id.logout).isVisible = false
+                menu.findItem(R.id.exit).isVisible = true
+            }
+
+            is ScannedListFragment -> {
+                menu.findItem(R.id.changeLocation).isVisible = true
+                menu.findItem(R.id.moveToScan).isVisible = true
+                menu.findItem(R.id.listEmpty).isVisible = true
+            }
+
+            is EmptyListFragment -> {
+                menu.findItem(R.id.changeLocation).isVisible = true
+                menu.findItem(R.id.moveToScan).isVisible = true
+                menu.findItem(R.id.listDesc).isVisible = true
+            }
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.exit -> activity.finish()
-            R.id.exportToCSV -> requestPermissionOrSaveCSV()
+            R.id.exit -> {
+                modeOfSavingCSV = ModeCSV.ExportAndExitApp
+                requestPermissionAndHandleCSV()
+            }
+            R.id.exportToCSV -> requestPermissionAndHandleCSV()
             R.id.changeLocation -> navigateTo(ChooseLocationRoute())
             R.id.listEmpty -> navigateTo(EmptyListRoute(LocationCache.locationName))
             R.id.listDesc -> navigateTo(ScannedListRoute(LocationCache.locationName))
+            R.id.moveToScan -> navigateTo(ScanPositionsRoute(LocationCache.locationName))
+            R.id.logout -> navigateTo(LoginRoute())
         }
         return super.onOptionsItemSelected(item)
     }
@@ -146,15 +169,25 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
         inputStream.close()
         println(stringBuilder.toString())
-        storage()
+        storageItems()
         return stringBuilder.toString()
     }
 
-    fun storage() {
-
+    fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
                 .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
                         ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+                .error { transaction, error -> }
+                .success {
+                    //                    navigateTo(ChooseLocationRoute())
+                    storageLocations()
+                }.build().execute()
+    }
+
+    fun storageLocations() {
+        FlowManager.getDatabase(AppDatabase::class.java)
+                .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                        ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
                 .error { transaction, error -> }
                 .success {
                     navigateTo(ChooseLocationRoute())
@@ -214,7 +247,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         return sb.toString()
     }
 
-    /* Internal storage */
+    /* Internal storageItems */
     private fun saveDocPosToFile(content: String) {
         val date = getTodaysDate()
         val path = Environment.getExternalStorageDirectory().toString()
@@ -288,16 +321,36 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
     }
 
-    fun requestPermissionOrSaveCSV() {
+    inner class saveAsyncCSVAndExitApp() : AsyncTask<Void, Void, Boolean>() {
+        val progressDialogFragment = ProgressDialogFragment()
+        val ft = (activity as MainActivity).fragmentManager
+
+        override fun onPreExecute() {
+            progressDialogFragment.show(ft, "dialog")
+        }
+
+        override fun doInBackground(vararg params: Void?): Boolean {
+            saveDocPosToFile()
+            return true
+        }
+
+        override fun onPostExecute(result: Boolean?) {
+            progressDialogFragment.dismiss()
+            toast(getString(R.string.saved))
+            activity.finish()
+        }
+    }
+
+    fun requestPermissionAndHandleCSV() {
         val permission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
             makeRequest()
         } else {
-            if (saveCurrentInventory)
-                InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
-            else
-                InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
-
+            when (modeOfSavingCSV) {
+                ModeCSV.ExportAndOpenNew -> exportAndOpenNew()
+                ModeCSV.ExportOrOpenNew -> exportOrOpenNew()
+                ModeCSV.ExportAndExitApp -> exportAndExitApp()
+            }
         }
     }
 
@@ -307,19 +360,36 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 REQUEST_WRITE_EXTERNAL_STORAGE)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            REQUEST_WRITE_EXTERNAL_STORAGE -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (saveCurrentInventory)
-                        InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
-                    else
-                        InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+    private fun exportAndOpenNew() {
 
-                } else {
-                    Toast.makeText(activity, "Musisz zezwolić na dostęp do pamięci telefonu aby zapisać plik", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
+        InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
+
+    private fun exportOrOpenNew() {
+        InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
+    private fun exportAndExitApp() {
+        if (dbContext.isEmpty) {
+            activity.finish()
+            return
+        }
+        InfoDialogFragment({ saveAsyncCSVAndExitApp().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+//        when (requestCode) {
+//            REQUEST_WRITE_EXTERNAL_STORAGE -> {
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    if (saveCurrentInventory)
+//                        InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+//                    else
+//                        InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+//
+//                } else {
+//                    Toast.makeText(activity, "Musisz zezwolić na dostęp do pamięci telefonu aby zapisać plik", Toast.LENGTH_LONG).show()
+//                }
+//            }
+//        }
+//    }
 }

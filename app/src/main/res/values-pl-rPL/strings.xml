@@ -41,9 +41,13 @@
     <string name="enter_code">Wpisz kod</string>
     <string name="saving_to_csv">Trwa zapis do pliku csv...</string>
     <string name="incorrect_file">"  Plik jest niezgodny z wymaganiami"</string>
+    <string name="adding_new_location">Dodawanie nowej lokalizacji</string>
+    <string name="logout">Wyloguj</string>
+    <string name="scanning_items">Skanowanie pozycji</string>
 
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>
+
 
 </resources>

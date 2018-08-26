@@ -7,6 +7,11 @@
         android:title="@string/Information"
         />
     <item
+        android:id="@+id/moveToScan"
+        android:title="@string/scanning_items"
+        android:visible="false"
+        />
+    <item
         android:id="@+id/exportToCSV"
         android:title="@string/save_in_csv_file"
         android:visible="false"
@@ -26,8 +31,15 @@
         android:title="@string/change_location"
         android:visible="false"
         />
+
+    <item
+        android:id="@+id/logout"
+        android:title="@string/logout"
+        android:visible="true"
+        />
     <item
         android:id="@+id/exit"
         android:title="@string/end_app"
+        android:visible="false"
         />
 </menu>

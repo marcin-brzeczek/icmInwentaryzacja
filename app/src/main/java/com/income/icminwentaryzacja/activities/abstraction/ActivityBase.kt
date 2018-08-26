@@ -82,7 +82,7 @@ abstract class ActivityBase : AppCompatActivity(), StateChanger, HasFragmentInje
 
     override fun onBackPressed() {
         if (backPressHandler.handleBackPressed(this)) {
-            super.onBackPressed()
+//            super.onBackPressed()
         } else {
             fragmentManager.popBackStack()
         }

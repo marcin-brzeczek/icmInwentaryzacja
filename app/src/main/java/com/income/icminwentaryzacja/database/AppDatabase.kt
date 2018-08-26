@@ -7,7 +7,7 @@ import com.raizlabs.android.dbflow.annotation.Database
 
 object AppDatabase {
     const val NAME: String = "app"
-    const val VERSION = 1
+    const val VERSION = 2
 }
 
 /*****MIGRATION EXAMPLE*****/

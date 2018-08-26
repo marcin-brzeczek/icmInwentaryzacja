@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.dto.User
+import com.income.icminwentaryzacja.fragments.ModeCSV
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
-import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationRoute
+import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
 import com.income.icminwentaryzacja.utilities.alsoUnless
 import com.income.icminwentaryzacja.utilities.displayError
 import com.income.icminwentaryzacja.utilities.inflate
@@ -28,8 +29,8 @@ class LoginFragment : FragmentBase() {
                     btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
                     btnExportFileAndStartNewInventory.visibility = View.VISIBLE
                 }
-                btnExportFileAndStartNewInventory.setOnClickListener { exportFileAndStartNewInventory(); saveCurrentInventory = true }
-                btnStartNewInventoryOrContinue.setOnClickListener { loadOrOpenDatabase(isEmptyDatabase); saveCurrentInventory = false }
+                btnExportFileAndStartNewInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
+                btnStartNewInventoryOrContinue.setOnClickListener { loadOrOpenDatabase(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
                 setHasOptionsMenu(true)
             }
 
@@ -55,7 +56,7 @@ class LoginFragment : FragmentBase() {
 
     private fun exportFileAndStartNewInventory() {
         if (!validateInput()) return
-        requestPermissionOrSaveCSV()
+        requestPermissionAndHandleCSV()
         User(etLogin.text.toString()).save()
     }
 }

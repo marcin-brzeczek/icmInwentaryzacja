@@ -41,6 +41,9 @@
     <string name="enter_code">Enter code</string>
     <string name="saving_to_csv">Saving csv file...</string>
     <string name="incorrect_file">The file is incompatible with the requirements</string>
+    <string name="adding_new_location">Adding new location</string>
+    <string name="logout">Log out</string>
+    <string name="scanning_items">Scanning items</string>
 
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>

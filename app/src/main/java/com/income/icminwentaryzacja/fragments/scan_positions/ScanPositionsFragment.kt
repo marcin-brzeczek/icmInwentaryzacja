@@ -2,7 +2,6 @@ package com.income.icminwentaryzacja.fragments.scan_positions
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,12 +14,8 @@ import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
 import com.income.icminwentaryzacja.emkd_scan.ScanWrapper
 import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
-import com.income.icminwentaryzacja.fragments.choose_location.ChooseLocationRoute
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
-import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
-import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
-import kotlinx.android.synthetic.main.fragment_scan_positions.view.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 

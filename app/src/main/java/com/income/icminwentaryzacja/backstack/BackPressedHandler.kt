@@ -32,7 +32,6 @@ class BackPressedHandler(private val backStackDelegate: BackstackDelegate) : Bac
         return isFinalBackPress
     }
 
-
     /** Method called on BackPressed in Activity
      * determining if we should exit application or not */
     fun handleBackPressed(context: Context): Boolean {
@@ -42,9 +41,9 @@ class BackPressedHandler(private val backStackDelegate: BackstackDelegate) : Bac
         }
         val lastElementKey = history[history.size - 1] as BaseRoute
         if (history.size == 1 ) {
-            return shouldExit(context)
+//            return shouldExit(context)
         }
-        backstackHistoryChange(lastElementKey)
+//        backstackHistoryChange(lastElementKey)
         return false
     }
 
