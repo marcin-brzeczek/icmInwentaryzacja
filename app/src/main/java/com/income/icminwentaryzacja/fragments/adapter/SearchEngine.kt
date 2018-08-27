@@ -15,7 +15,7 @@ class SearchEngine(private val items: List<ViewModel>) {
     fun search(query: String): MutableList<ViewModel> {
 
         try {
-            Thread.sleep(500)
+            Thread.sleep(200)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -23,7 +23,8 @@ class SearchEngine(private val items: List<ViewModel>) {
         val result = LinkedList<ViewModel>()
 
         for (i in 0 until _items) {
-            if ((items[i] as ItemViewModel).item.name.toLowerCase().contains(query.toLowerCase())) {
+            if ((items[i] as ItemViewModel).item.name.toLowerCase().contains(query.toLowerCase())
+                    || (items[i] as ItemViewModel).item.code.toLowerCase().contains(query.toLowerCase())) {
                 result.add(items[i])
             }
         }

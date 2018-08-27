@@ -44,6 +44,7 @@
     <string name="adding_new_location">Dodawanie nowej lokalizacji</string>
     <string name="logout">Wyloguj</string>
     <string name="scanning_items">Skanowanie pozycji</string>
+    <string name="location_already_exists">Już istnieje lokalizacja o tej nazwie</string>
 
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>

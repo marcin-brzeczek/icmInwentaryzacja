@@ -95,31 +95,14 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.main, menu)
         when (this) {
-            is ScanPositionsFragment -> {
-                menu.findItem(R.id.exportToCSV).isVisible = true
-                menu.findItem(R.id.listEmpty).isVisible = true
-                menu.findItem(R.id.listDesc).isVisible = true
-                menu.findItem(R.id.changeLocation).isVisible = true
-            }
-
-            is ChooseLocationFragment -> menu.findItem(R.id.exit).isVisible = false
-
             is LoginFragment -> {
                 menu.findItem(R.id.logout).isVisible = false
-                menu.findItem(R.id.exit).isVisible = true
+                menu.findItem(R.id.changeLocation).isVisible = false
+                menu.findItem(R.id.moveToScan).isVisible = false
+                menu.findItem(R.id.listEmpty).isVisible = false
+                menu.findItem(R.id.listDesc).isVisible = false
             }
-
-            is ScannedListFragment -> {
-                menu.findItem(R.id.changeLocation).isVisible = true
-                menu.findItem(R.id.moveToScan).isVisible = true
-                menu.findItem(R.id.listEmpty).isVisible = true
-            }
-
-            is EmptyListFragment -> {
-                menu.findItem(R.id.changeLocation).isVisible = true
-                menu.findItem(R.id.moveToScan).isVisible = true
-                menu.findItem(R.id.listDesc).isVisible = true
-            }
+            is ScanPositionsFragment -> menu.findItem(R.id.moveToScan).isVisible = false
         }
     }
 
