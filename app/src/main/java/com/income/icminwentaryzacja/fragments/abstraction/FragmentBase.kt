@@ -23,7 +23,9 @@ import com.income.icminwentaryzacja.cache.LocationCache
 import com.income.icminwentaryzacja.database.AppDatabase
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
+import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.database.dto.Location
+import com.income.icminwentaryzacja.database.dto.Location_Table
 import com.income.icminwentaryzacja.fragments.ModeCSV
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
@@ -40,6 +42,7 @@ import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragme
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.sql.language.Delete
+import com.raizlabs.android.dbflow.sql.language.SQLite
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
 import dagger.android.AndroidInjection
 import java.io.*
@@ -124,6 +127,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     /********** Wybranie i  czytanie z pliku csv z telefonu */
     fun selectCSVFile() {
+        dbContext.deleteOldLocations()
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "*/*"
@@ -158,24 +162,24 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    //                    navigateTo(ChooseLocationRoute())
-                    storageLocations()
-                }.build().execute()
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                //                    navigateTo(ChooseLocationRoute())
+                storageLocations()
+            }.build().execute()
     }
 
     fun storageLocations() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                        ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    navigateTo(ChooseLocationRoute())
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                navigateTo(ChooseLocationRoute())
 
-                }.build().execute()
+            }.build().execute()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -300,6 +304,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             progressDialogFragment.dismiss()
             toast(getString(R.string.saved))
             Delete.table(Item::class.java)
+            dbContext.deleteOldLocations()
             selectCSVFile()
         }
     }
@@ -339,8 +344,8 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(activity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                REQUEST_WRITE_EXTERNAL_STORAGE)
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_WRITE_EXTERNAL_STORAGE)
     }
 
     private fun exportAndOpenNew() {

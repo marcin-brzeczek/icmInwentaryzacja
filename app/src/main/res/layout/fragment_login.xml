@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/greyLight"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/greyLight"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/relativeLayout1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/icminventory_icon"/>
+        android:layout_above="@+id/btnExportFileAndStartNewInventory"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icminventory_icon" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -67,7 +74,6 @@
         android:layout_above="@+id/btnStartNewInventoryOrContinue"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
         android:text="@string/start_new_inventory"
         android:textSize="17dp">
     </Button>

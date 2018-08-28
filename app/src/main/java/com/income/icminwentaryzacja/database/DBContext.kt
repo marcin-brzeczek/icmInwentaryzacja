@@ -3,6 +3,7 @@ package com.income.icminwentaryzacja.database
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.database.dto.Location
+import com.income.icminwentaryzacja.database.dto.Location_Table
 import com.income.icminwentaryzacja.database.dto.User
 import com.raizlabs.android.dbflow.sql.language.From
 import com.raizlabs.android.dbflow.sql.language.SQLite
@@ -22,6 +23,14 @@ class DBContext @Inject constructor() {
     val locations: From<Location>
         get() = SQLite.select().from(Location::class.java)
 
-    val isEmpty :Boolean
-    get() = !items.hasData()
+    fun deleteOldLocations() {
+        SQLite.delete()
+            .from(Location::class.java)
+            .innerJoin(Item::class.java)
+            .on(Item_Table.oldLocation.eq(Location_Table.name))
+            .execute()
+    }
+
+    val isEmpty: Boolean
+        get() = !items.hasData()
 }

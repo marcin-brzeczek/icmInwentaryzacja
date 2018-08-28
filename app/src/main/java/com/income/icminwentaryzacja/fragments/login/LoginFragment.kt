@@ -12,35 +12,31 @@ import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
 import com.income.icminwentaryzacja.utilities.alsoUnless
 import com.income.icminwentaryzacja.utilities.displayError
 import com.income.icminwentaryzacja.utilities.inflate
-import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_login.view.*
+import kotlinx.android.synthetic.main.fragment_login.etLogin
+import kotlinx.android.synthetic.main.fragment_login.view.btnExportFileAndStartNewInventory
+import kotlinx.android.synthetic.main.fragment_login.view.btnStartNewInventoryOrContinue
 
 const val READ_REQUEST_CODE = 99
 
 class LoginFragment : FragmentBase() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.fragment_login, container) {
-                val isEmptyDatabase: Boolean = dbContext.isEmpty
-                if (isEmptyDatabase) {
-                    btnStartNewInventoryOrContinue.setText(context.getString(R.string.start_new_inventory))
-                    btnExportFileAndStartNewInventory.visibility = View.GONE
-                } else {
-                    btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
-                    btnExportFileAndStartNewInventory.visibility = View.VISIBLE
-                }
-                btnExportFileAndStartNewInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
-                btnStartNewInventoryOrContinue.setOnClickListener { loadOrOpenDatabase(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
-                setHasOptionsMenu(true)
+        inflater.inflate(R.layout.fragment_login, container) {
+            val isEmptyDatabase: Boolean = dbContext.isEmpty
+            if (isEmptyDatabase) {
+                btnStartNewInventoryOrContinue.setText(context.getString(R.string.start_new_inventory))
+                btnExportFileAndStartNewInventory.visibility = View.GONE
+            } else {
+                btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
+                btnExportFileAndStartNewInventory.visibility = View.VISIBLE
             }
+            btnExportFileAndStartNewInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
+            btnStartNewInventoryOrContinue.setOnClickListener { loadOrOpenDatabase(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
+            setHasOptionsMenu(true)
+        }
 
-    override fun onResume() {
-        super.onResume()
-        etLogin.text.clear()
-    }
-
-    private fun validateInput() = alsoUnless({ etLogin.text.isNotBlank() && etLogin.text.isNotEmpty() }) {
-        etLogin.text.clear()
+    private fun validateInput() = alsoUnless({ etLogin.text.trim().isNotEmpty() }) {
+        if (etLogin.text.isBlank()) etLogin.text.clear()
         displayError(etLogin, context = activity.baseContext)
     }
 

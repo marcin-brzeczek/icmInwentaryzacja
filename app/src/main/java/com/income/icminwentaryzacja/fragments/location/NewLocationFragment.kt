@@ -22,14 +22,14 @@ class NewLocationFragment : FragmentBase() {
             inflater.inflate(R.layout.fragment_new_location, container) {
                 setHasOptionsMenu(true)
                 btnSave.setOnClickListener { saveLocation() }
-                etName.setOnEditorActionListener( { textView, action, event ->
+                etName.setOnEditorActionListener { textView, action, event ->
                     var handled = false
                     if (action == EditorInfo.IME_ACTION_DONE) {
                         saveLocation()
                         handled = true
                     }
                     handled
-                })
+                }
             }
 
     private fun saveLocation() {
