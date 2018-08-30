@@ -56,6 +56,10 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
         itemAdapter.notifyDataSetChanged()
     }
 
+     fun loadAllData(items: MutableList<ViewModel>) {
+        _adapter.setListItem(items)
+    }
+
     private fun initAdapter() {
         val viewModels = loadItemViewModels()
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
@@ -77,12 +81,12 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
         if (userVisibleHint) {
             etSearch.text.clear()
             disposable = textSearchObservable.observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext { showProgressBar() }.observeOn(Schedulers.io())
-                    .map<MutableList<ViewModel>> { s -> searchEngine.search(s) }.observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { supleList ->
-                        hideProgressBar()
-                        showResult(supleList)
-                    }
+                .doOnNext { showProgressBar() }.observeOn(Schedulers.io())
+                .map<MutableList<ViewModel>> { s -> searchEngine.search(s) }.observeOn(AndroidSchedulers.mainThread())
+                .subscribe { list ->
+                    hideProgressBar()
+                    showResult(list)
+                }
         }
     }
 
