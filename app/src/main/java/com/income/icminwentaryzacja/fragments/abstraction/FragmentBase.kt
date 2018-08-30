@@ -151,7 +151,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             item.name = arrayLine[4]
             item.oldLocation = arrayLine[5]
             item.startNumber = arrayLine[6].toDouble()
-            item.itemState = getString(R.string.scanner)
+            item.itemState = ""
             items.add(item)
             currentline = reader.readLine()
         }
@@ -365,20 +365,4 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
         InfoDialogFragment({ saveAsyncCSVAndExitApp().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
-
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//        when (requestCode) {
-//            REQUEST_WRITE_EXTERNAL_STORAGE -> {
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    if (saveCurrentInventory)
-//                        InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
-//                    else
-//                        InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
-//
-//                } else {
-//                    Toast.makeText(activity, "Musisz zezwolić na dostęp do pamięci telefonu aby zapisać plik", Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        }
-//    }
 }

@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:src="@drawable/barcode"
             android:tint="@color/grey2"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tvCode"
             android:layout_width="match_parent"

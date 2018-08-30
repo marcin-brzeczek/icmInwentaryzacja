@@ -8,13 +8,13 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin">
 
-
     <RelativeLayout
         android:id="@+id/sectionLogo"
         android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
         <TextView
             android:id="@+id/tvLocationLabel"
             android:layout_width="match_parent"
@@ -120,18 +120,16 @@
                 android:alpha="1"
                 android:src="@drawable/scan_ean"/>
 
-            <EditText
-                android:id="@+id/editTextEAN"
+            <TextView
+                android:id="@+id/tvEAN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/layoutLogin"
-                android:hint="@string/scan_ean"
                 android:inputType="textPersonName"
-                android:maxLength="13"
                 android:singleLine="true"
-                android:textColor="@color/greyText"
-                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 android:textSize="16dp"/>
         </RelativeLayout>
 

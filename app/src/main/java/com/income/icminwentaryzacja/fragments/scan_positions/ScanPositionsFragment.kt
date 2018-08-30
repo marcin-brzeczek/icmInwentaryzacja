@@ -17,6 +17,8 @@ import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
+import kotlinx.android.synthetic.main.fragment_scan_positions.view.*
+
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
@@ -65,7 +67,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     override fun onReadData(data: String) {
-        editTextEAN.setText(data)
+        tvEAN.setText(data)
         val enterSuffix = "\n"
         val finishData = if (data.contains(enterSuffix)) data.removeSuffix(enterSuffix) else data
         getPositionByCode(finishData)
@@ -88,7 +90,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             tvLokalization.setText(it.oldLocation)
             it.itemState = activity.getString(R.string.scanner)
             it.save()
-        } ?: showNewPositionDialog(editTextEAN.text.toString())
+        } ?: showNewPositionDialog(tvEAN.text.toString())
     }
 
     fun showNewPositionDialog(codePos: String) {
