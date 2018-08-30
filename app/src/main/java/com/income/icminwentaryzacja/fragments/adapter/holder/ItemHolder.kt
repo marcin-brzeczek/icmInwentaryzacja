@@ -23,17 +23,19 @@ class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
 
             EmptyListFragment -> {
                 (itemView.findViewById(R.id.tvName) as TextView).text = itemVM.item.name
+                (itemView.findViewById(R.id.tvCode) as TextView).text = itemVM.item.code
                 (itemView.findViewById(R.id.tvAmountPos) as TextView).text = itemVM.item.startNumber.toString()
             }
 
             ScannedListFragment -> {
                 (itemView.findViewById(R.id.tvName) as TextView).text = itemVM.item.name
+                (itemView.findViewById(R.id.tvCode) as TextView).text = itemVM.item.code
                 val tvAmount = (itemView.findViewById(R.id.tvAmountPos) as TextView)
                 val imgState = (itemView.findViewById(R.id.imgState) as ImageView)
                 imgState.visibility = View.VISIBLE
 
                 val isHandleAdded = itemVM.item.itemState == itemView.context.resources.getString(R.string.handle)
-                if(isHandleAdded)
+                if (isHandleAdded)
                     imgState.setImageDrawable(itemView.context.resources.getDrawable(R.drawable.handle))
                 else
                     imgState.setImageDrawable(itemView.context.resources.getDrawable(R.drawable.barcode))
