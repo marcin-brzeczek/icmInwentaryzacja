@@ -151,6 +151,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             item.name = arrayLine[4]
             item.oldLocation = arrayLine[5]
             item.startNumber = arrayLine[6].toDouble()
+            item.itemState = getString(R.string.scanner)
             items.add(item)
             currentline = reader.readLine()
         }

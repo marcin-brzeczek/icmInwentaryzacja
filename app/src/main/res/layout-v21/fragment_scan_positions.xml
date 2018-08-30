@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_marginTop="60dp"
-              android:background="@color/greyLight"
-              android:orientation="vertical"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="60dp"
+    android:background="@color/greyLight"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
 
     <RelativeLayout
         android:id="@+id/sectionLogo"
@@ -16,12 +16,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tvLocationLabel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="@string/choose_location"
+            android:textColor="@color/grey2"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/imgScann"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:layout_gravity="center"
-            android:src="@drawable/scann_code"/>
+            android:src="@drawable/scann_code" />
 
 
         <TextView
@@ -34,7 +48,7 @@
             android:text="@string/scan_code"
             android:textColor="@color/grey3"
             android:textSize="26dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addNewItem"
@@ -44,8 +58,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="25dp"
             android:layout_marginEnd="15dp"
-            app:backgroundTint="@color/colorLogo"
-            android:src="@drawable/ic_plus_white_18dp"/>
+            android:src="@drawable/ic_plus_white_18dp"
+            app:backgroundTint="@color/colorLogo" />
 
     </RelativeLayout>
 
@@ -64,7 +78,7 @@
             android:background="@drawable/cell_shape_grey3"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="18dp"/>
+            android:textSize="18dp" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
@@ -91,7 +105,7 @@
                     android:alpha="1"
                     android:text="EAN:     "
                     android:textColor="@color/grey1"
-                    android:textSize="17dp"/>
+                    android:textSize="17dp" />
             </RelativeLayout>
 
             <ImageView
@@ -102,7 +116,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:alpha="1"
-                android:src="@drawable/scan_ean"/>
+                android:src="@drawable/scan_ean" />
 
             <EditText
                 android:id="@+id/editTextEAN"
@@ -116,7 +130,7 @@
                 android:singleLine="true"
                 android:textColor="@color/greyText"
                 android:textColorHint="@color/white"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -146,7 +160,7 @@
                     android:src="@drawable/scan_ean"
                     android:text="@string/name"
                     android:textColor="@color/grey1"
-                    android:textSize="17dp"/>
+                    android:textSize="17dp" />
 
                 <TextView
                     android:id="@+id/tvName"
@@ -166,7 +180,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold">
 
-                    <requestFocus/>
+                    <requestFocus />
                 </TextView>
             </RelativeLayout>
         </RelativeLayout>
@@ -198,7 +212,7 @@
                     android:src="@drawable/scan_ean"
                     android:text="@string/scanned_amount"
                     android:textColor="@color/grey1"
-                    android:textSize="17dp"/>
+                    android:textSize="17dp" />
 
                 <TextView
                     android:id="@+id/tvAmount"
@@ -213,7 +227,7 @@
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </RelativeLayout>
         </RelativeLayout>
 

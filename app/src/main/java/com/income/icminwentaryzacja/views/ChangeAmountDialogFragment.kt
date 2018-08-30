@@ -31,19 +31,19 @@ class ChangeAmountDialogFragment(val item: Item, val onReloadAdapterListener: IO
         val imgRemove = v.findViewById(R.id.imgRemoveAmount) as ImageView
         val imgAdd = v.findViewById(R.id.imgAddAmount) as ImageView
         tvAmount = v.findViewById(R.id.tvAmount) as TextView
-        tvAmount.setText(item.endNumber.toString())
+        tvAmount.text = item.endNumber.toString()
 
         bOK.setOnClickListener {
             removeView()
             item.endNumber = tvAmount.text.toString().toDouble()
-            item.itemState = "recznie"
+            item.itemState = activity.getString(R.string.handle)
             item.save()
             onReloadAdapterListener.reload()
             alert.cancel()
         }
 
-        imgRemove.setOnClickListener { setAmount();tvAmount.setText(if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0") }
-        imgAdd.setOnClickListener { setAmount();tvAmount.setText((++currentAmount).toString() + "") }
+        imgRemove.setOnClickListener { setAmount();tvAmount.text = if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0" }
+        imgAdd.setOnClickListener { setAmount();tvAmount.text = (++currentAmount).toString() + "" }
 
         alert.setView(v)
         alertDialog.create()

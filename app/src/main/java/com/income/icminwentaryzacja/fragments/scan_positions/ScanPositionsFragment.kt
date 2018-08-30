@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.MainActivity
+import com.income.icminwentaryzacja.cache.LocationCache
 import com.income.icminwentaryzacja.cache.LocationCache.locationName
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Item_Table
@@ -18,7 +19,6 @@ import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -33,7 +33,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addNewItem.setOnClickListener { navigateTo(NewItemRoute(locationName =locationName)) }
+        addNewItem.setOnClickListener { navigateTo(NewItemRoute(locationName = locationName)) }
+        tvLocationLabel.text = activity.baseContext.getString(R.string.location).plus(LocationCache.locationName)
     }
 
     override fun onResume() {
@@ -85,11 +86,12 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             tvName.setText(it.name)
             tvAmount.setText((++it.endNumber).toString())
             tvLokalization.setText(it.oldLocation)
+            it.itemState = activity.getString(R.string.scanner)
             it.save()
         } ?: showNewPositionDialog(editTextEAN.text.toString())
     }
+
     fun showNewPositionDialog(codePos: String) {
         NewPositionDialogFragment({ navigateTo(NewItemRoute(code = codePos, locationName = locationName)) }).show((activity as MainActivity).fragmentManager, "dialog")
     }
-
 }

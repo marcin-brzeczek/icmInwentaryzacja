@@ -44,7 +44,7 @@ class NewItemFragment : FragmentBase() {
                 oldLocation = tvLokalization.text.toString(),
                 startNumber = 0.0,
                 endNumber = tvAmount.text.toString().toDouble(),
-                itemState = "nowa",
+                itemState = getString(R.string.handle),
                 user = ""
         ).insert()
         Toast.makeText(activity.baseContext, getString(R.string.saved), Toast.LENGTH_SHORT).show()
