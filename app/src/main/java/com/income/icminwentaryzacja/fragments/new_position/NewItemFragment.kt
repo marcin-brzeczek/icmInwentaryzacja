@@ -38,9 +38,9 @@ class NewItemFragment : FragmentBase() {
     private fun saveItem() {
         if (!validateInput()) return
         Item(code = etCode.text.toString().trim(),
-                supportCode = "",
+                supportCode = etSupportCode.text.toString().trim(),
                 shortName = "",
-                name = etName.text.toString(),
+                name = etName.text.toString().trim(),
                 oldLocation = tvLokalization.text.toString(),
                 startNumber = 0.0,
                 endNumber = tvAmount.text.toString().toDouble(),
