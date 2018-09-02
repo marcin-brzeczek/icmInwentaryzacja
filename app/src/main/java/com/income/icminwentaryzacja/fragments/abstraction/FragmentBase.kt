@@ -27,6 +27,7 @@ import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.database.dto.Location
 import com.income.icminwentaryzacja.database.dto.Location_Table
 import com.income.icminwentaryzacja.fragments.ModeCSV
+import com.income.icminwentaryzacja.fragments.information.InfoFragmentRoute
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
@@ -121,6 +122,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             R.id.listDesc -> navigateTo(ScannedListRoute(LocationCache.locationName))
             R.id.moveToScan -> navigateTo(ScanPositionsRoute(LocationCache.locationName))
             R.id.logout -> navigateTo(LoginRoute())
+            R.id.info -> navigateTo(InfoFragmentRoute())
         }
         return super.onOptionsItemSelected(item)
     }

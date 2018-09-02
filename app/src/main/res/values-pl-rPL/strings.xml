@@ -52,6 +52,7 @@
     <string name="enter_support_code">Wpisz kod pomocniczy</string>
     <string name="name_without_asterisk">Name:</string>
     <string name="support_code_without_asterisk">Kod 2:</string>
+    <string name="company_info">Producent: \n INCOME Sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Polska\n \n  income@income.pl \n \n Wszystkie informacja o aplikacji:\n  http://icmInventory.com</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>
