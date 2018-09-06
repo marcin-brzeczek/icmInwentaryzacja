@@ -9,7 +9,7 @@
     <string name="fill_value">Complete the value!</string>
     <string name="incorrect_file_format">The selected file is not csv!</string>
     <string name="saved">Saved</string>
-    <string name="start_new_inventory">Start new inventory</string>
+    <string name="start_new_inventory">New inventory with data</string>
     <string name="continue_current_inventory">Continue the current inventory</string>
     <string name="login">Login</string>
     <string name="error_init_scanner">Error while init scanner:</string>
@@ -51,4 +51,5 @@
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>
+    <string name="empty_inventory">New inventory without data</string>
 </resources>

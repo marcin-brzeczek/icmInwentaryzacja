@@ -31,24 +31,27 @@
 
         <ImageView
             android:id="@+id/imgScann"
-            android:layout_marginTop="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:src="@drawable/scann_code"/>
+            android:layout_marginTop="80dp"
+            android:src="@drawable/scan_ean" />
 
 
         <TextView
             android:id="@+id/tvScanCode"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="30dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/imgScann"
             android:gravity="center"
             android:text="@string/scan_code"
             android:textColor="@color/grey3"
             android:textSize="26dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addNewItem"

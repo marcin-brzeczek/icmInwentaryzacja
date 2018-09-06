@@ -310,6 +310,29 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
     }
 
+    inner class saveAsyncCSVAndStartNewEmptyInventory() : AsyncTask<Void, Void, Boolean>() {
+        val progressDialogFragment = ProgressDialogFragment()
+        val ft = (activity as MainActivity).fragmentManager
+
+        override fun onPreExecute() {
+            progressDialogFragment.show(ft, "dialog")
+        }
+
+        override fun doInBackground(vararg params: Void?): Boolean {
+            saveDocPosToFile()
+            return true
+        }
+
+        override fun onPostExecute(result: Boolean?) {
+            progressDialogFragment.dismiss()
+            toast(getString(R.string.saved))
+            Delete.table(Item::class.java)
+            dbContext.deleteOldLocations()
+            navigateTo(ChooseLocationRoute())
+        }
+    }
+
+
     inner class saveAsyncCSVAndExitApp() : AsyncTask<Void, Void, Boolean>() {
         val progressDialogFragment = ProgressDialogFragment()
         val ft = (activity as MainActivity).fragmentManager
@@ -339,6 +362,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 ModeCSV.ExportAndOpenNew -> exportAndOpenNew()
                 ModeCSV.ExportOrOpenNew -> exportOrOpenNew()
                 ModeCSV.ExportAndExitApp -> exportAndExitApp()
+                ModeCSV.ExportAndStartEpmtyInventory -> exportStartNewEmptyInventory()
             }
         }
     }
@@ -350,8 +374,11 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     }
 
     private fun exportAndOpenNew() {
-
         InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
+    private fun exportStartNewEmptyInventory() {
+        InfoDialogFragment({ saveAsyncCSVAndStartNewEmptyInventory().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportOrOpenNew() {

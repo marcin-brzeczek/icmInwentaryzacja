@@ -9,7 +9,7 @@
     <string name="fill_value">Uzupełnij wartość!</string>
     <string name="incorrect_file_format">Wybrany plik nie jest formatu csv!</string>
     <string name="saved">Zapisano</string>
-    <string name="start_new_inventory">Rozpocznij nowy spis</string>
+    <string name="start_new_inventory">Nowy spis z danymi</string>
     <string name="continue_current_inventory">"Kontynuuj obecny spis"</string>
     <string name="login">Spisujący</string>
     <string name="error_init_scanner">Błąd w inicjalizacji  Skanera:</string>
@@ -51,6 +51,7 @@
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>
+    <string name="empty_inventory">Nowy pusty spis</string>
 
 
 </resources>

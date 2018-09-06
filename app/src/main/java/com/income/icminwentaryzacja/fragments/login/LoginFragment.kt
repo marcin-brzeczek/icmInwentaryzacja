@@ -12,6 +12,7 @@ import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
 import com.income.icminwentaryzacja.utilities.alsoUnless
 import com.income.icminwentaryzacja.utilities.displayError
 import com.income.icminwentaryzacja.utilities.inflate
+import kotlinx.android.synthetic.main.fragment_login.view.btnExportFileAndStartNewEmptyInventory
 import kotlinx.android.synthetic.main.fragment_login.etLogin
 import kotlinx.android.synthetic.main.fragment_login.view.btnExportFileAndStartNewInventory
 import kotlinx.android.synthetic.main.fragment_login.view.btnStartNewInventoryOrContinue
@@ -30,6 +31,7 @@ class LoginFragment : FragmentBase() {
                 btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
                 btnExportFileAndStartNewInventory.visibility = View.VISIBLE
             }
+            btnExportFileAndStartNewEmptyInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndStartEpmtyInventory }
             btnExportFileAndStartNewInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
             btnStartNewInventoryOrContinue.setOnClickListener { loadOrOpenDatabase(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
             setHasOptionsMenu(true)
