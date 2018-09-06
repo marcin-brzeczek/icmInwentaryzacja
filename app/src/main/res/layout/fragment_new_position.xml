@@ -62,10 +62,54 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="50dp"
+                    android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/txtCodeLabel"
                     android:ems="10"
                     android:hint="@string/enter_code"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textColorHint="@color/clearWhite"
+                    android:textColor="@color/white"
+                    android:textSize="17dp"
+                    />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlCodSupport"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/cell_shape_btn_return_item_dark">
+
+
+                <TextView
+                    android:id="@+id/txtCode2Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:alpha="1"
+                    android:src="@drawable/scan_ean"
+                    android:text="@string/support_code"
+                    android:textColor="@color/clearWhite"
+                    android:textSize="17dp"
+                    android:textStyle="bold"/>
+
+
+                <EditText
+                    android:id="@+id/etSupportCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@+id/txtCode2Label"
+                    android:ems="10"
+                    android:hint="@string/enter_support_code"
                     android:inputType="textPersonName"
                     android:singleLine="true"
                     android:textColorHint="@color/clearWhite"
@@ -236,7 +280,7 @@
                     android:id="@+id/etxtUnit"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:inputType="text"

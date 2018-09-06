@@ -1,6 +1,7 @@
 package com.income.icminwentaryzacja.injection
 
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
+import com.income.icminwentaryzacja.fragments.information.InfoFragment
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.location.NewLocationFragment
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
@@ -26,4 +27,5 @@ internal abstract class FragmentInjectorsModule {
     @ContributesAndroidInjector internal abstract fun contributeNewItemFragment(): NewItemFragment
     @ContributesAndroidInjector internal abstract fun contributeChooseLocationFragment(): ChooseLocationFragment
     @ContributesAndroidInjector internal abstract fun contributeNewLocationFragment(): NewLocationFragment
+    @ContributesAndroidInjector internal abstract fun contributeInfoFragment(): InfoFragment
 }

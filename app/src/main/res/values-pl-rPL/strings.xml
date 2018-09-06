@@ -23,11 +23,11 @@
     <string name="sum">Suma sztuk</string>
     <string name="scan_code">Zeskanuj Kod</string>
     <string name="scan_ean">Zeskanuj kod EAN</string>
-    <string name="name">Nazwa:</string>
+    <string name="name">Nazwa *</string>
     <string name="scanned_amount">Ilość Zeskanowana:</string>
     <string name="no_tem_for_code">Brak pozycji o takim kodzie. Utworzyć nową?</string>
     <string name="amount">Ilosc:</string>
-    <string name="code">Kod:</string>
+    <string name="code">Kod *</string>
     <string name="entry_list">Lista wejściowa</string>
     <string name="scanned_list">Lista zeskanowanych pozycji</string>
     <string name="change_location">Zmień lokalizację</string>
@@ -46,8 +46,13 @@
     <string name="scanning_items">Skanowanie pozycji</string>
     <string name="location_already_exists">Już istnieje lokalizacja o tej nazwie</string>
     <string name="location">Lokalizacja: \u0020</string>
-    <string name="handle">Handle</string>
-    <string name="scanner">Scanner</string>
+    <string name="handle">Ręcznie</string>
+    <string name="scanner">Skaner</string>
+    <string name="support_code">Kod 2</string>
+    <string name="enter_support_code">Wpisz kod pomocniczy</string>
+    <string name="name_without_asterisk">Name:</string>
+    <string name="support_code_without_asterisk">Kod 2:</string>
+    <string name="company_info">Producent: \n INCOME Sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Polska\n \n  income@income.pl \n \n Wszystkie informacja o aplikacji:\n  http://icmInventory.com</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>

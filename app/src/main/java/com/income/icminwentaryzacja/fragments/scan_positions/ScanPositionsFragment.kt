@@ -17,7 +17,6 @@ import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
-import kotlinx.android.synthetic.main.fragment_scan_positions.view.*
 
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
@@ -85,6 +84,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         item?.let {
             sectionLogo.visibility = View.GONE
             sectionScann.visibility = View.VISIBLE
+            sectionSupportCode.visibility.let { if (item.supportCode.trim().isNotEmpty()) View.VISIBLE else View.GONE }
             tvName.setText(it.name)
             tvAmount.setText((++it.endNumber).toString())
             tvLokalization.setText(it.oldLocation)
