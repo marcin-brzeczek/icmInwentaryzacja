@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="242dp"
-        android:layout_above="@+id/btnStartNewInventoryOrContinue"
+        android:layout_above="@+id/section_buttons"
         android:layout_below="@+id/relativeLayout1"
         android:gravity="center">
 
@@ -45,7 +45,7 @@
                 android:layout_centerVertical="true"
                 android:alpha="1"
                 android:src="@drawable/ic_person_black_24dp"
-                android:tint="#fff"/>
+                android:tint="#fff" />
 
             <EditText
                 android:id="@+id/etLogin"
@@ -62,46 +62,51 @@
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="@color/white"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
         </RelativeLayout>
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnStartNewInventoryOrContinue"
+    <LinearLayout
+        android:id="@+id/section_buttons"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_above="@+id/btnExportFileAndStartNewEmptyInventory"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/continue_current_inventory"
-        android:textSize="17dp">
-    </Button>
-
-    <Button
-        android:id="@+id/btnExportFileAndStartNewEmptyInventory"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_above="@+id/btnExportFileAndStartNewInventory"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/empty_inventory"
-        android:textSize="17dp">
-    </Button>
-
-    <Button
-        android:id="@+id/btnExportFileAndStartNewInventory"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="5dp"
-        android:text="@string/start_new_inventory"
-        android:textSize="17dp"
-        android:layout_marginBottom="5dp">
-    </Button>
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnStartNewInventoryOrContinue"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_above="@+id/btnExportFileAndStartNewEmptyInventory"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/continue_current_inventory"
+            android:textSize="17dp"/>
+
+        <Button
+            android:id="@+id/btnExportFileAndStartNewEmptyInventory"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_above="@+id/btnExportFileAndStartNewInventory"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/empty_inventory"
+            android:textSize="17dp"/>
+
+        <Button
+            android:id="@+id/btnExportFileAndStartNewInventory"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/start_new_inventory"
+            android:textSize="17dp"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

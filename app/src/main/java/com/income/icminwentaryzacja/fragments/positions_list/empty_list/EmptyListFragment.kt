@@ -17,7 +17,7 @@ class EmptyListFragment : FragmentSearch() {
 
     override fun getFragmenType(): FragmentType = FragmentType.EmptyListFragment
 
-    override fun loadItemViewModels(): MutableList<ViewModel> = dbContext.items.where(Item_Table.oldLocation.eq(LocationCache.locationName)).queryList().map { ItemViewModel(it, activity.baseContext) }.toMutableList()
+    override fun loadItemViewModels(): MutableList<ViewModel> = dbContext.items.where(Item_Table.oldLocation.eq(LocationCache.locationName)).queryList().filter { it.endNumber < 1 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList()
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

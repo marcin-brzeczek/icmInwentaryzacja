@@ -31,7 +31,7 @@ class LoginFragment : FragmentBase() {
                 btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
                 btnExportFileAndStartNewInventory.visibility = View.VISIBLE
             }
-            btnExportFileAndStartNewEmptyInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndStartEpmtyInventory }
+            btnExportFileAndStartNewEmptyInventory.setOnClickListener { exportFileAndStartNewEmptyInventory(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndStartEpmtyInventory }
             btnExportFileAndStartNewInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
             btnStartNewInventoryOrContinue.setOnClickListener { loadOrOpenDatabase(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
             setHasOptionsMenu(true)
@@ -50,6 +50,15 @@ class LoginFragment : FragmentBase() {
             navigateTo(ChooseLocationRoute())
         }
         User(etLogin.text.toString()).save()
+    }
+
+    private fun exportFileAndStartNewEmptyInventory(isEmptyDatabase: Boolean) {
+        if (!validateInput()) return
+        if (isEmptyDatabase) {
+            navigateTo(ChooseLocationRoute())
+        } else {
+            requestPermissionAndHandleCSV()
+        }
     }
 
     private fun exportFileAndStartNewInventory() {
