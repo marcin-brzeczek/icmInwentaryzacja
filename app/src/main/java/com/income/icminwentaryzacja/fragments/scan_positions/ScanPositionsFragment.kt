@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.MainActivity
-import com.income.icminwentaryzacja.cache.LocationCache
-import com.income.icminwentaryzacja.cache.LocationCache.locationName
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
@@ -18,14 +16,13 @@ import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import com.income.icminwentaryzacja.fragments.new_position.NewItemRoute
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
-
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_scan_positions, container, false).apply {
             try {
-                ScanWrapper.initScanner(activity.baseContext, ScannerType.CIPHERLAB)
+                ScanWrapper.initScanner(activity.baseContext, ScannerType.ZEBRA)
             } catch (e: Exception) {
                 exceptionMessage(context.getString(R.string.error_init_scanner) + e.message)
             }
@@ -34,8 +31,13 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addNewItem.setOnClickListener { navigateTo(NewItemRoute(locationName = locationName)) }
-        tvLocationLabel.text = activity.baseContext.getString(R.string.location).plus(LocationCache.locationName)
+        addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
+        tvLokalization.text = activity.baseContext.getString(R.string.location).plus((activity as MainActivity).currentLocation)
+        back.setOnClickListener {
+            sectionLogo.visibility = View.VISIBLE
+            sectionScann.visibility = View.GONE
+            it.visibility = View.GONE
+        }
     }
 
     override fun onResume() {
@@ -47,7 +49,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         }
     }
 
-    public override fun onPause() {
+     override fun onPause() {
         super.onPause()
         try {
             ScanWrapper.unregisterScannerListener()
@@ -80,10 +82,11 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     private fun getPositionByCode(codew: String) {
-        val item: Item? = dbContext.items.where(Item_Table.code.eq(codew)).and(Item_Table.oldLocation.eq(locationName)).querySingle()
+        val item: Item? = dbContext.items.where(Item_Table.code.eq(codew)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
         item?.let {
             sectionLogo.visibility = View.GONE
             sectionScann.visibility = View.VISIBLE
+            back.visibility = View.VISIBLE
             sectionSupportCode.visibility.let { if (item.supportCode.trim().isNotEmpty()) View.VISIBLE else View.GONE }
             tvName.setText(it.name)
             tvAmount.setText((++it.endNumber).toString())
@@ -94,6 +97,6 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     fun showNewPositionDialog(codePos: String) {
-        NewPositionDialogFragment({ navigateTo(NewItemRoute(code = codePos, locationName = locationName)) }).show((activity as MainActivity).fragmentManager, "dialog")
+        NewPositionDialogFragment({ navigateTo(NewItemRoute(code = codePos)) }).show((activity as MainActivity).fragmentManager, "dialog")
     }
 }

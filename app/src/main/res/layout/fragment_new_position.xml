@@ -21,7 +21,7 @@
 
 
             <TextView
-                android:id="@+id/tvLokalization"
+                android:id="@+id/tvLocation"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
@@ -54,7 +54,6 @@
                     android:textSize="17dp"
                     android:textStyle="bold"/>
 
-
                 <EditText
                     android:id="@+id/etCode"
                     android:layout_width="match_parent"
@@ -68,10 +67,14 @@
                     android:hint="@string/enter_code"
                     android:inputType="textPersonName"
                     android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/etSupportCode"
                     android:textColorHint="@color/clearWhite"
                     android:textColor="@color/white"
-                    android:textSize="17dp"
-                    />
+                    android:textSize="17dp">
+                    <requestFocus />
+                </EditText>
+
             </RelativeLayout>
 
 
@@ -109,9 +112,11 @@
                     android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/txtCode2Label"
                     android:ems="10"
+                    android:nextFocusDown="@+id/etName"
                     android:hint="@string/enter_support_code"
                     android:inputType="textPersonName"
                     android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:textColorHint="@color/clearWhite"
                     android:textColor="@color/white"
                     android:textSize="17dp"
@@ -160,6 +165,8 @@
                         android:layout_marginRight="10dp"
                         android:hint="@string/enter_name"
                         android:inputType="textMultiLine"
+                        android:nextFocusUp="@+id/etCode"
+                        android:imeOptions="actionNext"
                         android:text=""
                         android:textColorHint="@color/clearWhite"
                         android:textColor="@color/white"

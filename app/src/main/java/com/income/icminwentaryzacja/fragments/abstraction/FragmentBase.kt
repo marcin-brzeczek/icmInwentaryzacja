@@ -19,23 +19,17 @@ import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.backstack.BackstackService
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import com.income.icminwentaryzacja.backstack.ROUTE_ARGUMENTS_KEY
-import com.income.icminwentaryzacja.cache.LocationCache
 import com.income.icminwentaryzacja.database.AppDatabase
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
-import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.database.dto.Location
-import com.income.icminwentaryzacja.database.dto.Location_Table
 import com.income.icminwentaryzacja.fragments.ModeCSV
 import com.income.icminwentaryzacja.fragments.information.InfoFragmentRoute
-import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
 import com.income.icminwentaryzacja.fragments.login.LoginRoute
 import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
-import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
-import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import com.income.icminwentaryzacja.fragments.scan_positions.InfoDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
@@ -43,7 +37,6 @@ import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragme
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.sql.language.Delete
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
 import dagger.android.AndroidInjection
 import java.io.*
@@ -62,9 +55,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     var modeOfSavingCSV: ModeCSV = ModeCSV.ExportOrOpenNew
 
     private val items = mutableListOf<Item>()
-
-    /*TODO lepiej lokalizacje wybraną trzymać właściowości globalnej niż w singletonie*/
-    var currentLocation = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -118,9 +108,9 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             }
             R.id.exportToCSV -> requestPermissionAndHandleCSV()
             R.id.changeLocation -> navigateTo(ChooseLocationRoute())
-            R.id.listEmpty -> navigateTo(EmptyListRoute(LocationCache.locationName))
-            R.id.listDesc -> navigateTo(ScannedListRoute(LocationCache.locationName))
-            R.id.moveToScan -> navigateTo(ScanPositionsRoute(LocationCache.locationName))
+            R.id.listEmpty -> navigateTo(EmptyListRoute((activity as MainActivity).currentLocation))
+            R.id.listDesc -> navigateTo(ScannedListRoute((activity as MainActivity).currentLocation))
+            R.id.moveToScan -> navigateTo(ScanPositionsRoute((activity as MainActivity).currentLocation))
             R.id.logout -> navigateTo(LoginRoute())
             R.id.info -> navigateTo(InfoFragmentRoute())
         }
@@ -165,24 +155,23 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
-            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-            .error { transaction, error -> }
-            .success {
-                //                    navigateTo(ChooseLocationRoute())
-                storageLocations()
-            }.build().execute()
+                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+                .error { transaction, error -> }
+                .success {
+                    storageLocations()
+                }.build().execute()
     }
 
     fun storageLocations() {
         FlowManager.getDatabase(AppDatabase::class.java)
-            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
-            .error { transaction, error -> }
-            .success {
-                navigateTo(ChooseLocationRoute())
+                .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                        ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+                .error { transaction, error -> }
+                .success {
+                    navigateTo(ChooseLocationRoute())
 
-            }.build().execute()
+                }.build().execute()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -270,7 +259,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         return dateFormat.format(date)
     }
 
-
     inner class saveAsyncCSV() : AsyncTask<Void, Void, Boolean>() {
         val progressDialogFragment = ProgressDialogFragment()
         val ft = (activity as MainActivity).fragmentManager
@@ -334,7 +322,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
     }
 
-
     inner class saveAsyncCSVAndExitApp() : AsyncTask<Void, Void, Boolean>() {
         val progressDialogFragment = ProgressDialogFragment()
         val ft = (activity as MainActivity).fragmentManager
@@ -371,8 +358,8 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(activity,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            REQUEST_WRITE_EXTERNAL_STORAGE)
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                REQUEST_WRITE_EXTERNAL_STORAGE)
     }
 
     private fun exportAndOpenNew() {

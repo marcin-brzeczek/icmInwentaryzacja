@@ -3,7 +3,7 @@ package com.income.icminwentaryzacja.fragments.positions_list.empty_list
 import android.os.Bundle
 import android.view.View
 import com.income.icminwentaryzacja.R
-import com.income.icminwentaryzacja.cache.LocationCache
+import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentSearch
@@ -17,7 +17,7 @@ class EmptyListFragment : FragmentSearch() {
 
     override fun getFragmenType(): FragmentType = FragmentType.EmptyListFragment
 
-    override fun loadItemViewModels(): MutableList<ViewModel> = dbContext.items.where(Item_Table.oldLocation.eq(LocationCache.locationName)).queryList().filter { it.endNumber < 1 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList()
+    override fun loadItemViewModels(): MutableList<ViewModel> = dbContext.items.where(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).queryList().filter { it.endNumber < 1 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList()
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

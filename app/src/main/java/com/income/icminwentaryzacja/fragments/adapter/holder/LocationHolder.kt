@@ -6,26 +6,28 @@ import android.support.annotation.RequiresApi
 import android.view.View
 import android.widget.TextView
 import com.income.icminwentaryzacja.R
+import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.backstack.BackstackService
-import com.income.icminwentaryzacja.cache.LocationCache
-import com.income.icminwentaryzacja.fragments.FragmentType
-import com.income.icminwentaryzacja.fragments.FragmentType.ChooseLocationFragment
+import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import com.income.icminwentaryzacja.fragments.adapter.viewmodel.LocationViewModel
+import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
 
 class LocationHolder(view: View) : GenericViewHolder<LocationViewModel>(view) {
 
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun bind(itemVM: LocationViewModel, fragmentType: FragmentType) {
+    override fun bind(itemVM: LocationViewModel, fragment: FragmentBase) {
 
-        when (fragmentType) {
+        when (fragment) {
 
-            ChooseLocationFragment -> {
+            is ChooseLocationFragment -> {
                 (itemView.findViewById(R.id.tvName) as TextView).apply {
                     setText(itemVM.item.name)
-                    setOnClickListener {    BackstackService.get(itemView.context).goTo(ScanPositionsRoute())
-                        LocationCache.locationName = itemVM.item.name}
+                    setOnClickListener {
+                        (fragment.activity as MainActivity).currentLocation = itemVM.item.name
+                        BackstackService.get(itemView.context).goTo(ScanPositionsRoute())
+                    }
                 }
             }
         }

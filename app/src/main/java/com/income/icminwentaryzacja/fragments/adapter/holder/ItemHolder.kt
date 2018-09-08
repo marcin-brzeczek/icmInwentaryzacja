@@ -2,32 +2,32 @@ package com.income.icminwentaryzacja.fragments.adapter.holder
 
 import android.annotation.TargetApi
 import android.os.Build
-import com.income.icminwentaryzacja.R
-import com.income.icminwentaryzacja.fragments.FragmentType
 import android.support.annotation.RequiresApi
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.income.icminwentaryzacja.fragments.FragmentType.EmptyListFragment
-import com.income.icminwentaryzacja.fragments.FragmentType.ScannedListFragment
+import com.income.icminwentaryzacja.R
+import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import com.income.icminwentaryzacja.fragments.adapter.ItemStatus
 import com.income.icminwentaryzacja.fragments.adapter.viewmodel.ItemViewModel
+import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListFragment
+import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListFragment
 
 class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
 
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun bind(itemVM: ItemViewModel, fragmentType: FragmentType) {
+    override fun bind(itemVM: ItemViewModel, fragmentBase: FragmentBase) {
 
-        when (fragmentType) {
+        when (fragmentBase) {
 
-            EmptyListFragment -> {
+            is EmptyListFragment -> {
                 (itemView.findViewById(R.id.tvName) as TextView).text = itemVM.item.name
                 (itemView.findViewById(R.id.tvCode) as TextView).text = itemVM.item.code
                 (itemView.findViewById(R.id.tvAmountPos) as TextView).text = itemVM.item.startNumber.toString()
             }
 
-            ScannedListFragment -> {
+            is ScannedListFragment-> {
                 (itemView.findViewById(R.id.tvName) as TextView).text = itemVM.item.name
                 (itemView.findViewById(R.id.tvCode) as TextView).text = itemVM.item.code
                 val tvAmount = (itemView.findViewById(R.id.tvAmountPos) as TextView)

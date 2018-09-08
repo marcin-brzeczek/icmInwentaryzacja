@@ -8,4 +8,5 @@ class MainActivity : ActivityBase() {
 
     override val layoutId = R.layout.activity_main
     override val startRoute get() = ReportRoute()
+    var currentLocation =""
 }

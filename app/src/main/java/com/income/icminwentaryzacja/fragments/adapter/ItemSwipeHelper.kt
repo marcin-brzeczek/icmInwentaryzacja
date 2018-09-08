@@ -22,8 +22,7 @@ class ItemSwipeHelper(var adapter: ItemAdapter, var activity: Activity, var relo
 
         if (direction == ItemTouchHelper.LEFT) {
         val currentItem: Item = (adapter.items[position] as ItemViewModel).item
-            currentItem.endNumber = 0.0
-            currentItem.save()
+            currentItem.delete()
             adapter.removeItem(position)
             reloadListenr.reload()
 

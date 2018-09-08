@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Location
-import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import com.income.icminwentaryzacja.fragments.adapter.ItemAdapter
 import com.income.icminwentaryzacja.fragments.adapter.TypesFactoryImpl
@@ -34,10 +33,8 @@ class ChooseLocationFragment : FragmentBase() {
     override fun onStart() {
         super.onStart()
         val viewModels = databaseContext.locations.queryList().map { LocationViewModel(Location(it.name), activity.baseContext) }
-//                .distinctBy { it.oldLocation }
-//                .map { LocationViewModel(Location(it.oldLocation), activity.baseContext) }
         rv_locations.layoutManager = LinearLayoutManager(activity.baseContext)
-        _adapter = ItemAdapter(viewModels.toMutableList(), TypesFactoryImpl(), FragmentType.ChooseLocationFragment)
+        _adapter = ItemAdapter(viewModels.toMutableList(), TypesFactoryImpl(), this)
         rv_locations.adapter = _adapter
     }
 }

@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.income.icminwentaryzacja.R
-import com.income.icminwentaryzacja.cache.LocationCache
+import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.database.dto.Item_Table
 import com.income.icminwentaryzacja.fragments.FragmentType
 import com.income.icminwentaryzacja.fragments.adapter.*
@@ -48,11 +48,11 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
 
     fun loadAdapter() {
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
-        val itemAdapter = ItemAdapter(loadItemViewModels(), TypesFactoryImpl(), getFragmenType())
+        val itemAdapter = ItemAdapter(loadItemViewModels(), TypesFactoryImpl(), this)
         rv_items.adapter = itemAdapter
         val itemTouchHelper = ItemTouchHelper(ItemSwipeHelper(itemAdapter, activity, this))
         itemTouchHelper.attachToRecyclerView(rv_items)
-        tvSumItems.text = dbContext.items.where(Item_Table.oldLocation.eq(LocationCache.locationName)).queryList().filter { it.endNumber > 0 }.sumByDouble { item -> item.endNumber }.toString()
+        tvSumItems.text = dbContext.items.where(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).queryList().filter { it.endNumber > 0 }.sumByDouble { item -> item.endNumber }.toString()
         itemAdapter.notifyDataSetChanged()
     }
 
@@ -63,13 +63,13 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
     private fun initAdapter() {
         val viewModels = loadItemViewModels()
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
-        _adapter = ItemAdapter(viewModels.toMutableList(), TypesFactoryImpl(), getFragmenType())
+        _adapter = ItemAdapter(viewModels.toMutableList(), TypesFactoryImpl(), this)
         rv_items.adapter = _adapter
         searchEngine = SearchEngine(viewModels)
         if (getFragmenType() == FragmentType.ScannedListFragment) {
             val itemTouchHelper = ItemTouchHelper(ItemSwipeHelper(_adapter, activity, this))
             itemTouchHelper.attachToRecyclerView(rv_items)
-            tvSumItems.text = dbContext.items.where(Item_Table.oldLocation.eq(LocationCache.locationName)).queryList().filter { it.endNumber > 0 }.sumByDouble { item -> item.endNumber }.toString()
+            tvSumItems.text = dbContext.items.where(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).queryList().filter { it.endNumber > 0 }.sumByDouble { item -> item.endNumber }.toString()
             _adapter.notifyDataSetChanged()
         }
     }
