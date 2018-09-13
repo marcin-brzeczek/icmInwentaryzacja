@@ -21,13 +21,12 @@ class ItemSwipeHelper(var adapter: ItemAdapter, var activity: Activity, var relo
         val position = viewHolder.adapterPosition
 
         if (direction == ItemTouchHelper.LEFT) {
-        val currentItem: Item = (adapter.items[position] as ItemViewModel).item
+            val currentItem: Item = (adapter.items[position] as ItemViewModel).item
             currentItem.delete()
             adapter.removeItem(position)
             reloadListenr.reload()
-
         } else {
-        val currentItem: Item = (adapter.items[position] as ItemViewModel).item
+            val currentItem: Item = (adapter.items[position] as ItemViewModel).item
             val changeAmountDialogFragment = ChangeAmountDialogFragment(currentItem, reloadListenr)
             val ft = (activity as MainActivity).supportFragmentManager
             changeAmountDialogFragment.show(ft, "dialog")

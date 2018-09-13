@@ -23,7 +23,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_new_position, container, false).apply {
             try {
-                ScanWrapper.initScanner(activity.baseContext, ScannerType.ZEBRA)
+                ScanWrapper.initScanner(activity.baseContext, ScannerType.CIPHERLAB)
             } catch (e: Exception) {
                 exceptionMessage(context.getString(R.string.error_init_scanner) + e.message)
             }

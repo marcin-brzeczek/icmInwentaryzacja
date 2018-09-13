@@ -95,6 +95,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 menu.findItem(R.id.moveToScan).isVisible = false
                 menu.findItem(R.id.listEmpty).isVisible = false
                 menu.findItem(R.id.listDesc).isVisible = false
+                menu.findItem(R.id.generateEmptyCSV).isVisible = true
             }
             is ScanPositionsFragment -> menu.findItem(R.id.moveToScan).isVisible = false
         }
@@ -104,6 +105,10 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         when (item.itemId) {
             R.id.exit -> {
                 modeOfSavingCSV = ModeCSV.ExportAndExitApp
+                requestPermissionAndHandleCSV()
+            }
+            R.id.generateEmptyCSV -> {
+                modeOfSavingCSV = ModeCSV.GenerateEmptyCSV
                 requestPermissionAndHandleCSV()
             }
             R.id.exportToCSV -> requestPermissionAndHandleCSV()
@@ -155,23 +160,23 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    storageLocations()
-                }.build().execute()
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                storageLocations()
+            }.build().execute()
     }
 
     fun storageLocations() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                        ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    navigateTo(ChooseLocationRoute())
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                navigateTo(ChooseLocationRoute())
 
-                }.build().execute()
+            }.build().execute()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -196,40 +201,41 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
     }
 
-    /***********Zapis pliku CSV do telefonu*/
-    fun saveDocPosToFile() {
-        saveDocPosToFile(preparePosToSave())
+    /***********Zapis pliku CSV do telefonu (pusty plik albo z pozycjami)*****/
+    fun saveItems(isEmptyFile: Boolean = false) {
+        saveItemsToCSV(isEmptyFile, preparePosToSave(isEmptyFile))
     }
 
-    private fun preparePosToSave(): String {
+    private fun preparePosToSave(isEmptyFile: Boolean): String {
         val sb = StringBuilder()
 
-        sb.append(activity.baseContext.getResources().getString(R.string.header_of_exported_file) + "\n")
+        sb.append(activity.baseContext.resources.getString(R.string.header_of_exported_file) + "\n")
 
-        /* zapis wszystkich pozycji do pliku (nawet nie skanowanych) */
-        val iterator = dbContext.items.queryList().iterator()
-        while (iterator.hasNext()) {
-            val item = iterator.next()
-
-            sb.append(item.id.toString() + ";") /*id*/
-            sb.append(item.code + ";")
-            sb.append(item.supportCode + ";")
-            sb.append(item.shortName + ";")
-            sb.append(item.name + ";")
-            sb.append(item.oldLocation + ";")
-            sb.append(item.startNumber.toString() + ";")
-            sb.append(item.endNumber.toString() + ";")
-            sb.append(item.itemState + ";")
-            sb.append(dbContext.users.queryList().last().name + ";")
-            sb.append("\n")
+        if (!isEmptyFile) {
+            val iterator = dbContext.items.queryList().iterator()
+            while (iterator.hasNext()) {
+                val item = iterator.next()
+                sb.append(item.id.toString() + ";") /*id*/
+                sb.append(item.code + ";")
+                sb.append(item.supportCode + ";")
+                sb.append(item.shortName + ";")
+                sb.append(item.name + ";")
+                sb.append(item.oldLocation + ";")
+                sb.append(item.startNumber.toString() + ";")
+                sb.append(item.endNumber.toString() + ";")
+                sb.append(item.itemState + ";")
+                sb.append(dbContext.users.queryList().last().name + ";")
+                sb.append("\n")
+            }
         }
         return sb.toString()
     }
 
     /* Internal storageItems */
-    private fun saveDocPosToFile(content: String) {
+    private fun saveItemsToCSV(isEmptyFile: Boolean, content: String) {
         val date = getTodaysDate()
         val path = Environment.getExternalStorageDirectory().toString()
+
         val folder = File(path)
         if (!folder.exists()) {
             try {
@@ -239,7 +245,10 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             }
         }
 
-        val file = File(path + "/Export_" + date.replace(":", "_") + ".csv")
+        val pathNotEmptyString = path + "/Export_" + date.replace(":", "_") + ".csv"
+        val pathEmptyString = path + "/Export_empty_" + date.replace(":", "_") + ".csv"
+
+        val file = File(if (isEmptyFile) pathEmptyString else pathNotEmptyString)
         val out: FileOutputStream
         val myOutWriter: OutputStreamWriter
         try {
@@ -259,7 +268,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         return dateFormat.format(date)
     }
 
-    inner class saveAsyncCSV() : AsyncTask<Void, Void, Boolean>() {
+    inner class saveAsyncCSV(var isEmptyFile: Boolean = false) : AsyncTask<Void, Void, Boolean>() {
         val progressDialogFragment = ProgressDialogFragment()
         val ft = (activity as MainActivity).fragmentManager
 
@@ -268,7 +277,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
 
         override fun doInBackground(vararg params: Void?): Boolean {
-            saveDocPosToFile()
+            saveItems(isEmptyFile)
             return true
         }
 
@@ -287,7 +296,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
 
         override fun doInBackground(vararg params: Void?): Boolean {
-            saveDocPosToFile()
+            saveItems()
             return true
         }
 
@@ -309,7 +318,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
 
         override fun doInBackground(vararg params: Void?): Boolean {
-            saveDocPosToFile()
+            saveItems()
             return true
         }
 
@@ -331,7 +340,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
 
         override fun doInBackground(vararg params: Void?): Boolean {
-            saveDocPosToFile()
+            saveItems()
             return true
         }
 
@@ -352,14 +361,15 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 ModeCSV.ExportOrOpenNew -> exportOrOpenNew()
                 ModeCSV.ExportAndExitApp -> exportAndExitApp()
                 ModeCSV.ExportAndStartEpmtyInventory -> exportStartNewEmptyInventory()
+                ModeCSV.GenerateEmptyCSV -> generateEmptyCSV()
             }
         }
     }
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(activity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                REQUEST_WRITE_EXTERNAL_STORAGE)
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_WRITE_EXTERNAL_STORAGE)
     }
 
     private fun exportAndOpenNew() {
@@ -372,6 +382,10 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     private fun exportOrOpenNew() {
         InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
+    private fun generateEmptyCSV() {
+        InfoDialogFragment({ saveAsyncCSV(isEmptyFile = true).execute() }, "Export_empty_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndExitApp() {

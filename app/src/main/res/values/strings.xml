@@ -58,4 +58,5 @@
         <item name="timeline">oś czasu</item>
     </string-array>
     <string name="empty_inventory">New inventory without data</string>
+    <string name="generate_empty_file_csv">Generate empty file CSV</string>
 </resources>
