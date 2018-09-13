@@ -54,9 +54,10 @@
     <string name="support_code_without_asterisk">Code 2:</string>
     <string name="company_info">Producer: \n INCOME Sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Poland\n \n  income@income.pl \n \n All informations about this application:\n  http://icmInventory.com</string>
     <string name="back">Back</string>
+    <string name="empty_inventory">New inventory without data</string>
+    <string name="generate_empty_file_csv">Generate empty file CSV</string>
+    <string name="version_demo_not_save_file">The demo version can not save data</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>
-    <string name="empty_inventory">New inventory without data</string>
-    <string name="generate_empty_file_csv">Generate empty file CSV</string>
 </resources>

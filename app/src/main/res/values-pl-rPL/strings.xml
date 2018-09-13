@@ -56,7 +56,7 @@
     <string name="back">Wstecz</string>
     <string name="generate_empty_file_csv">Generuj pusty plik CSV</string>
     <string name="empty_inventory">Nowy pusty spis</string>
-
+    <string name="version_demo_not_save_file">Wersja demo nie ma możliwości zapisu danych</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>

@@ -24,12 +24,18 @@ import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Location
 import com.income.icminwentaryzacja.fragments.ModeCSV
+import com.income.icminwentaryzacja.fragments.information.InfoFragment
 import com.income.icminwentaryzacja.fragments.information.InfoFragmentRoute
+import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
+import com.income.icminwentaryzacja.fragments.location.NewLocationFragment
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
 import com.income.icminwentaryzacja.fragments.login.LoginRoute
 import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
+import com.income.icminwentaryzacja.fragments.new_position.NewItemFragment
+import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
+import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import com.income.icminwentaryzacja.fragments.scan_positions.InfoDialogFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
@@ -53,6 +59,9 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     private var onResumeListeners = mutableSetOf<((FragmentBase) -> Unit)>()
     var modeOfSavingCSV: ModeCSV = ModeCSV.ExportOrOpenNew
+
+    /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
+    val isDemoVersion = true
 
     private val items = mutableListOf<Item>()
 
@@ -96,8 +105,18 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 menu.findItem(R.id.listEmpty).isVisible = false
                 menu.findItem(R.id.listDesc).isVisible = false
                 menu.findItem(R.id.generateEmptyCSV).isVisible = true
+                menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
             }
-            is ScanPositionsFragment -> menu.findItem(R.id.moveToScan).isVisible = false
+            is ScanPositionsFragment -> {
+                menu.findItem(R.id.moveToScan).isVisible = false
+                menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
+            }
+            is ChooseLocationFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
+            is ScannedListFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
+            is EmptyListFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
+            is NewLocationFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
+            is NewItemFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
+            is InfoFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
         }
     }
 
@@ -160,23 +179,23 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
-            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-            .error { transaction, error -> }
-            .success {
-                storageLocations()
-            }.build().execute()
+                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+                .error { transaction, error -> }
+                .success {
+                    storageLocations()
+                }.build().execute()
     }
 
     fun storageLocations() {
         FlowManager.getDatabase(AppDatabase::class.java)
-            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
-            .error { transaction, error -> }
-            .success {
-                navigateTo(ChooseLocationRoute())
+                .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                        ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+                .error { transaction, error -> }
+                .success {
+                    navigateTo(ChooseLocationRoute())
 
-            }.build().execute()
+                }.build().execute()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -368,19 +387,28 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(activity,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            REQUEST_WRITE_EXTERNAL_STORAGE)
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                REQUEST_WRITE_EXTERNAL_STORAGE)
     }
 
     private fun exportAndOpenNew() {
+        if(isDemoVersion)
+            InfoDialogFragment({selectCSVFile()},getString(R.string.version_demo_not_save_file)).show((activity as MainActivity).fragmentManager, "dialog")
+        else
         InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportStartNewEmptyInventory() {
+        if(isDemoVersion)
+            InfoDialogFragment({selectCSVFile()},getString(R.string.version_demo_not_save_file)).show((activity as MainActivity).fragmentManager, "dialog")
+        else
         InfoDialogFragment({ saveAsyncCSVAndStartNewEmptyInventory().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportOrOpenNew() {
+        if(isDemoVersion)
+            InfoDialogFragment({selectCSVFile()},getString(R.string.version_demo_not_save_file)).show((activity as MainActivity).fragmentManager, "dialog")
+        else
         InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
@@ -389,7 +417,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     }
 
     private fun exportAndExitApp() {
-        if (dbContext.isEmpty) {
+        if (dbContext.isEmpty || isDemoVersion) {
             activity.finish()
             return
         }

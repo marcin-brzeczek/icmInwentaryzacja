@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.income.icminwentaryzacja.R
 
 @SuppressLint("ValidFragment")
-class InfoDialogFragment(val block: () -> Unit, val text: String) : DialogFragment() {
+class InfoDialogFragment(val block: () -> Unit , val text: String) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val alertDialog = AlertDialog.Builder(activity)
