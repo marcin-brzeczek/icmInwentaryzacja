@@ -6,15 +6,14 @@ import android.app.Fragment
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.income.icminwentaryzacja.R
+import com.income.icminwentaryzacja.SaveFileController.SaveFileController
 import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.asynctasks.AsyncTaskWithProgress
 import com.income.icminwentaryzacja.backstack.BackstackService
@@ -25,30 +24,22 @@ import com.income.icminwentaryzacja.database.DBContext
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Location
 import com.income.icminwentaryzacja.fragments.ModeCSV
-import com.income.icminwentaryzacja.fragments.information.InfoFragment
 import com.income.icminwentaryzacja.fragments.information.InfoFragmentRoute
-import com.income.icminwentaryzacja.fragments.location.ChooseLocationFragment
 import com.income.icminwentaryzacja.fragments.location.ChooseLocationRoute
-import com.income.icminwentaryzacja.fragments.location.NewLocationFragment
 import com.income.icminwentaryzacja.fragments.login.LoginFragment
 import com.income.icminwentaryzacja.fragments.login.LoginRoute
 import com.income.icminwentaryzacja.fragments.login.READ_REQUEST_CODE
-import com.income.icminwentaryzacja.fragments.new_position.NewItemFragment
-import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.empty_list.EmptyListRoute
-import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListFragment
 import com.income.icminwentaryzacja.fragments.positions_list.scanned_list.ScannedListRoute
 import com.income.icminwentaryzacja.fragments.scan_positions.InfoDialogFragment
-import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragment
-import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsFragment
 import com.income.icminwentaryzacja.fragments.scan_positions.ScanPositionsRoute
+import com.income.icminwentaryzacja.utilities.todayDate
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.sql.language.Delete
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction
 import dagger.android.AndroidInjection
-import java.io.*
-import java.text.SimpleDateFormat
-import java.util.*
+import java.io.InputStreamReader
+import java.io.LineNumberReader
 import javax.inject.Inject
 
 const val REQUEST_WRITE_EXTERNAL_STORAGE = 99
@@ -57,6 +48,8 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     @Inject
     lateinit var dbContext: DBContext
+
+    private var saveController: SaveFileController? = null
 
     private var onResumeListeners = mutableSetOf<((FragmentBase) -> Unit)>()
     var modeOfSavingCSV: ModeCSV = ModeCSV.ExportOrOpenNew
@@ -69,6 +62,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        saveController = SaveFileController(this, dbContext)
     }
 
     override fun onResume() {
@@ -213,73 +207,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         }
     }
 
-    /***********Zapis pliku CSV do telefonu (pusty plik albo z pozycjami)*****/
-    fun saveItems(isEmptyFile: Boolean = false) {
-        saveItemsToCSV(isEmptyFile, preparePosToSave(isEmptyFile))
-    }
-
-    private fun preparePosToSave(isEmptyFile: Boolean): String {
-        val sb = StringBuilder()
-
-        sb.append(activity.baseContext.resources.getString(R.string.header_of_exported_file) + "\n")
-
-        if (!isEmptyFile) {
-            val iterator = dbContext.items.queryList().iterator()
-            while (iterator.hasNext()) {
-                val item = iterator.next()
-                sb.append(item.id.toString() + ";") /*id*/
-                sb.append(item.code + ";")
-                sb.append(item.supportCode + ";")
-                sb.append(item.shortName + ";")
-                sb.append(item.name + ";")
-                sb.append(item.oldLocation + ";")
-                sb.append(item.startNumber.toString() + ";")
-                sb.append(item.endNumber.toString() + ";")
-                sb.append(item.itemState + ";")
-                sb.append(dbContext.users.queryList().last().name + ";")
-                sb.append("\n")
-            }
-        }
-        return sb.toString()
-    }
-
-    /* Internal storageItems */
-    private fun saveItemsToCSV(isEmptyFile: Boolean, content: String) {
-        val date = getTodaysDate()
-        val path = Environment.getExternalStorageDirectory().toString()
-
-        val folder = File(path)
-        if (!folder.exists()) {
-            try {
-                folder.mkdir()
-            } catch (e: Exception) {
-                toast(e.toString())
-            }
-        }
-
-        val pathNotEmptyString = path + "/Export_" + date.replace(":", "_") + ".csv"
-        val pathEmptyString = path + "/Export_empty_" + date.replace(":", "_") + ".csv"
-
-        val file = File(if (isEmptyFile) pathEmptyString else pathNotEmptyString)
-        val out: FileOutputStream
-        val myOutWriter: OutputStreamWriter
-        try {
-            out = FileOutputStream(file)
-            myOutWriter = OutputStreamWriter(out)
-            myOutWriter.append(content)
-            myOutWriter.close()
-            out.close()
-        } catch (e: Exception) {
-            toast(e.toString())
-        }
-    }
-
-    fun getTodaysDate(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm")
-        val date = Date()
-        return dateFormat.format(date)
-    }
-
     private fun showIfSavedAndClosActivity() {
         toast(getString(R.string.saved))
         activity.finish()
@@ -325,32 +252,32 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         if (isDemoVersion)
             InfoDialogFragment({ }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndOpenNew() {
         if (isDemoVersion)
             InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { showIfSavedAndSelectFile() }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { showIfSavedAndSelectFile() }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportStartNewEmptyInventory() {
         if (isDemoVersion)
             InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { showIfSavedAndNavigate() }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { showIfSavedAndNavigate() }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportOrOpenNew() {
         if (isDemoVersion)
             InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun generateEmptyCSV() {
-        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndExitApp() {
@@ -358,6 +285,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             activity.finish()
             return
         }
-        InfoDialogFragment({ AsyncTaskWithProgress(activity as MainActivity, { saveItems() }, { showIfSavedAndClosActivity() }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+        InfoDialogFragment({ AsyncTaskWithProgress(activity as MainActivity, { saveController?.saveItems() }, { showIfSavedAndClosActivity() }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 }
