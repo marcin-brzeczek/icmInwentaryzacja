@@ -42,14 +42,9 @@ abstract class FragmentBase : Fragment() {
 
     @Inject
     lateinit var dbContext: DBContext
-
     private var saveController: SaveFileController? = null
     private var readController: ReadFileController? = null
-
-    private var onResumeListeners = mutableSetOf<((FragmentBase) -> Unit)>()
     var modeOfSavingCSV: ModeCSV = ModeCSV.ExportOrOpenNew
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
