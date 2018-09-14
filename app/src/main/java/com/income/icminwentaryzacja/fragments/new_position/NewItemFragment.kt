@@ -34,7 +34,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
         super.onViewCreated(view, savedInstanceState)
         val itemCode: String? = arguments.getString(NEW_ITEM_CODE)
 
-        tvLocation.setText((activity as MainActivity).currentLocation)
+        tvLocation.text = (activity as MainActivity).currentLocation
         etCode.setText(itemCode)
 
         btnSave.setOnClickListener { saveItem() }

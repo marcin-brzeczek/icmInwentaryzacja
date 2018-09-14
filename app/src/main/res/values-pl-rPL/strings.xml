@@ -33,7 +33,7 @@
     <string name="change_location">Zmień lokalizację</string>
     <string name="end_app">Zakończ</string>
     <string name="Information">Informacje</string>
-    <string name="save_in_csv_file">Zapisz w pliku CSV</string>
+    <string name="save_in_csv_file">Zapisz dane w pliku CSV</string>
     <string name="choose_location">Wybierz lokalizację</string>
     <string name="enter_name">Wpisz nazwę</string>
     <string name="no">NIE</string>
@@ -52,11 +52,14 @@
     <string name="enter_support_code">Wpisz kod pomocniczy</string>
     <string name="name_without_asterisk">Name:</string>
     <string name="support_code_without_asterisk">Kod 2:</string>
-    <string name="company_info">Producent: \n INCOME Sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Polska\n \n  income@income.pl \n \n Wszystkie informacje o aplikacji:\n  http://icmInventory.com</string>
+    <string name="company_info">Producent: \n INCOME Sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Polska\n \n  income@income.pl \n \n Wszystkie informacje o aplikacji:</string>
     <string name="back">Wstecz</string>
     <string name="generate_empty_file_csv">Generuj pusty plik CSV</string>
     <string name="empty_inventory">Nowy pusty spis</string>
-    <string name="version_demo_not_save_file">Wersja demo nie ma możliwości zapisu danych</string>
+    <string name="version_demo_not_save_file">Posiadasz wersję DEMO, która nie obsługuje zapisu danych do pliku. Zachęcamy do zakupu pełnej wersji aplikacji w Google Play.</string>
+    <string name="go_to_google_play_link">https://play.google.com/store/apps/developer?id=Income+sp.+z+o.o"</string>
+    <string name="go_to_google_play">Przejdź do Google Play</string>
+    <string name="website"><a href="http://icmInventory.com">http://icmInventory.com</a></string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>

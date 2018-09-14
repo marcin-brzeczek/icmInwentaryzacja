@@ -3,13 +3,18 @@ package com.income.icminwentaryzacja.fragments.scan_positions
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.DialogFragment
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.view.View
 import android.widget.TextView
 import com.income.icminwentaryzacja.R
 
+
 @SuppressLint("ValidFragment")
-class InfoDialogFragment(val block: () -> Unit , val text: String) : DialogFragment() {
+class InfoDialogFragment(private val block: () -> Unit, val text: String, private val isWebLink: Boolean = false) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val alertDialog = AlertDialog.Builder(activity)
@@ -18,7 +23,19 @@ class InfoDialogFragment(val block: () -> Unit , val text: String) : DialogFragm
         val inflater = activity.layoutInflater
         val v = inflater.inflate(R.layout.dialog_info, null)
         val title = v.findViewById(R.id.tvTitle) as TextView
-        title.setText(text)
+        val tvDownload = v.findViewById(R.id.tvDownload) as TextView
+        title.text = text
+
+        if (isWebLink) {
+            tvDownload.visibility = View.VISIBLE
+            tvDownload.setOnClickListener {
+                val url = getString(R.string.go_to_google_play_link)
+                val i = Intent(ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+        }
+
         v.findViewById(R.id.bOk).setOnClickListener {
             block.invoke()
             dismiss()

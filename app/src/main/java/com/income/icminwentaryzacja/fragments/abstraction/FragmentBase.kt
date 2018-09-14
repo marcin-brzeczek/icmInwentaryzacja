@@ -16,6 +16,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.MainActivity
+import com.income.icminwentaryzacja.asynctasks.AsyncTaskWithProgress
 import com.income.icminwentaryzacja.backstack.BackstackService
 import com.income.icminwentaryzacja.backstack.BaseRoute
 import com.income.icminwentaryzacja.backstack.ROUTE_ARGUMENTS_KEY
@@ -61,7 +62,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
     var modeOfSavingCSV: ModeCSV = ModeCSV.ExportOrOpenNew
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = true
+    val isDemoVersion = false
 
     private val items = mutableListOf<Item>()
 
@@ -105,18 +106,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 menu.findItem(R.id.listEmpty).isVisible = false
                 menu.findItem(R.id.listDesc).isVisible = false
                 menu.findItem(R.id.generateEmptyCSV).isVisible = true
-                menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
             }
-            is ScanPositionsFragment -> {
-                menu.findItem(R.id.moveToScan).isVisible = false
-                menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
-            }
-            is ChooseLocationFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
-            is ScannedListFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
-            is EmptyListFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
-            is NewLocationFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
-            is NewItemFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
-            is InfoFragment -> menu.findItem(R.id.exportToCSV).isVisible = !isDemoVersion
         }
     }
 
@@ -130,7 +120,10 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
                 modeOfSavingCSV = ModeCSV.GenerateEmptyCSV
                 requestPermissionAndHandleCSV()
             }
-            R.id.exportToCSV -> requestPermissionAndHandleCSV()
+            R.id.exportToCSV -> {
+                modeOfSavingCSV = ModeCSV.ExportCSV
+                requestPermissionAndHandleCSV()
+            }
             R.id.changeLocation -> navigateTo(ChooseLocationRoute())
             R.id.listEmpty -> navigateTo(EmptyListRoute((activity as MainActivity).currentLocation))
             R.id.listDesc -> navigateTo(ScannedListRoute((activity as MainActivity).currentLocation))
@@ -179,23 +172,23 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    storageLocations()
-                }.build().execute()
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                storageLocations()
+            }.build().execute()
     }
 
     fun storageLocations() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                        ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    navigateTo(ChooseLocationRoute())
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                navigateTo(ChooseLocationRoute())
 
-                }.build().execute()
+            }.build().execute()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -287,87 +280,23 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
         return dateFormat.format(date)
     }
 
-    inner class saveAsyncCSV(var isEmptyFile: Boolean = false) : AsyncTask<Void, Void, Boolean>() {
-        val progressDialogFragment = ProgressDialogFragment()
-        val ft = (activity as MainActivity).fragmentManager
-
-        override fun onPreExecute() {
-            progressDialogFragment.show(ft, "dialog")
-        }
-
-        override fun doInBackground(vararg params: Void?): Boolean {
-            saveItems(isEmptyFile)
-            return true
-        }
-
-        override fun onPostExecute(result: Boolean?) {
-            progressDialogFragment.dismiss()
-            toast(getString(R.string.saved))
-        }
+    private fun showIfSavedAndClosActivity() {
+        toast(getString(R.string.saved))
+        activity.finish()
     }
 
-    inner class saveAsyncCSVAndOpenNew() : AsyncTask<Void, Void, Boolean>() {
-        val progressDialogFragment = ProgressDialogFragment()
-        val ft = (activity as MainActivity).fragmentManager
-
-        override fun onPreExecute() {
-            progressDialogFragment.show(ft, "dialog")
-        }
-
-        override fun doInBackground(vararg params: Void?): Boolean {
-            saveItems()
-            return true
-        }
-
-        override fun onPostExecute(result: Boolean?) {
-            progressDialogFragment.dismiss()
-            toast(getString(R.string.saved))
-            Delete.table(Item::class.java)
-            dbContext.deleteOldLocations()
-            selectCSVFile()
-        }
+    private fun showIfSavedAndNavigate() {
+        toast(getString(R.string.saved))
+        Delete.table(Item::class.java)
+        dbContext.deleteOldLocations()
+        navigateTo(ChooseLocationRoute())
     }
 
-    inner class saveAsyncCSVAndStartNewEmptyInventory() : AsyncTask<Void, Void, Boolean>() {
-        val progressDialogFragment = ProgressDialogFragment()
-        val ft = (activity as MainActivity).fragmentManager
-
-        override fun onPreExecute() {
-            progressDialogFragment.show(ft, "dialog")
-        }
-
-        override fun doInBackground(vararg params: Void?): Boolean {
-            saveItems()
-            return true
-        }
-
-        override fun onPostExecute(result: Boolean?) {
-            progressDialogFragment.dismiss()
-            toast(getString(R.string.saved))
-            Delete.table(Item::class.java)
-            dbContext.deleteOldLocations()
-            navigateTo(ChooseLocationRoute())
-        }
-    }
-
-    inner class saveAsyncCSVAndExitApp() : AsyncTask<Void, Void, Boolean>() {
-        val progressDialogFragment = ProgressDialogFragment()
-        val ft = (activity as MainActivity).fragmentManager
-
-        override fun onPreExecute() {
-            progressDialogFragment.show(ft, "dialog")
-        }
-
-        override fun doInBackground(vararg params: Void?): Boolean {
-            saveItems()
-            return true
-        }
-
-        override fun onPostExecute(result: Boolean?) {
-            progressDialogFragment.dismiss()
-            toast(getString(R.string.saved))
-            activity.finish()
-        }
+    private fun showIfSavedAndSelectFile() {
+        toast(getString(R.string.saved))
+        Delete.table(Item::class.java)
+        dbContext.deleteOldLocations()
+        selectCSVFile()
     }
 
     fun requestPermissionAndHandleCSV() {
@@ -376,6 +305,7 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             makeRequest()
         } else {
             when (modeOfSavingCSV) {
+                ModeCSV.ExportCSV -> exportCsv()
                 ModeCSV.ExportAndOpenNew -> exportAndOpenNew()
                 ModeCSV.ExportOrOpenNew -> exportOrOpenNew()
                 ModeCSV.ExportAndExitApp -> exportAndExitApp()
@@ -387,33 +317,40 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(activity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                REQUEST_WRITE_EXTERNAL_STORAGE)
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_WRITE_EXTERNAL_STORAGE)
+    }
+
+    private fun exportCsv() {
+        if (isDemoVersion)
+            InfoDialogFragment({ }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
+        else
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndOpenNew() {
-        if(isDemoVersion)
-            InfoDialogFragment({selectCSVFile()},getString(R.string.version_demo_not_save_file)).show((activity as MainActivity).fragmentManager, "dialog")
+        if (isDemoVersion)
+            InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-        InfoDialogFragment({ saveAsyncCSVAndOpenNew().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { showIfSavedAndSelectFile() }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportStartNewEmptyInventory() {
-        if(isDemoVersion)
-            InfoDialogFragment({selectCSVFile()},getString(R.string.version_demo_not_save_file)).show((activity as MainActivity).fragmentManager, "dialog")
+        if (isDemoVersion)
+            InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-        InfoDialogFragment({ saveAsyncCSVAndStartNewEmptyInventory().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { showIfSavedAndNavigate() }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportOrOpenNew() {
-        if(isDemoVersion)
-            InfoDialogFragment({selectCSVFile()},getString(R.string.version_demo_not_save_file)).show((activity as MainActivity).fragmentManager, "dialog")
+        if (isDemoVersion)
+            InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-        InfoDialogFragment({ saveAsyncCSV().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun generateEmptyCSV() {
-        InfoDialogFragment({ saveAsyncCSV(isEmptyFile = true).execute() }, "Export_empty_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveItems(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndExitApp() {
@@ -421,6 +358,6 @@ abstract class FragmentBase : Fragment(), IOnResumeNotifier {
             activity.finish()
             return
         }
-        InfoDialogFragment({ saveAsyncCSVAndExitApp().execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+        InfoDialogFragment({ AsyncTaskWithProgress(activity as MainActivity, { saveItems() }, { showIfSavedAndClosActivity() }).execute() }, "Export_" + getTodaysDate().replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 }
