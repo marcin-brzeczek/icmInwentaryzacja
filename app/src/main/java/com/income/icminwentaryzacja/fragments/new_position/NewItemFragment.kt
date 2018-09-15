@@ -10,7 +10,6 @@ import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.emkd_scan.OnScannerRead
 import com.income.icminwentaryzacja.emkd_scan.ScanWrapper
-import com.income.icminwentaryzacja.emkd_scan.ScannerType
 import com.income.icminwentaryzacja.fragments.abstraction.FragmentBase
 import com.income.icminwentaryzacja.utilities.alsoUnless
 import com.income.icminwentaryzacja.utilities.displayError

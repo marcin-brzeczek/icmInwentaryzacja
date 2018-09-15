@@ -17,7 +17,7 @@ class MainActivity : ActivityBase() {
     var scannerType = ScannerType.CAMERA
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = false
+    val isDemoVersion = true
 
     override fun onResume() {
         super.onResume()

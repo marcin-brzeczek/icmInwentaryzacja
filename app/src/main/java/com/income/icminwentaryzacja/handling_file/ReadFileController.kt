@@ -1,8 +1,6 @@
 package com.income.icminwentaryzacja.handling_file
 
-import android.app.Activity
 import android.net.Uri
-import com.income.icminwentaryzacja.activities.MainActivity
 import com.income.icminwentaryzacja.database.AppDatabase
 import com.income.icminwentaryzacja.database.dto.Item
 import com.income.icminwentaryzacja.database.dto.Location
