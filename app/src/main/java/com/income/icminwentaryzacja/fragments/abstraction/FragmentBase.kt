@@ -140,15 +140,19 @@ abstract class FragmentBase : Fragment() {
 
     private fun showIfSavedAndNavigate() {
         toast(getString(R.string.saved))
+        deleteItemAndLocations()
+        navigateTo(ChooseLocationRoute())
+    }
+
+    private fun deleteItemAndLocations() {
         Delete.table(Item::class.java)
         dbContext.deleteOldLocations()
-        navigateTo(ChooseLocationRoute())
+
     }
 
     private fun showIfSavedAndSelectFile() {
         toast(getString(R.string.saved))
-        Delete.table(Item::class.java)
-        dbContext.deleteOldLocations()
+        deleteItemAndLocations()
         selectCSVFile()
     }
 
@@ -178,32 +182,32 @@ abstract class FragmentBase : Fragment() {
         if ((activity as MainActivity).isDemoVersion)
             InfoDialogFragment({ }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndOpenNew() {
         if ((activity as MainActivity).isDemoVersion)
             InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { showIfSavedAndSelectFile() }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { showIfSavedAndSelectFile() }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportStartNewEmptyInventory() {
         if ((activity as MainActivity).isDemoVersion)
-            InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { deleteItemAndLocations() }, { navigateTo(ChooseLocationRoute()) }).execute() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { showIfSavedAndNavigate() }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { showIfSavedAndNavigate() }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportOrOpenNew() {
         if ((activity as MainActivity).isDemoVersion)
             InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
-            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun generateEmptyCSV() {
-        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndExitApp() {
@@ -211,6 +215,6 @@ abstract class FragmentBase : Fragment() {
             activity.finish()
             return
         }
-        InfoDialogFragment({ AsyncTaskWithProgress(activity as MainActivity, { saveController?.saveItems() }, { showIfSavedAndClosActivity() }).execute() }, "Export_" + todayDate.replace(":", "_") + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+        InfoDialogFragment({ AsyncTaskWithProgress(activity as MainActivity, { saveController?.saveItems() }, { showIfSavedAndClosActivity() }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 }

@@ -22,20 +22,20 @@ const val READ_REQUEST_CODE = 99
 class LoginFragment : FragmentBase() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.fragment_login, container) {
-            val isEmptyDatabase: Boolean = dbContext.isEmpty
-            if (isEmptyDatabase) {
-                btnStartNewInventoryOrContinue.setText(context.getString(R.string.start_new_inventory))
-                btnExportFileAndStartNewInventory.visibility = View.GONE
-            } else {
-                btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
-                btnExportFileAndStartNewInventory.visibility = View.VISIBLE
+            inflater.inflate(R.layout.fragment_login, container) {
+                val isEmptyDatabase: Boolean = dbContext.isEmpty
+                if (isEmptyDatabase) {
+                    btnStartNewInventoryOrContinue.setText(context.getString(R.string.start_new_inventory))
+                    btnExportFileAndStartNewInventory.visibility = View.GONE
+                } else {
+                    btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
+                    btnExportFileAndStartNewInventory.visibility = View.VISIBLE
+                }
+                btnExportFileAndStartNewEmptyInventory.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndStartEpmtyInventory;exportFileAndStartNewEmptyInventory(isEmptyDatabase) }
+                btnExportFileAndStartNewInventory.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; exportFileAndStartNewInventory() }
+                btnStartNewInventoryOrContinue.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; loadOrOpenDatabase(isEmptyDatabase) }
+                setHasOptionsMenu(true)
             }
-            btnExportFileAndStartNewEmptyInventory.setOnClickListener { exportFileAndStartNewEmptyInventory(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndStartEpmtyInventory }
-            btnExportFileAndStartNewInventory.setOnClickListener { exportFileAndStartNewInventory(); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
-            btnStartNewInventoryOrContinue.setOnClickListener { loadOrOpenDatabase(isEmptyDatabase); modeOfSavingCSV = ModeCSV.ExportAndOpenNew }
-            setHasOptionsMenu(true)
-        }
 
     private fun validateInput() = alsoUnless({ etLogin.text.trim().isNotEmpty() }) {
         if (etLogin.text.isBlank()) etLogin.text.clear()

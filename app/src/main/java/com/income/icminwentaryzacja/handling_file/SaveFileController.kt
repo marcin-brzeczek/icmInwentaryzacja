@@ -45,7 +45,7 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
 
     /* Internal storageItems */
     private fun saveItemsToCSV(isEmptyFile: Boolean, content: String) {
-        val date = todayDate
+        val date = todayDate(fragmentBase.activity.baseContext)
         val path = Environment.getExternalStorageDirectory().toString()
 
         val folder = File(path)

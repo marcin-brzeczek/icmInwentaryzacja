@@ -1,11 +1,13 @@
 package com.income.icminwentaryzacja.utilities
 
+import android.content.Context
+import android.text.format.DateFormat
 import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormat
 
-const val YEAR_MONTH_DAY_HOUR_MINUTE = "yyyy-MM-dd hh:mm"
+const val YEAR_MONTH_DAY_HOUR_MINUTE_US = "yyyy-MM-dd hh_mm_a"
+const val YEAR_MONTH_DAY_HOUR_MINUTE_PL = "yyyy-MM-dd HH_mm"
 
-val DateTime.todaysDateFormat: String get() = DateTimeFormat.forPattern(YEAR_MONTH_DAY_HOUR_MINUTE).print(this)
+fun DateTime.todaysDateFormat(context:Context) = (if (DateFormat.is24HourFormat(context)) DateTimeFormat.forPattern(YEAR_MONTH_DAY_HOUR_MINUTE_PL).print(this.plusHours(2)) else DateTimeFormat.forPattern(YEAR_MONTH_DAY_HOUR_MINUTE_US).print(this.plusHours(2)))!!
 
-val todayDate = DateTime.now().withZone(DateTimeZone.UTC).todaysDateFormat
+fun todayDate(context: Context) = DateTime.now().todaysDateFormat(context)
