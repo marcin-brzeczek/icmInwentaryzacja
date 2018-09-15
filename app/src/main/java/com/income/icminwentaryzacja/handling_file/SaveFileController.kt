@@ -63,14 +63,10 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
         val file = File(if (isEmptyFile) pathEmptyString else pathNotEmptyString)
         val out: FileOutputStream
         val myOutWriter: OutputStreamWriter
-        try {
             out = FileOutputStream(file)
             myOutWriter = OutputStreamWriter(out)
             myOutWriter.append(content)
             myOutWriter.close()
             out.close()
-        } catch (e: Exception) {
-            fragmentBase.toast(e.toString())
-        }
     }
 }

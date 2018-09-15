@@ -60,6 +60,7 @@
     <string name="go_to_google_play_link">https://play.google.com/store/apps/developer?id=Income+sp.+z+o.o"</string>
     <string name="go_to_google_play">Go to Google Play</string>
     <string name="website"><a href="http://icmInventory.com">http://icmInventory.com</a></string>
+    <string name="error_ocurred">Error occured:</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>
