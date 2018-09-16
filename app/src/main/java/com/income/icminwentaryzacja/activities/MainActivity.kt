@@ -14,7 +14,7 @@ class MainActivity : ActivityBase() {
     var currentLocation = ""
 
     /*właściwość ustawiajaca skaner ZEBRA,CIPHERLAB, CAMERA*/
-    var scannerType = ScannerType.CAMERA
+    var scannerType = ScannerType.ZEBRA
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
     val isDemoVersion = false
