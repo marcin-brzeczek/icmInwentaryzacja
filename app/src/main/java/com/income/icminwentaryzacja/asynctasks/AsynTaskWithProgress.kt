@@ -11,13 +11,13 @@ import com.income.icminwentaryzacja.fragments.scan_positions.ProgressDialogFragm
 @SuppressLint("StaticFieldLeak")
 class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: () -> Unit, private val onPostExecute: () -> Unit) : AsyncTask<Void, Void, Boolean>() {
 
-    private var progressDialogFragment: ProgressDialogFragment? = null
+    private var progressDialogFragment: ProgressDialogFragment? = (activity as MainActivity).progressDialogFragment
 
     private val ft = (activity as MainActivity).fragmentManager
     var exc: Exception? = null
 
     override fun onPreExecute() {
-        progressDialogFragment = ProgressDialogFragment()
+
         progressDialogFragment?.show(ft, "dialog")
     }
 
@@ -32,6 +32,7 @@ class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: 
 
     override fun onPostExecute(result: Boolean) {
         if (result) {
+            if((activity as MainActivity).isActivityResume)
             InfoDialogFragment({ progressDialogFragment?.dismiss() }, activity.baseContext.getString(R.string.error_ocurred) + " ${exc.toString()}").show((activity as MainActivity).fragmentManager, "dialog")
         } else {
             onPostExecute.invoke()
