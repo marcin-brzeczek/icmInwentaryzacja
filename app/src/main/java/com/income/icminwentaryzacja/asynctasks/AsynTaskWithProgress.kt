@@ -17,7 +17,6 @@ class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: 
     var exc: Exception? = null
 
     override fun onPreExecute() {
-
         progressDialogFragment?.show(ft, "dialog")
     }
 

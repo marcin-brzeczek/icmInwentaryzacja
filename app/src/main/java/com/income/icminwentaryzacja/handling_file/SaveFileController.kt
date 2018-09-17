@@ -11,7 +11,6 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 
 /***********Zapis pliku CSV do telefonu (pusty plik albo z pozycjami)*****/
-
 class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContext) {
 
     fun saveItems(isEmptyFile: Boolean = false) {

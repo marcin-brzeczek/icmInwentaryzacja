@@ -64,6 +64,4 @@ dependencies {
     implementation files('libs/BarcodeAPI_V1_1_12.jar')
     //Joda Time
     implementation 'net.danlew:android.joda:2.9.9.3'
-    // Anko
-    implementation "org.jetbrains.anko:anko-common:$anko_version"
 }

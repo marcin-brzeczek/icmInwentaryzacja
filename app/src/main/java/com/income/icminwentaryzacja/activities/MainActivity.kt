@@ -1,7 +1,6 @@
 package com.income.icminwentaryzacja.activities
 
 import android.os.Build
-import android.widget.Toast
 import com.income.icminwentaryzacja.R
 import com.income.icminwentaryzacja.activities.abstraction.ActivityBase
 import com.income.icminwentaryzacja.emkd_scan.ScannerType
@@ -22,20 +21,23 @@ class MainActivity : ActivityBase() {
     }
 
     /*właściwość ustawiajaca skaner ZEBRA,CIPHERLAB, CAMERA*/
-    var scannerType = ScannerType.ZEBRA
+    var scannerType = ScannerType.CIPHERLAB
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = false
+    val isDemoVersion = true
 
     override fun onPause() {
         super.onPause()
-        progressDialogFragment?.dismiss()
+        progressDialogFragment?.let {
+            if (it.isVisible)
+                it.dismiss()
+        }
         isActivityResume = false
     }
 
     override fun onResume() {
         super.onResume()
-       isActivityResume = true
+        isActivityResume = true
         /*Podłączenie automatyczne skanera z wykryciem urządzenia w wersji Demo*/
         if (isDemoVersion) {
             if (Build.MANUFACTURER.contains("Zebra Technologies") || Build.MANUFACTURER.contains("Motorola Solutions"))
