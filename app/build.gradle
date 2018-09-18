@@ -11,8 +11,8 @@ android {
     defaultConfig {
         applicationId "com.income.icminwentaryzacja"
         minSdkVersion 21
-        targetSdkVersion 23
-        versionCode 8
+        targetSdkVersion 27
+        versionCode 9
         versionName "1.00"
     }
 
@@ -21,7 +21,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
     buildTypes {
+        debug {
+            debuggable false
+        }
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

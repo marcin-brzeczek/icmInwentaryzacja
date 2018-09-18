@@ -22,10 +22,10 @@ class MainActivity : ActivityBase() {
     }
 
     /*właściwość ustawiajaca skaner ZEBRA,CIPHERLAB, CAMERA*/
-    var scannerType = ScannerType.CIPHERLAB
+    var scannerType = ScannerType.ZEBRA
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = false
+    val isDemoVersion = true
 
     override fun onPause() {
         super.onPause()

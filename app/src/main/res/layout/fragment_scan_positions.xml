@@ -97,7 +97,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:alpha="1"
-                android:src="@drawable/scan_ean"/>
+                android:src="@drawable/scan_ean_small"/>
 
             <TextView
                 android:id="@+id/tvEAN"

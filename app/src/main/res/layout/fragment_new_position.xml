@@ -48,7 +48,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:alpha="1"
-                    android:src="@drawable/scan_ean"
+                    android:src="@drawable/scan_ean_small"
                     android:text="@string/code"
                     android:textColor="@color/clearWhite"
                     android:textSize="17dp"
