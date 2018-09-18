@@ -18,6 +18,7 @@ class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: 
 
     override fun onPreExecute() {
         progressDialogFragment?.show(ft, "dialog")
+        (activity as MainActivity).isDialogShowed = true
     }
 
     override fun doInBackground(vararg params: Void?): Boolean {
@@ -36,6 +37,7 @@ class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: 
         } else {
             onPostExecute.invoke()
             progressDialogFragment?.dismiss()
+            (activity as MainActivity).isDialogShowed = false
         }
     }
 }

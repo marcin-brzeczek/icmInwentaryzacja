@@ -14,6 +14,7 @@ class MainActivity : ActivityBase() {
     var currentLocation = ""
     var progressDialogFragment: ProgressDialogFragment? = null
     var isActivityResume = false
+    var isDialogShowed = false
 
     override fun onStart() {
         super.onStart()
@@ -24,13 +25,15 @@ class MainActivity : ActivityBase() {
     var scannerType = ScannerType.CIPHERLAB
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = true
+    val isDemoVersion = false
 
     override fun onPause() {
         super.onPause()
         progressDialogFragment?.let {
-            if (it.isVisible)
+            if (isDialogShowed) {
                 it.dismiss()
+                isDialogShowed = false
+            }
         }
         isActivityResume = false
     }
