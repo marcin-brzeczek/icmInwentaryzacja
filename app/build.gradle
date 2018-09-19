@@ -9,7 +9,7 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "com.income.icminwentaryzacja"
+        applicationId "com.income.icminventory"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 9
@@ -22,10 +22,10 @@ android {
     }
     buildTypes {
         debug {
-            debuggable false
+            debuggable true
         }
         release {
-            debuggable false
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
