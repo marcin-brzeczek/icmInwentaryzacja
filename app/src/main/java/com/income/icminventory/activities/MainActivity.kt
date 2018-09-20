@@ -6,7 +6,7 @@ import com.income.icminventory.R
 import com.income.icminventory.activities.abstraction.ActivityBase
 import com.income.icminventory.emkd_scan.ScannerType
 import com.income.icminventory.fragments.report.ReportRoute
-import com.income.icminventory.fragments.scan_positions.ProgressDialogFragment
+import com.income.icminventory.views.ProgressDialogFragment
 
 class MainActivity : ActivityBase() {
 
@@ -26,7 +26,7 @@ class MainActivity : ActivityBase() {
     var scannerType = ScannerType.CIPHERLAB
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = false
+    val isDemoVersion = true
 
     override fun onPause() {
         super.onPause()

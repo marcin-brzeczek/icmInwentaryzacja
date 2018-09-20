@@ -9,6 +9,7 @@ import com.income.icminventory.activities.MainActivity
 import com.income.icminventory.database.dto.Item
 import com.income.icminventory.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminventory.views.ChangeAmountDialogFragment
+import com.income.icminventory.views.YesOrNotDialogFragment
 
 class ItemSwipeHelper(var adapter: ItemAdapter, var activity: Activity, var reloadListenr: IOnReloadAdapterListener, dragDirs: Int = 0, swipeDirs: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
 
@@ -16,20 +17,28 @@ class ItemSwipeHelper(var adapter: ItemAdapter, var activity: Activity, var relo
         return false
     }
 
+    private fun deleteItemAndReloadAdapter(item: Item, position: Int) {
+        item.delete()
+        adapter.removeItem(position)
+        reloadListenr.reload()
+    }
+
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
         val position = viewHolder.adapterPosition
 
         if (direction == ItemTouchHelper.LEFT) {
-            val currentItem: Item = (adapter.items[position] as ItemViewModel).item
-            currentItem.delete()
-            adapter.removeItem(position)
-            reloadListenr.reload()
+
+            val currentItem = (adapter.items[position] as ItemViewModel).item
+            val title = activity.baseContext.getString(R.string.do_you_want_remove_position) + "${currentItem.name}?"
+            YesOrNotDialogFragment(
+                { deleteItemAndReloadAdapter(currentItem, position) },
+                { reloadListenr.reload() },
+                title)
+                .show((activity as MainActivity).fragmentManager, "dialog")
         } else {
             val currentItem: Item = (adapter.items[position] as ItemViewModel).item
-            val changeAmountDialogFragment = ChangeAmountDialogFragment(currentItem, reloadListenr)
-            val ft = (activity as MainActivity).supportFragmentManager
-            changeAmountDialogFragment.show(ft, "dialog")
+            ChangeAmountDialogFragment(currentItem, reloadListenr).show((activity as MainActivity).supportFragmentManager, "dialog")
             adapter.notifyDataSetChanged()
         }
     }

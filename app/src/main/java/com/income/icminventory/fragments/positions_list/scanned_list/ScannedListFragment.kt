@@ -12,19 +12,22 @@ import com.income.icminventory.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
 import kotlinx.android.synthetic.main.fragment_list.etSearch
 import kotlinx.android.synthetic.main.fragment_list.imgClear
+import kotlinx.android.synthetic.main.fragment_list.tvLocation
 import kotlinx.android.synthetic.main.fragment_list.tvTitle
 
 class ScannedListFragment : FragmentSearch(), IOnReloadAdapterListener {
 
-    override fun loadItemViewModels(): MutableList<ViewModel>  = dbContext.items.where(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).queryList().filter { it.endNumber > 0 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList()
+    override fun loadItemViewModels(): MutableList<ViewModel> = dbContext.items.where(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).queryList().filter { it.endNumber > 0 }.map { ItemViewModel(it, activity.baseContext) }.toMutableList()
 
-    override fun getFragmenType(): FragmentType  = FragmentType.ScannedListFragment
+    override fun getFragmenType(): FragmentType = FragmentType.ScannedListFragment
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvTitle.text = activity.getString(R.string.scanned_list)
+        tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
         imgClear.setOnClickListener {
             etSearch.text.clear()
-            loadAllData(loadItemViewModels()) }
+            loadAllData(loadItemViewModels())
+        }
     }
 }

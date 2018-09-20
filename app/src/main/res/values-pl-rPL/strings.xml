@@ -57,10 +57,11 @@
     <string name="generate_empty_file_csv">Generuj pusty plik CSV</string>
     <string name="empty_inventory">Nowy pusty spis</string>
     <string name="version_demo_not_save_file">Posiadasz wersję DEMO, która nie obsługuje zapisu danych do pliku. Zachęcamy do zakupu pełnej wersji aplikacji w Google Play.</string>
-    <string name="go_to_google_play_link">https://play.google.com/store/apps/developer?id=Income+sp.+z+o.o"</string>
+    <string name="go_to_google_play_link">https://play.google.com/store/apps/developer?id=Income+sp.+z+o.o."</string>
     <string name="go_to_google_play">Przejdź do Google Play</string>
     <string name="website"><a href="http://icmInventory.com">http://icmInventory.com</a></string>
     <string name="error_ocurred">Wystąpił błąd: </string>
+    <string name="do_you_want_remove_position">Czy na pewno chcesz usunąć pozycję: \u0020</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>

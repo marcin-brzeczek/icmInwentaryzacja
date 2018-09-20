@@ -11,9 +11,9 @@ import com.income.icminventory.database.dto.Item
 import com.income.icminventory.database.dto.Item_Table
 import com.income.icminventory.emkd_scan.OnScannerRead
 import com.income.icminventory.emkd_scan.ScanWrapper
-import com.income.icminventory.emkd_scan.ScannerType
 import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.fragments.new_position.NewItemRoute
+import com.income.icminventory.views.NewPositionDialogFragment
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {

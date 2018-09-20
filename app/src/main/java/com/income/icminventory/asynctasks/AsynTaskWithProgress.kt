@@ -5,8 +5,8 @@ import android.app.Activity
 import android.os.AsyncTask
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
-import com.income.icminventory.fragments.scan_positions.InfoDialogFragment
-import com.income.icminventory.fragments.scan_positions.ProgressDialogFragment
+import com.income.icminventory.views.InfoDialogFragment
+import com.income.icminventory.views.ProgressDialogFragment
 
 @SuppressLint("StaticFieldLeak")
 class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: () -> Unit, private val onPostExecute: () -> Unit) : AsyncTask<Void, Void, Boolean>() {

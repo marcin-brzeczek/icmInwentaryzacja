@@ -11,6 +11,7 @@ import com.income.icminventory.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
 import kotlinx.android.synthetic.main.fragment_list.etSearch
 import kotlinx.android.synthetic.main.fragment_list.imgClear
+import kotlinx.android.synthetic.main.fragment_list.tvLocation
 import kotlinx.android.synthetic.main.fragment_list.tvTitle
 
 class EmptyListFragment : FragmentSearch() {
@@ -22,6 +23,7 @@ class EmptyListFragment : FragmentSearch() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvTitle.text = activity.getString(R.string.entry_list)
+        tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
         imgClear.setOnClickListener {
             etSearch.text.clear()
             loadAllData(loadItemViewModels())

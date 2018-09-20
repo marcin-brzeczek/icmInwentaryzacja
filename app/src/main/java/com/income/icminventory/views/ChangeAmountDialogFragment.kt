@@ -27,6 +27,8 @@ class ChangeAmountDialogFragment(val item: Item, val onReloadAdapterListener: IO
         alert.setCanceledOnTouchOutside(false)
         val inflater = activity.layoutInflater
         val v = inflater.inflate(R.layout.dialog_change_amount, null)
+        (v.findViewById(R.id.tvCode) as TextView).text = item.code
+        (v.findViewById(R.id.tvName) as TextView).text = item.name
         val bOK = v.findViewById(R.id.bOK) as Button
         val imgRemove = v.findViewById(R.id.imgRemoveAmount) as ImageView
         val imgAdd = v.findViewById(R.id.imgAddAmount) as ImageView

@@ -27,7 +27,7 @@ import com.income.icminventory.fragments.login.LoginRoute
 import com.income.icminventory.fragments.login.READ_REQUEST_CODE
 import com.income.icminventory.fragments.positions_list.empty_list.EmptyListRoute
 import com.income.icminventory.fragments.positions_list.scanned_list.ScannedListRoute
-import com.income.icminventory.fragments.scan_positions.InfoDialogFragment
+import com.income.icminventory.views.InfoDialogFragment
 import com.income.icminventory.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminventory.handling_file.ReadFileController
 import com.income.icminventory.handling_file.SaveFileController

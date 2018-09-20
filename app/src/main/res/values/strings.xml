@@ -57,10 +57,11 @@
     <string name="empty_inventory">New inventory without data</string>
     <string name="generate_empty_file_csv">Generate empty file CSV</string>
     <string name="version_demo_not_save_file">You have a DEMO version that does not support write data to a file. We encourage you to purchase the full version of the application on Google Play.</string>
-    <string name="go_to_google_play_link">https://play.google.com/store/apps/developer?id=Income+sp.+z+o.o"</string>
+    <string name="go_to_google_play_link">https://play.google.com/store/apps/developer?id=Income+sp.+z+o.o."</string>
     <string name="go_to_google_play">Go to Google Play</string>
     <string name="website"><a href="http://icmInventory.com">http://icmInventory.com</a></string>
     <string name="error_ocurred">Error occured:</string>
+    <string name="do_you_want_remove_position">Are you sure you want to delete the item: \u0020</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>

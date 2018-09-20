@@ -1,4 +1,4 @@
-package com.income.icminventory.fragments.scan_positions
+package com.income.icminventory.views
 
 import android.annotation.SuppressLint
 import android.app.Dialog
