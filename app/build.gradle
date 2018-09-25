@@ -12,8 +12,8 @@ android {
         applicationId "com.income.icminventory"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 9
-        versionName "1.00"
+        versionCode 10
+        versionName "1.01"
     }
 
     compileOptions {
@@ -22,10 +22,10 @@ android {
     }
     buildTypes {
         debug {
-            debuggable true
+            debuggable false
         }
         release {
-            debuggable true
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -68,4 +68,6 @@ dependencies {
     implementation files('libs/BarcodeAPI_V1_1_12.jar')
     //Joda Time
     implementation 'net.danlew:android.joda:2.9.9.3'
+/*Honeywell lib*/
+    compile project(":DataCollectionLib")
 }
