@@ -70,4 +70,6 @@ dependencies {
     implementation 'net.danlew:android.joda:2.9.9.3'
 /*Honeywell lib*/
     compile project(":DataCollectionLib")
+/*Anko*/
+    compile 'org.jetbrains.anko:anko-common:0.10.6'
 }

@@ -43,7 +43,6 @@ private constructor(private val _ctx: Context) {
             Log.e("INV", e.message, e)
             throw e
         }
-
     }
 
     /* rejestracja listenera odbywa się na obiekcie _onRead */
@@ -60,8 +59,6 @@ private constructor(private val _ctx: Context) {
         _onRead = null
         _ctx.unregisterReceiver(dataReceiver)
     }
-
-
 
     fun enableScanner() {
         if (rm != null && !rm!!.GetActive())

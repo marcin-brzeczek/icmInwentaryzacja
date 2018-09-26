@@ -1,9 +1,8 @@
 package com.income.icminventory.emkd_scan
 
 import android.content.Context
-import com.income.icminventory.emkd_scan.ScannerType.ZEBRA
-import com.income.icminventory.emkd_scan.ScannerType.CIPHERLAB
-import com.income.icminventory.emkd_scan.ScannerType.CAMERA
+import com.honeywell.aidc.BarcodeReader
+import com.income.icminventory.emkd_scan.ScannerType.*
 
 object ScanWrapper {
 
@@ -16,7 +15,9 @@ object ScanWrapper {
         when (_typeOfScanner) {
             ZEBRA -> EmdkSupport.initEmdkSupport(ctx)
             CIPHERLAB -> CipherLabSupport.initCipherLabSupport(ctx)
-            CAMERA -> {}
+            HONEYWELL -> HoneywellSupport.initHoneywellSupport(ctx)
+            CAMERA -> {
+            }
             else -> {
             }
         }
@@ -27,7 +28,9 @@ object ScanWrapper {
         when (_typeOfScanner) {
             ZEBRA -> EmdkSupport.emdkSupport?.registerScannerListener(onReadScan)
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.registerScannerListener(onReadScan)
-            CAMERA -> {}
+            HONEYWELL -> HoneywellSupport.honeywellSupport?.registerScannerListener(onReadScan)
+            CAMERA -> {
+            }
 
             else -> {
             }
@@ -39,7 +42,9 @@ object ScanWrapper {
         when (_typeOfScanner) {
             ZEBRA -> EmdkSupport.emdkSupport?.unregisterScannerListeners()
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.unregisterScannerListeners()
-            CAMERA -> {}
+            HONEYWELL -> HoneywellSupport.honeywellSupport?.unregisterScannerListeners()
+            CAMERA -> {
+            }
 
             else -> {
             }
@@ -51,7 +56,9 @@ object ScanWrapper {
         when (_typeOfScanner) {
             ZEBRA -> EmdkSupport.emdkSupport?.onClosed()
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.releaseScanner()
-            CAMERA -> {}
+            HONEYWELL -> HoneywellSupport.honeywellSupport?.releaseScanner()
+            CAMERA -> {
+            }
 
             else -> {
             }
