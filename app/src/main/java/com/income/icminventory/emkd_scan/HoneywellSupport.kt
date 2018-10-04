@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.honeywell.aidc.*
+import com.income.icminventory.activities.MainActivity
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -13,7 +14,6 @@ class HoneywellSupport @Throws(Exception::class)
 private constructor(private val _ctx: Context) {
 
     private var barcodeReader: BarcodeReader? = null
-    private var manager: AidcManager? = null
     @Volatile
     private var _onRead: OnScannerRead? = null
 
@@ -37,14 +37,8 @@ private constructor(private val _ctx: Context) {
     init {
         try {
             if (honeywellSupport == null) {
-                // create the AidcManager providing a Context and a
-                // CreatedCallback implementation.
-                AidcManager.create(_ctx, object : AidcManager.CreatedCallback {
-                    override fun onCreated(aidcManager: AidcManager?) {
-                        manager = aidcManager
-                        barcodeReader = manager!!.createBarcodeReader()
-                    }
-                })
+              barcodeReader =  MainActivity.barcodeReader
+
             }
         } catch (e: Exception) {
             Log.e("INV", e.message, e)
@@ -56,9 +50,6 @@ private constructor(private val _ctx: Context) {
     fun registerScannerListener(onRead: OnScannerRead) {
         if (barcodeReader != null) {
             try {
-                _onRead = onRead
-                _barcodeListener = barcodeListener
-                barcodeReader!!.addBarcodeListener(_barcodeListener)
                 barcodeReader!!.claim()
             } catch (e: ScannerUnavailableException) {
                 e.printStackTrace()
@@ -78,12 +69,18 @@ private constructor(private val _ctx: Context) {
 
 
     fun releaseScanner() {
-        if (barcodeReader != null) {
-            barcodeReader!!.close()
-            barcodeReader = null
-        }
-        if (manager != null)
-            manager!!.close()
+//        if (barcodeReader != null) {
+//            barcodeReader!!.close()
+//            barcodeReader = null
+//        }
+//        if (manager != null)
+//            manager!!.close()
+    }
+
+    fun registerBarcodeListener(onReadScan: OnScannerRead) {
+        _onRead = onReadScan
+        _barcodeListener = barcodeListener
+        barcodeReader!!.addBarcodeListener(_barcodeListener)
     }
 
 

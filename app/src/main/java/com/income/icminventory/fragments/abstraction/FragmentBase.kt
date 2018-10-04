@@ -20,13 +20,18 @@ import com.income.icminventory.backstack.ROUTE_ARGUMENTS_KEY
 import com.income.icminventory.database.DBContext
 import com.income.icminventory.database.dto.Item
 import com.income.icminventory.fragments.ModeCSV
+import com.income.icminventory.fragments.information.InfoFragment
 import com.income.icminventory.fragments.information.InfoFragmentRoute
+import com.income.icminventory.fragments.location.ChooseLocationFragment
 import com.income.icminventory.fragments.location.ChooseLocationRoute
 import com.income.icminventory.fragments.login.LoginFragment
 import com.income.icminventory.fragments.login.LoginRoute
 import com.income.icminventory.fragments.login.READ_REQUEST_CODE
+import com.income.icminventory.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminventory.fragments.positions_list.empty_list.EmptyListRoute
+import com.income.icminventory.fragments.positions_list.scanned_list.ScannedListFragment
 import com.income.icminventory.fragments.positions_list.scanned_list.ScannedListRoute
+import com.income.icminventory.fragments.scan_positions.ScanPositionsFragment
 import com.income.icminventory.views.InfoDialogFragment
 import com.income.icminventory.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminventory.handling_file.ReadFileController
@@ -67,14 +72,30 @@ abstract class FragmentBase : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.main, menu)
         when (this) {
-            is LoginFragment -> {
+            is LoginFragment  -> {
                 menu.findItem(R.id.logout).isVisible = false
                 menu.findItem(R.id.changeLocation).isVisible = false
                 menu.findItem(R.id.moveToScan).isVisible = false
                 menu.findItem(R.id.listEmpty).isVisible = false
                 menu.findItem(R.id.listDesc).isVisible = false
                 menu.findItem(R.id.generateEmptyCSV).isVisible = true
+                menu.findItem(R.id.exportToCSV).isVisible = false
             }
+            is InfoFragment  -> {
+                menu.findItem(R.id.logout).isVisible = true
+                menu.findItem(R.id.changeLocation).isVisible = false
+                menu.findItem(R.id.moveToScan).isVisible = false
+                menu.findItem(R.id.listEmpty).isVisible = false
+                menu.findItem(R.id.listDesc).isVisible = false
+                menu.findItem(R.id.info).isVisible = false
+                menu.findItem(R.id.generateEmptyCSV).isVisible = false
+                menu.findItem(R.id.exportToCSV).isVisible = false
+            }
+            is ChooseLocationFragment -> menu.findItem(R.id.changeLocation).isVisible = false
+            is ScanPositionsFragment -> menu.findItem(R.id.moveToScan).isVisible = false
+            is EmptyListFragment -> menu.findItem(R.id.listEmpty).isVisible = false
+            is ScannedListFragment -> menu.findItem(R.id.listDesc).isVisible = false
+
         }
     }
 

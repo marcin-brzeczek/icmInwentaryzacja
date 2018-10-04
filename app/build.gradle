@@ -9,11 +9,11 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "com.income.icminventory"
+        applicationId "com.income.icminventory_honeywell"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 10
-        versionName "1.01"
+        versionCode 12
+        versionName "1.03"
     }
 
     compileOptions {
@@ -62,14 +62,15 @@ dependencies {
     compile 'nz.bradcampbell:paperparcel:2.0.4'
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.4'
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.4'
-// RxJava
+    // RxJava
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation files('libs/BarcodeAPI_V1_1_12.jar')
     //Joda Time
     implementation 'net.danlew:android.joda:2.9.9.3'
-/*Honeywell lib*/
-    compile project(":DataCollectionLib")
-/*Anko*/
+    /*Honeywell lib*/
+    compile project(':DataCollectionLib')
+    /*Anko*/
     compile 'org.jetbrains.anko:anko-common:0.10.6'
+    implementation files('libs/platform_sdk_v2.3.602.jar')
 }

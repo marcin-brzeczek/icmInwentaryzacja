@@ -16,10 +16,17 @@ object ScanWrapper {
             ZEBRA -> EmdkSupport.initEmdkSupport(ctx)
             CIPHERLAB -> CipherLabSupport.initCipherLabSupport(ctx)
             HONEYWELL -> HoneywellSupport.initHoneywellSupport(ctx)
+            UNITECH -> UnitechSupport.initUnitechSupport(ctx)
             CAMERA -> {
             }
             else -> {
             }
+        }
+    }
+
+    fun registerBarcodeListener(onReadScan: OnScannerRead) {
+        when (_typeOfScanner) {
+            HONEYWELL -> HoneywellSupport.honeywellSupport?.registerBarcodeListener(onReadScan)
         }
     }
 
@@ -29,6 +36,7 @@ object ScanWrapper {
             ZEBRA -> EmdkSupport.emdkSupport?.registerScannerListener(onReadScan)
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.registerScannerListener(onReadScan)
             HONEYWELL -> HoneywellSupport.honeywellSupport?.registerScannerListener(onReadScan)
+            UNITECH -> UnitechSupport.unitechSupport?.registerScannerListener(onReadScan)
             CAMERA -> {
             }
 
@@ -43,6 +51,7 @@ object ScanWrapper {
             ZEBRA -> EmdkSupport.emdkSupport?.unregisterScannerListeners()
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.unregisterScannerListeners()
             HONEYWELL -> HoneywellSupport.honeywellSupport?.unregisterScannerListeners()
+            UNITECH -> UnitechSupport.unitechSupport?.unregisterScannerListeners()
             CAMERA -> {
             }
 
@@ -57,6 +66,7 @@ object ScanWrapper {
             ZEBRA -> EmdkSupport.emdkSupport?.onClosed()
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.releaseScanner()
             HONEYWELL -> HoneywellSupport.honeywellSupport?.releaseScanner()
+            UNITECH -> UnitechSupport.unitechSupport?.releaseScanner()
             CAMERA -> {
             }
 

@@ -1,5 +1,9 @@
 package com.income.icminventory.emkd_scan
 
 enum class ScannerType {
-    ZEBRA, CIPHERLAB, CAMERA, HONEYWELL
+    ZEBRA,
+    CIPHERLAB,
+    HONEYWELL,
+    UNITECH,
+    CAMERA
 }

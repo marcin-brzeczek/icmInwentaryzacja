@@ -46,6 +46,11 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
         imgAddAmount.setOnClickListener { setAmount();tvAmount.setText((++currentAmount).toString() + "") }
     }
 
+    override fun onStart() {
+        super.onStart()
+        ScanWrapper.registerBarcodeListener(this)
+    }
+
     override fun onResume() {
         super.onResume()
         try {

@@ -40,6 +40,11 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+       ScanWrapper.registerBarcodeListener(this)
+    }
+
     override fun onResume() {
         super.onResume()
         try {
