@@ -12,6 +12,7 @@ import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.fragments.adapter.viewmodel.LocationViewModel
 import com.income.icminventory.fragments.location.ChooseLocationFragment
 import com.income.icminventory.fragments.scan_positions.ScanPositionsRoute
+import org.jetbrains.anko.find
 
 class LocationHolder(view: View) : GenericViewHolder<LocationViewModel>(view) {
 
@@ -22,7 +23,7 @@ class LocationHolder(view: View) : GenericViewHolder<LocationViewModel>(view) {
         when (fragment) {
 
             is ChooseLocationFragment -> {
-                (itemView.findViewById(R.id.tvName) as TextView).apply {
+                itemView.find<TextView>(R.id.tvName).apply {
                     setText(itemVM.item.name)
                     setOnClickListener {
                         (fragment.activity as MainActivity).currentLocation = itemVM.item.name

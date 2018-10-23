@@ -24,10 +24,10 @@ class MainActivity : ActivityBase() {
     var isDialogShowed = false
 
     /*właściwość ustawiajaca skaner ZEBRA,CIPHERLAB, CAMERA*/
-    var scannerType = ScannerType.HONEYWELL
+    var scannerType = ScannerType.DATALOGIC
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = false
+    val isDemoVersion = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +41,8 @@ class MainActivity : ActivityBase() {
                 scannerType = ScannerType.HONEYWELL
             if (Build.MANUFACTURER.contains("Unitech"))
                 scannerType = ScannerType.UNITECH
+            if (Build.MANUFACTURER.contains("Datalogic"))
+                scannerType = ScannerType.DATALOGIC
         }
 
         if (scannerType == ScannerType.HONEYWELL)

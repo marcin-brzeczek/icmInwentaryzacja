@@ -1,9 +1,7 @@
 package com.income.icminventory.fragments.scan_positions
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
@@ -13,10 +11,15 @@ import com.income.icminventory.emkd_scan.OnScannerRead
 import com.income.icminventory.emkd_scan.ScanWrapper
 import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.fragments.new_position.NewItemRoute
+import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.views.NewPositionDialogFragment
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
+
+    var currentAmount: Double = 0.0
+    private var amount = ""
+    private var item: Item? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -31,18 +34,42 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
         tvLokalization.text = activity.baseContext.getString(R.string.location).plus((activity as MainActivity).currentLocation)
         back.setOnClickListener {
             sectionLogo.visibility = View.VISIBLE
             sectionScann.visibility = View.GONE
             it.visibility = View.GONE
+            item?.endNumber = (etAmount.text.toString().toDouble())
+            item?.save()
+
         }
+        imgRemoveAmount.setOnClickListener { setAmount();etAmount.setText(if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0") }
+        imgAddAmount.setOnClickListener { setAmount();etAmount.setText((++currentAmount).toString() + "") }
+        etAmount.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                item?.endNumber = (etAmount.text.toString().toDouble())
+                item?.save()
+                hideKeyboard(etAmount)
+                return@OnKeyListener true
+            }
+            false
+        })
+    }
+
+
+    private fun setAmount() {
+        amount = if (etAmount.getText().toString() != null && etAmount.getText().toString().length > 1)
+            etAmount.getText().toString()
+        else
+            "1.0"
+        currentAmount = java.lang.Double.valueOf(amount)
     }
 
     override fun onStart() {
         super.onStart()
-       ScanWrapper.registerBarcodeListener(this)
+        ScanWrapper.registerBarcodeListener(this)
     }
 
     override fun onResume() {
@@ -54,7 +81,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         }
     }
 
-     override fun onPause() {
+    override fun onPause() {
         super.onPause()
         try {
             ScanWrapper.unregisterScannerListener()
@@ -87,14 +114,14 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     private fun getPositionByCode(codew: String) {
-        val item: Item? = dbContext.items.where(Item_Table.code.eq(codew)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
+        item = dbContext.items.where(Item_Table.code.eq(codew)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
         item?.let {
             sectionLogo.visibility = View.GONE
             sectionScann.visibility = View.VISIBLE
             back.visibility = View.VISIBLE
-            sectionSupportCode.visibility.let { if (item.supportCode.trim().isNotEmpty()) View.VISIBLE else View.GONE }
+            sectionSupportCode.visibility.let { if (item?.supportCode!!.trim().isNotEmpty()) View.VISIBLE else View.GONE }
             tvName.setText(it.name)
-            tvAmount.setText((++it.endNumber).toString())
+            etAmount.setText((++it.endNumber).toString())
             tvLokalization.setText(it.oldLocation)
             it.itemState = activity.getString(R.string.scanner)
             it.save()

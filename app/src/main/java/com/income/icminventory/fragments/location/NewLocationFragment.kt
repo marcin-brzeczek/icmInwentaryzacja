@@ -8,7 +8,7 @@ import android.view.inputmethod.EditorInfo
 import com.income.icminventory.R
 import com.income.icminventory.database.dto.Location
 import com.income.icminventory.fragments.abstraction.FragmentBase
-import com.income.icminventory.fragments.abstraction.toast
+import com.income.icminventory.utilities.toast
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.inflate

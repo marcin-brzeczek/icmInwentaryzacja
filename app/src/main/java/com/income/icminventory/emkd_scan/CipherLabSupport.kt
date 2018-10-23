@@ -71,7 +71,6 @@ private constructor(private val _ctx: Context) {
     }
 
     fun releaseScanner() {
-        //		new AsynTaskEnableScannerWhenExitProgram().execute();
         if (rm != null) {
             rm!!.Release()
             rm = null

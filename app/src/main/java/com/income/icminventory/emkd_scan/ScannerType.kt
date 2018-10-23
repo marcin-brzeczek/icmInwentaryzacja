@@ -5,5 +5,6 @@ enum class ScannerType {
     CIPHERLAB,
     HONEYWELL,
     UNITECH,
-    CAMERA
+    CAMERA,
+    DATALOGIC
 }

@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.income.icminventory.R
 import com.income.icminventory.database.dto.Item
 import com.income.icminventory.fragments.adapter.IOnReloadAdapterListener
+import org.jetbrains.anko.find
 
 @SuppressLint("ValidFragment")
 class ChangeAmountDialogFragment(val item: Item, val onReloadAdapterListener: IOnReloadAdapterListener) : DialogFragment() {
@@ -27,12 +28,12 @@ class ChangeAmountDialogFragment(val item: Item, val onReloadAdapterListener: IO
         alert.setCanceledOnTouchOutside(false)
         val inflater = activity.layoutInflater
         val v = inflater.inflate(R.layout.dialog_change_amount, null)
-        (v.findViewById(R.id.tvCode) as TextView).text = item.code
-        (v.findViewById(R.id.tvName) as TextView).text = item.name
-        val bOK = v.findViewById(R.id.bOK) as Button
-        val imgRemove = v.findViewById(R.id.imgRemoveAmount) as ImageView
-        val imgAdd = v.findViewById(R.id.imgAddAmount) as ImageView
-        tvAmount = v.findViewById(R.id.tvAmount) as TextView
+        v.find<TextView>(R.id.tvCode).text = item.code
+        v.find<TextView>(R.id.tvName).text = item.name
+        val bOK = v.find<TextView>(R.id.bOK) as Button
+        val imgRemove = v.find<ImageView>(R.id.imgRemoveAmount)
+        val imgAdd = v.find<ImageView>(R.id.imgAddAmount)
+        tvAmount = v.find<TextView>(R.id.tvAmount)
         tvAmount.text = item.endNumber.toString()
 
         bOK.setOnClickListener {

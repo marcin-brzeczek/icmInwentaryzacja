@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:background="@color/white"
-              android:orientation="vertical"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="80dp"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
     <TextView
         android:id="@+id/tvLokalization"
@@ -34,16 +34,16 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="80dp"
-            android:src="@drawable/scan_ean" />
+            android:src="@drawable/scan_ean"/>
 
 
         <TextView
             android:id="@+id/tvScanCode"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="30dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/imgScann"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="@string/scan_code"
             android:textColor="@color/grey3"
@@ -56,10 +56,10 @@
         android:id="@+id/sectionScann"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_below="@+id/tvLokalization"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:visibility="gone">
-
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
@@ -108,8 +108,8 @@
                 android:inputType="textPersonName"
                 android:singleLine="true"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
+                android:textSize="16dp"
+                android:textStyle="bold"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -206,49 +206,71 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/sectionAmount"
-            android:layout_width="match_parent"
+            android:id="@+id/rlAmount"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/sectionName"
-            android:layout_marginTop="19dp"
-            android:background="@drawable/cell_shape_grey2"
-            android:visibility="visible">
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            >
 
-            <RelativeLayout
-                android:id="@+id/layoutLoginSeries"
+            <ImageView
+                android:id="@+id/imgRemoveAmount"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/textAmount"
+                android:layout_toRightOf="@+id/textAmount"
+                android:background="@drawable/circle_shape"
+                android:onClick="onClickRemoveAmountStandard"
+                android:src="@drawable/ic_remove_circle_black_24dp"
+                android:tint="@color/red200"/>
+
+            <EditText
+                android:id="@+id/etAmount"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/imgRemoveAmount"
+                android:layout_toRightOf="@+id/imgRemoveAmount"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:maxWidth="110dp"
+                android:minEms="5"
+                android:minWidth="30dp"
+                android:singleLine="true"
+                android:text="1"
+                android:textColor="@color/greyText"
+                android:textColorHint="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/imgAddAmount"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignTop="@+id/imgRemoveAmount"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/etAmount"
+                android:layout_toRightOf="@+id/etAmount"
+                android:alpha="1"
+                android:background="@drawable/circle_shape"
+                android:onClick="onClickAddAmountStandard"
+                android:src="@drawable/ic_add_circle_black_24dp"
+                android:tint="@color/teal200"/>
+
+            <TextView
+                android:id="@+id/textAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="20dp">
-
-                <TextView
-                    android:id="@+id/tvAmountLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:alpha="1"
-                    android:src="@drawable/scan_ean"
-                    android:text="@string/scanned_amount"
-                    android:textColor="@color/grey1"
-                    android:textSize="17dp"/>
-
-                <TextView
-                    android:id="@+id/tvAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toRightOf="@+id/tvAmountLabel"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"/>
-            </RelativeLayout>
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:alpha="1"
+                android:text="@string/amount"
+                android:textColor="@color/grey3"
+                android:textSize="18dp"/>
         </RelativeLayout>
 
     </LinearLayout>
@@ -256,30 +278,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
         android:gravity="end"
-        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
         >
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addNewItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/sectionLogo"
-        android:layout_above="@id/back"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="15dp"
-        android:src="@drawable/ic_plus_white_18dp"
-        app:backgroundTint="@color/colorLogo"/>
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp"
-        android:visibility="gone"
-        android:text="@string/back"
-        android:textSize="17dp"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addNewItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/back"
+            android:layout_alignEnd="@+id/sectionLogo"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_plus_white_18dp"
+            app:backgroundTint="@color/colorLogo"/>
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/back"
+            android:textSize="17dp"
+            android:visibility="gone"/>
     </LinearLayout>
 </RelativeLayout>

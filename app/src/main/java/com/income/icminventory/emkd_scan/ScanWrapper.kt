@@ -17,6 +17,7 @@ object ScanWrapper {
             CIPHERLAB -> CipherLabSupport.initCipherLabSupport(ctx)
             HONEYWELL -> HoneywellSupport.initHoneywellSupport(ctx)
             UNITECH -> UnitechSupport.initUnitechSupport(ctx)
+            DATALOGIC -> DatalogicSupport.initDatalogicSupport(ctx)
             CAMERA -> {
             }
             else -> {
@@ -37,6 +38,7 @@ object ScanWrapper {
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.registerScannerListener(onReadScan)
             HONEYWELL -> HoneywellSupport.honeywellSupport?.registerScannerListener(onReadScan)
             UNITECH -> UnitechSupport.unitechSupport?.registerScannerListener(onReadScan)
+            DATALOGIC -> DatalogicSupport.datalogicSupport?.registerScannerListener(onReadScan)
             CAMERA -> {
             }
 
@@ -52,6 +54,7 @@ object ScanWrapper {
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.unregisterScannerListeners()
             HONEYWELL -> HoneywellSupport.honeywellSupport?.unregisterScannerListeners()
             UNITECH -> UnitechSupport.unitechSupport?.unregisterScannerListeners()
+            DATALOGIC -> DatalogicSupport.datalogicSupport?.unregisterScannerListeners()
             CAMERA -> {
             }
 
@@ -67,6 +70,7 @@ object ScanWrapper {
             CIPHERLAB -> CipherLabSupport.cipherLabSupport?.releaseScanner()
             HONEYWELL -> HoneywellSupport.honeywellSupport?.releaseScanner()
             UNITECH -> UnitechSupport.unitechSupport?.releaseScanner()
+            DATALOGIC -> DatalogicSupport.datalogicSupport?.releaseScanner()
             CAMERA -> {
             }
 

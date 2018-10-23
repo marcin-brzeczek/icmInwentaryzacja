@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
@@ -33,6 +34,8 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
         val itemCode: String? = arguments.getString(NEW_ITEM_CODE)
         itemState = arguments?.getString(NEW_ITEM_STATE) ?: getString(R.string.handle)
 

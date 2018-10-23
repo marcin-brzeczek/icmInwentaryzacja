@@ -9,8 +9,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import com.income.icminventory.R
+import org.jetbrains.anko.find
 
 
 @SuppressLint("ValidFragment")
@@ -22,14 +24,14 @@ class YesOrNotDialogFragment(private val blockYesClick: () -> Unit,private val b
         alert.setCanceledOnTouchOutside(false)
         val inflater = activity.layoutInflater
         val v = inflater.inflate(R.layout.dialog_yes_or_not, null)
-        val title = v.findViewById(R.id.tvTitle) as TextView
+        val title = v.find<TextView>(R.id.tvTitle)
         title.text = text
 
-        v.findViewById(R.id.bNo).setOnClickListener {
+        v.find<Button>(R.id.bNo).setOnClickListener {
             blockNoClick.invoke()
             dismiss()
         }
-        v.findViewById(R.id.bYes).setOnClickListener {
+        v.find<Button>(R.id.bYes).setOnClickListener {
             blockYesClick.invoke()
             dismiss()
         }

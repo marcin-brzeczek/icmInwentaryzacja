@@ -12,6 +12,7 @@ import com.income.icminventory.fragments.adapter.ItemStatus
 import com.income.icminventory.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminventory.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminventory.fragments.positions_list.scanned_list.ScannedListFragment
+import org.jetbrains.anko.find
 
 class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
 
@@ -22,16 +23,16 @@ class ItemHolder(view: View) : GenericViewHolder<ItemViewModel>(view) {
         when (fragmentBase) {
 
             is EmptyListFragment -> {
-                (itemView.findViewById(R.id.tvName) as TextView).text = itemVM.item.name
-                (itemView.findViewById(R.id.tvCode) as TextView).text = itemVM.item.code
-                (itemView.findViewById(R.id.tvAmountPos) as TextView).text = itemVM.item.startNumber.toString()
+                (itemView.find<TextView>(R.id.tvName)).text = itemVM.item.name
+                (itemView.find<TextView>(R.id.tvCode)).text = itemVM.item.code
+                (itemView.find<TextView>(R.id.tvAmountPos)).text = itemVM.item.startNumber.toString()
             }
 
             is ScannedListFragment-> {
-                (itemView.findViewById(R.id.tvName) as TextView).text = itemVM.item.name
-                (itemView.findViewById(R.id.tvCode) as TextView).text = itemVM.item.code
-                val tvAmount = (itemView.findViewById(R.id.tvAmountPos) as TextView)
-                val imgState = (itemView.findViewById(R.id.imgState) as ImageView)
+                itemView.find<TextView>(R.id.tvName).text = itemVM.item.name
+                itemView.find<TextView>(R.id.tvCode).text = itemVM.item.code
+                val tvAmount = itemView.find<TextView>(R.id.tvAmountPos)
+                val imgState = itemView.find<ImageView>(R.id.imgState)
                 imgState.visibility = View.VISIBLE
 
                 val isHandleAdded = itemVM.item.itemState == itemView.context.resources.getString(R.string.handle)

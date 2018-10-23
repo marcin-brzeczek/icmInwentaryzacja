@@ -15,7 +15,9 @@
         <uses-library
             android:name="com.symbol.emdk"
             android:required="false"/>
-
+        <uses-library
+            android:name="com.datalogic.device"
+            android:required="false" />
         <activity
             android:name="com.income.icminventory.activities.MainActivity"
             android:logo="@drawable/icminwentory_title"

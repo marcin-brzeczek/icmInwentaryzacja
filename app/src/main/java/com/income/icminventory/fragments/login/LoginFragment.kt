@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.income.icminventory.R
 import com.income.icminventory.database.dto.User
 import com.income.icminventory.fragments.ModeCSV
@@ -35,6 +36,7 @@ class LoginFragment : FragmentBase() {
                 btnExportFileAndStartNewInventory.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; exportFileAndStartNewInventory() }
                 btnStartNewInventoryOrContinue.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; loadOrOpenDatabase(isEmptyDatabase) }
                 setHasOptionsMenu(true)
+                activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
             }
 
     private fun validateInput() = alsoUnless({ etLogin.text.trim().isNotEmpty() }) {

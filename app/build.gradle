@@ -9,11 +9,11 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "com.income.icminventory_honeywell"
+        applicationId "com.income.icminventory_datalogic"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 12
-        versionName "1.03"
+        versionCode 13
+        versionName "1.04"
     }
 
     compileOptions {
@@ -73,4 +73,5 @@ dependencies {
     /*Anko*/
     compile 'org.jetbrains.anko:anko-common:0.10.6'
     implementation files('libs/platform_sdk_v2.3.602.jar')
+    implementation files('libs/datalogic.jar')
 }

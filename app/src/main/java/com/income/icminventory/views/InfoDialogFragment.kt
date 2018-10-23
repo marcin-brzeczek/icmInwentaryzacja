@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.TextView
 import com.income.icminventory.R
+import org.jetbrains.anko.find
 
 
 @SuppressLint("ValidFragment")
@@ -22,8 +23,8 @@ class InfoDialogFragment(private val block: () -> Unit, val text: String, privat
         alert.setCanceledOnTouchOutside(false)
         val inflater = activity.layoutInflater
         val v = inflater.inflate(R.layout.dialog_info, null)
-        val title = v.findViewById(R.id.tvTitle) as TextView
-        val tvDownload = v.findViewById(R.id.tvDownload) as TextView
+        val title = v.find<TextView>(R.id.tvTitle)
+        val tvDownload = v.find<TextView>(R.id.tvDownload)
         title.text = text
 
         if (isWebLink) {
@@ -36,7 +37,7 @@ class InfoDialogFragment(private val block: () -> Unit, val text: String, privat
             }
         }
 
-        v.findViewById(R.id.bOk).setOnClickListener {
+        v.find<TextView>(R.id.bOk).setOnClickListener {
             block.invoke()
             dismiss()
         }

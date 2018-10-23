@@ -18,198 +18,201 @@ import com.symbol.emdk.barcode.ScannerResults
 class EmdkSupport @Throws(Exception::class)
 
 private constructor(private val _ctx: Context) : EMDKListener, StatusListener, DataListener {
-    private var _emdkManager: EMDKManager? = null
-    private var _barcodeManager: BarcodeManager? = null
-    @Volatile
-    private var _scanner: Scanner? = null
-    @Volatile
-    private var _onRead: OnScannerRead? = null
-    internal var isScannerFinishRead = true
+        private var _emdkManager: EMDKManager? = null
+        private var _barcodeManager: BarcodeManager? = null
+        @Volatile
+        private var _scanner: Scanner? = null
+        @Volatile
+        private var _onRead: OnScannerRead? = null
+        internal var isScannerFinishRead = true
 
-    init {
-        try {
+        init {
+            try {
             if (emdkSupport == null)
 
                 EMDKManager.getEMDKManager(_ctx, this)
 
-        } catch (e: Exception) {
-            Log.e("INV", e.message, e)
-            throw e
-        }
-
-    }
-
-    override fun onData(scanDataCollection: ScanDataCollection) {
-        AsyncDataUpdate().execute(scanDataCollection)
-    }
-
-    override fun onStatus(statusData: StatusData) {
-        AsyncStatusUpdate().execute(statusData)
-    }
-
-    override fun onClosed() {
-
-        if (_emdkManager != null) {
-            if (_barcodeManager != null) {
-                _barcodeManager = null
+            } catch (e: Exception) {
+                Log.e("INV", e.message, e)
+                throw e
             }
-            _emdkManager = null
+
         }
-    }
 
-    override fun onOpened(emdkManager: EMDKManager) {
-        _emdkManager = emdkManager
+        override fun onData(scanDataCollection: ScanDataCollection) {
+            AsyncDataUpdate().execute(scanDataCollection)
+        }
 
-        try {
-            if (_scanner == null) {
-                _barcodeManager = _emdkManager!!.getInstance(EMDKManager.FEATURE_TYPE.BARCODE) as BarcodeManager
-                _scanner = _barcodeManager!!.getDevice(BarcodeManager.DeviceIdentifier.DEFAULT)
+        override fun onStatus(statusData: StatusData) {
+            AsyncStatusUpdate().execute(statusData)
+        }
 
-                _scanner!!.triggerType = Scanner.TriggerType.HARD
-                _scanner!!.enable()
+        override
+        fun onClosed() {
 
-                onScannerReadChanged()
+            if (_emdkManager != null) {
+                if (_barcodeManager != null) {
+                    _barcodeManager = null
+                }
+                _emdkManager = null
             }
-        } catch (se: ScannerException) {
-            if (_onRead != null)
-                _onRead!!.exceptionMessage("Błąd w trakcie uzyskiwania " + "dostępu do Skanera: " + se.message)
         }
 
-    }
-
-    private fun onScannerReadChanged() {
-        if (_scanner == null)
-            return
-
-        try {
-            if (_onRead != null) {
-                _scanner!!.addDataListener(this)
-                _scanner!!.addStatusListener(this)
-                _scanner!!.enable()
-                if (!_scanner!!.isReadPending)
-                    _scanner!!.read()
-
-                Log.e("INFO SCANNER", "ENABLED")
-            } else {
-                if (_scanner!!.isReadPending)
-                    _scanner!!.cancelRead()
-
-                _scanner!!.removeDataListener(this)
-                _scanner!!.removeStatusListener(this)
-                _scanner!!.disable()
-
-                Log.e("INFO SCANNER", "DISABLED")
-            }
-        } catch (e: Exception) {
-            Log.e("SCANNER", e.message, e)
-            if (_onRead != null)
-                _onRead!!.exceptionMessage("Błąd w trakcie ustawiania " + "odbiorników Skanera " + e.message)
-        }
-
-    }
-
-    /* rejestracja listenera odbywa się na obiekcie _onRead */
-    fun registerScannerListener(onRead: OnScannerRead) {
-        _onRead = onRead
-        onScannerReadChanged()
-    }
-
-    /* wyrejestrowanie listenera przy przypisaniu listenera na null */
-    fun unregisterScannerListeners() {
-        _onRead = null
-        onScannerReadChanged()
-    }
-
-    inner class AsyncDataUpdate : AsyncTask<ScanDataCollection, Void, String>() {
-
-        override fun doInBackground(vararg params: ScanDataCollection): String {
-
-            var statusStr = ""
+        override fun onOpened(emdkManager: EMDKManager) {
+            _emdkManager = emdkManager
 
             try {
-                // TODO:test bez poniższej linii
-                // _scanner.read();
-                val scanDataCollection = params[0]
+                if (_scanner == null) {
+                    _barcodeManager = _emdkManager!!.getInstance(EMDKManager.FEATURE_TYPE.BARCODE) as BarcodeManager
+                    _scanner = _barcodeManager!!.getDevice(BarcodeManager.DeviceIdentifier.DEFAULT)
 
-                if (scanDataCollection != null && scanDataCollection.result == ScannerResults.SUCCESS) {
-                    val scanData = scanDataCollection.scanData
+                    _scanner!!.triggerType = Scanner.TriggerType.HARD
+                    _scanner!!.enable()
 
-                    for (data in scanData) {
+                    onScannerReadChanged()
+                }
+            } catch (se: ScannerException) {
+                if (_onRead != null)
+                    _onRead!!.exceptionMessage("Błąd w trakcie uzyskiwania " + "dostępu do Skanera: " + se.message)
+            }
 
-                        val barcodeData = data.data
-                        val labelType = data.labelType
-                        statusStr = barcodeData // + " " + labelType;
-                        Log.e("scanner data", "status: $statusStr")
+        }
+
+        private fun onScannerReadChanged() {
+            if (_scanner == null)
+                return
+
+            try {
+                if (_onRead != null) {
+                    _scanner!!.addDataListener(this)
+                    _scanner!!.addStatusListener(this)
+                    _scanner!!.enable()
+                    if (!_scanner!!.isReadPending)
+                        _scanner!!.read()
+
+                    Log.e("INFO SCANNER", "ENABLED")
+                } else {
+                    if (_scanner!!.isReadPending)
+                        _scanner!!.cancelRead()
+
+                    _scanner!!.removeDataListener(this)
+                    _scanner!!.removeStatusListener(this)
+                    _scanner!!.disable()
+
+                    Log.e("INFO SCANNER", "DISABLED")
+                }
+            } catch (e: Exception) {
+                Log.e("SCANNER", e.message, e)
+                if (_onRead != null)
+                    _onRead!!.exceptionMessage("Błąd w trakcie ustawiania " + "odbiorników Skanera " + e.message)
+            }
+
+        }
+
+        //    /* rejestracja listenera odbywa się na obiekcie _onRead */
+        fun registerScannerListener(onRead: OnScannerRead) {
+            _onRead = onRead
+            onScannerReadChanged()
+        }
+
+        //
+//    /* wyrejestrowanie listenera przy przypisaniu listenera na null */
+        fun unregisterScannerListeners() {
+            _onRead = null
+            onScannerReadChanged()
+        }
+
+        inner class AsyncDataUpdate : AsyncTask<ScanDataCollection, Void, String>() {
+
+            override fun doInBackground(vararg params: ScanDataCollection): String {
+
+                var statusStr = ""
+
+                try {
+                    // TODO:test bez poniższej linii
+                    // _scanner.read();
+                    val scanDataCollection = params[0]
+
+                    if (scanDataCollection != null && scanDataCollection.result == ScannerResults.SUCCESS) {
+                        val scanData = scanDataCollection.scanData
+
+                        for (data in scanData) {
+
+                            val barcodeData = data.data
+                            val labelType = data.labelType
+                            statusStr = barcodeData // + " " + labelType;
+                            Log.e("scanner data", "status: $statusStr")
+                        }
+                    }
+                } catch (se: Exception) {
+                    if (_onRead != null) {
+                        _onRead!!.exceptionMessage("Błąd w trakcie zczytywania kodu :" + se.message)
                     }
                 }
-            } catch (se: Exception) {
-                if (_onRead != null) {
-                    _onRead!!.exceptionMessage("Błąd w trakcie zczytywania kodu :" + se.message)
-                }
+
+                return statusStr
             }
 
-            return statusStr
+            override fun onPostExecute(result: String) {
+
+                Log.e("SCANNER READ", result)
+                if (_onRead != null)
+                    _onRead!!.onReadData(result)
+            }
         }
 
-        override fun onPostExecute(result: String) {
+        inner class AsynTaskStateIdle : AsyncTask<Void, Void, Void>() {
 
-            Log.e("SCANNER READ", result)
-            if (_onRead != null)
-                _onRead!!.onReadData(result)
-        }
-    }
-
-    inner class AsynTaskStateIdle : AsyncTask<Void, Void, Void>() {
-
-        override fun doInBackground(vararg params: Void): Void? {
-            try {
-                _scanner!!.read()
+            override fun doInBackground(vararg params: Void): Void? {
+                try {
+                    _scanner!!.read()
             } catch (e: ScannerException) {
-                e.printStackTrace()
-            }
-
-            return null
-        }
-    }
-
-    @Synchronized
-    private fun runScanAfterIDLE() {
-        AsynTaskStateIdle().execute()
-    }
-
-    // TODO:analiza statusów przesyłanych przez skaner. Jak nie pomoże to DEBUG
-    // z breakpointami w każdym case
-    inner class AsyncStatusUpdate : AsyncTask<StatusData, Void, String>() {
-
-        override fun doInBackground(vararg params: StatusData): String {
-            var statusStr = ""
-            val statusData = params[0]
-            val state = statusData.state
-
-            /* Different states of Scanner */
-            when (state) {
-
-                StatusData.ScannerStates.IDLE -> {
-
-                    statusStr = "The Scanner enabled and its idle"
-                    /* jeśli IDLE to próbuj czytać dalej */
-                    if (!_scanner!!.isReadPending && _onRead != null)
-                        runScanAfterIDLE()
+                    e.printStackTrace()
                 }
-                StatusData.ScannerStates.SCANNING -> statusStr = "Scanning.."
-                StatusData.ScannerStates.WAITING -> statusStr = "Waiting for trigger press.."
-                StatusData.ScannerStates.DISABLED -> statusStr = "Scanner is not enabled"
-                else -> statusStr = "DEF"
+
+                return null
             }
-            Log.e("SCANNER STATUS", statusStr)
-            return statusStr
         }
 
-        override fun onPostExecute(result: String) {
-            if (_onRead != null)
-                _onRead!!.onReadStatus(result)
+        @Synchronized
+        private fun runScanAfterIDLE() {
+            AsynTaskStateIdle().execute()
         }
-    }
+
+        // TODO:analiza statusów przesyłanych przez skaner. Jak nie pomoże to DEBUG
+        // z breakpointami w każdym case
+        inner class AsyncStatusUpdate : AsyncTask<StatusData, Void, String>() {
+
+            override fun doInBackground(vararg params: StatusData): String {
+                var statusStr = ""
+                val statusData = params[0]
+                val state = statusData.state
+
+                /* Different states of Scanner */
+                when (state) {
+
+                    StatusData.ScannerStates.IDLE -> {
+
+                        statusStr = "The Scanner enabled and its idle"
+                        /* jeśli IDLE to próbuj czytać dalej */
+                        if (!_scanner!!.isReadPending && _onRead != null)
+                            runScanAfterIDLE()
+                    }
+                    StatusData.ScannerStates.SCANNING -> statusStr = "Scanning.."
+                    StatusData.ScannerStates.WAITING -> statusStr = "Waiting for trigger press.."
+                    StatusData.ScannerStates.DISABLED -> statusStr = "Scanner is not enabled"
+                    else -> statusStr = "DEF"
+                }
+                Log.e("SCANNER STATUS", statusStr)
+                return statusStr
+            }
+
+            override fun onPostExecute(result: String) {
+                if (_onRead != null)
+                    _onRead!!.onReadStatus(result)
+            }
+        }
+
 
     companion object {
 
