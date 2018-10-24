@@ -50,6 +50,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         etAmount.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 item?.endNumber = (etAmount.text.toString().toDouble())
+                item?.itemState = activity.getString(R.string.handle)
                 item?.save()
                 hideKeyboard(etAmount)
                 return@OnKeyListener true
@@ -100,9 +101,9 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     override fun onReadData(data: String) {
-        tvEAN.setText(data)
         val enterSuffix = "\n"
         val finishData = if (data.contains(enterSuffix)) data.removeSuffix(enterSuffix) else data
+        tvCode.setText(data)
         getPositionByCode(finishData)
     }
 
@@ -113,8 +114,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         Toast.makeText(activity.baseContext, text, Toast.LENGTH_LONG).show();
     }
 
-    private fun getPositionByCode(codew: String) {
-        item = dbContext.items.where(Item_Table.code.eq(codew)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
+    private fun getPositionByCode(code: String) {
+        item = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
         item?.let {
             sectionLogo.visibility = View.GONE
             sectionScann.visibility = View.VISIBLE
@@ -122,10 +123,12 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             sectionSupportCode.visibility.let { if (item?.supportCode!!.trim().isNotEmpty()) View.VISIBLE else View.GONE }
             tvName.setText(it.name)
             etAmount.setText((++it.endNumber).toString())
+            tvCode.setText(it.code)
+            tvSupportCode.setText(it.supportCode)
             tvLokalization.setText(it.oldLocation)
-            it.itemState = activity.getString(R.string.scanner)
+            it.itemState = let { if (it.equals(activity.getString(R.string.handle))) activity.getString(R.string.handle) else activity.getString(R.string.scanner) }
             it.save()
-        } ?: showNewPositionDialog(tvEAN.text.toString())
+        } ?: showNewPositionDialog(tvCode.text.toString())
     }
 
     fun showNewPositionDialog(codePos: String) {

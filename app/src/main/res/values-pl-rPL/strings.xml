@@ -54,6 +54,8 @@
     <string name="support_code_without_asterisk">Kod 2:</string>
     <string name="company_info">Producent: \n INCOME Sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Polska\n \n  income@income.pl \n \n Wszystkie informacje o aplikacji:</string>
     <string name="back">Wstecz</string>
+    <string name="code_one_label">Kod: </string>
+    <string name="code_two_label">Kod 2: </string>
     <string name="generate_empty_file_csv">Generuj pusty plik CSV</string>
     <string name="empty_inventory">Nowy pusty spis</string>
     <string name="version_demo_not_save_file">Posiadasz wersję DEMO, która nie obsługuje zapisu danych do pliku. Zachęcamy do zakupu pełnej wersji aplikacji w Google Play.</string>

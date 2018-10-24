@@ -51,7 +51,6 @@
             android:textStyle="bold"/>
     </RelativeLayout>
 
-
     <LinearLayout
         android:id="@+id/sectionScann"
         android:layout_width="match_parent"
@@ -79,12 +78,12 @@
                 android:layout_marginLeft="20dp">
 
                 <TextView
-                    android:id="@+id/txtScanEan"
+                    android:id="@+id/tvCodeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:alpha="1"
-                    android:text="EAN:     "
+                    android:text="@string/code_one_label"
                     android:textColor="@color/grey1"
                     android:textSize="17dp"/>
             </RelativeLayout>
@@ -100,12 +99,13 @@
                 android:src="@drawable/scan_ean_small"/>
 
             <TextView
-                android:id="@+id/tvEAN"
+                android:id="@+id/tvCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/layoutLogin"
                 android:inputType="textPersonName"
+                android:layout_marginStart="10dp"
                 android:singleLine="true"
                 android:textColor="@color/white"
                 android:textSize="16dp"
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:background="@drawable/cell_shape_grey2"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="wrap_content"

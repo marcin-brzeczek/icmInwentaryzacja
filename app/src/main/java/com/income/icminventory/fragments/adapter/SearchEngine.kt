@@ -24,7 +24,8 @@ class SearchEngine(private val items: List<ViewModel>) {
 
         for (i in 0 until _items) {
             if ((items[i] as ItemViewModel).item.name.toLowerCase().contains(query.toLowerCase())
-                    || (items[i] as ItemViewModel).item.code.toLowerCase().contains(query.toLowerCase())) {
+                    || (items[i] as ItemViewModel).item.code.toLowerCase().contains(query.toLowerCase())
+                    || (items[i] as ItemViewModel).item.supportCode.toLowerCase().contains(query.toLowerCase())) {
                 result.add(items[i])
             }
         }

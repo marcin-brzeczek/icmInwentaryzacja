@@ -1,10 +1,7 @@
 package com.income.icminventory.fragments.new_position
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
@@ -14,6 +11,7 @@ import com.income.icminventory.emkd_scan.ScanWrapper
 import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
+import com.income.icminventory.utilities.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_new_position.*
 
 class NewItemFragment : FragmentBase(), OnScannerRead {
@@ -21,6 +19,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
     var currentAmount: Double = 0.0
     private var amount = ""
     private var itemState=""
+    private var item: Item? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_new_position, container, false).apply {
@@ -34,7 +33,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         val itemCode: String? = arguments.getString(NEW_ITEM_CODE)
         itemState = arguments?.getString(NEW_ITEM_STATE) ?: getString(R.string.handle)
@@ -45,8 +44,18 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
         btnSave.setOnClickListener { saveItem() }
         setHasOptionsMenu(true)
 
-        imgRemoveAmount.setOnClickListener { setAmount();tvAmount.setText(if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0") }
-        imgAddAmount.setOnClickListener { setAmount();tvAmount.setText((++currentAmount).toString() + "") }
+        imgRemoveAmount.setOnClickListener { setAmount();etAmount.setText(if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0") }
+        imgAddAmount.setOnClickListener { setAmount();etAmount.setText((++currentAmount).toString() + "") }
+        etAmount.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                item?.endNumber = (etAmount.text.toString().toDouble())
+                item?.itemState = activity.getString(R.string.handle)
+                item?.save()
+                hideKeyboard(etAmount)
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 
     override fun onStart() {
@@ -110,8 +119,8 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
                 name = etName.text.toString().trim(),
                 oldLocation = tvLocation.text.toString(),
                 startNumber = 0.0,
-                endNumber = tvAmount.text.toString().toDouble(),
-                itemState = itemState,
+                endNumber = etAmount.text.toString().toDouble(),
+                itemState = activity.getString(R.string.handle),
                 user = ""
         ).insert()
         Toast.makeText(activity.baseContext, getString(R.string.saved), Toast.LENGTH_SHORT).show()
@@ -125,8 +134,8 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
     }
 
     private fun setAmount() {
-        amount = if (tvAmount.getText().toString() != null && tvAmount.getText().toString().length > 1)
-            tvAmount.getText().toString()
+        amount = if (etAmount.getText().toString() != null && etAmount.getText().toString().length > 1)
+            etAmount.getText().toString()
         else
             "1.0"
         currentAmount = java.lang.Double.valueOf(amount)

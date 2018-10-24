@@ -28,6 +28,8 @@
     <string name="no_tem_for_code">No item for this code. Would you like create new item?</string>
     <string name="amount">Amount:</string>
     <string name="code">Code *</string>
+    <string name="code_one_label">Code: </string>
+    <string name="code_two_label">Code 2: </string>
     <string name="entry_list">Entry list</string>
     <string name="scanned_list">Scanned item list</string>
     <string name="change_location">Change location</string>
