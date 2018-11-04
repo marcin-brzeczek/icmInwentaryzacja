@@ -26,6 +26,7 @@ class ChooseLocationFragment : FragmentBase() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_choose_location, container) {
+                setActionBar(this@ChooseLocationFragment)
                 setHasOptionsMenu(true)
                 addNewLocation.setOnClickListener { navigateTo(NewLocationRoute()) }
             }

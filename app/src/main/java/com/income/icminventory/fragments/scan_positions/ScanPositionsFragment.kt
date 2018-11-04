@@ -34,6 +34,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setActionBar(this@ScanPositionsFragment)
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
         tvLokalization.text = activity.baseContext.getString(R.string.location).plus((activity as MainActivity).currentLocation)

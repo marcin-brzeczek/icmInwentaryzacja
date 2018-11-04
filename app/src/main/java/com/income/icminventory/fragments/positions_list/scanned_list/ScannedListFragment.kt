@@ -23,6 +23,7 @@ class ScannedListFragment : FragmentSearch(), IOnReloadAdapterListener {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setActionBar(this@ScannedListFragment)
         tvTitle.text = activity.getString(R.string.scanned_list)
         tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
         imgClear.setOnClickListener {

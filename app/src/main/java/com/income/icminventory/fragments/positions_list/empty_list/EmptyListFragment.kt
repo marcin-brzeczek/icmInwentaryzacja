@@ -22,6 +22,7 @@ class EmptyListFragment : FragmentSearch() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setActionBar(this@EmptyListFragment)
         tvTitle.text = activity.getString(R.string.entry_list)
         tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
         imgClear.setOnClickListener {

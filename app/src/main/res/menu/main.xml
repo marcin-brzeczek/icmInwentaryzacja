@@ -36,7 +36,6 @@
         android:title="@string/change_location"
         android:visible="true"
         />
-
     <item
         android:id="@+id/logout"
         android:title="@string/logout"

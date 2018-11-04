@@ -8,17 +8,18 @@ import android.view.inputmethod.EditorInfo
 import com.income.icminventory.R
 import com.income.icminventory.database.dto.Location
 import com.income.icminventory.fragments.abstraction.FragmentBase
-import com.income.icminventory.utilities.toast
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.inflate
-import kotlinx.android.synthetic.main.fragment_new_location.view.*
+import com.income.icminventory.utilities.toast
 import kotlinx.android.synthetic.main.fragment_new_location.*
+import kotlinx.android.synthetic.main.fragment_new_location.view.*
 
 class NewLocationFragment : FragmentBase() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_new_location, container) {
+                setActionBar(this@NewLocationFragment)
                 setHasOptionsMenu(true)
                 btnSave.setOnClickListener { saveLocation() }
                 etName.setOnEditorActionListener { textView, action, event ->

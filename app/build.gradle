@@ -12,8 +12,8 @@ android {
         applicationId "com.income.icminventory"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 14
-        versionName "1.05"
+        versionCode 15
+        versionName "1.06"
     }
 
     compileOptions {

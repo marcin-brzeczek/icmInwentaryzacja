@@ -31,6 +31,17 @@ class DBContext @Inject constructor() {
             .execute()
     }
 
-    val isEmpty: Boolean
+    fun deleteUsers(){
+        SQLite.delete()
+            .from(User::class.java)
+            .async()
+            .execute()
+    }
+
+    val isEmptyItems: Boolean
         get() = !items.hasData()
+
+    val isEmptyUsers: Boolean
+        get() = !users.hasData()
+
 }

@@ -64,6 +64,7 @@
     <string name="website"><a href="http://icmInventory.com">http://icmInventory.com</a></string>
     <string name="error_ocurred">Wystąpił błąd: </string>
     <string name="do_you_want_remove_position">Czy na pewno chcesz usunąć pozycję: \u0020</string>
+    <string name="start_screen">Ekran startowy</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>

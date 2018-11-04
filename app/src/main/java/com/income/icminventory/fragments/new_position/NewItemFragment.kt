@@ -23,6 +23,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_new_position, container, false).apply {
+            setActionBar(this@NewItemFragment)
             try {
                 ScanWrapper.initScanner(activity.baseContext, (activity as MainActivity).scannerType)
             } catch (e: Exception) {

@@ -44,7 +44,7 @@ import javax.inject.Inject
 
 const val REQUEST_WRITE_EXTERNAL_STORAGE = 99
 
-abstract class FragmentBase : Fragment() {
+abstract class FragmentBase : Fragment(), ActionBarManager {
 
     @Inject
     lateinit var dbContext: DBContext
@@ -82,16 +82,7 @@ abstract class FragmentBase : Fragment() {
                 menu.findItem(R.id.generateEmptyCSV).isVisible = true
                 menu.findItem(R.id.exportToCSV).isVisible = false
             }
-            is InfoFragment  -> {
-                menu.findItem(R.id.logout).isVisible = true
-                menu.findItem(R.id.changeLocation).isVisible = false
-                menu.findItem(R.id.moveToScan).isVisible = false
-                menu.findItem(R.id.listEmpty).isVisible = false
-                menu.findItem(R.id.listDesc).isVisible = false
-                menu.findItem(R.id.info).isVisible = false
-                menu.findItem(R.id.generateEmptyCSV).isVisible = false
-                menu.findItem(R.id.exportToCSV).isVisible = false
-            }
+
             is ChooseLocationFragment -> menu.findItem(R.id.changeLocation).isVisible = false
             is ScanPositionsFragment -> menu.findItem(R.id.moveToScan).isVisible = false
             is EmptyListFragment -> menu.findItem(R.id.listEmpty).isVisible = false
@@ -121,6 +112,7 @@ abstract class FragmentBase : Fragment() {
             R.id.logout -> {
                 modeOfSavingCSV = ModeCSV.ExportAndLogout
                 requestPermissionAndHandleCSV()
+                dbContext.deleteUsers()
             }
             R.id.info -> navigateTo(InfoFragmentRoute())
         }
@@ -242,7 +234,7 @@ abstract class FragmentBase : Fragment() {
     }
 
     private fun exportAndExitApp() {
-        if (dbContext.isEmpty || (activity as MainActivity).isDemoVersion) {
+        if (dbContext.isEmptyItems || (activity as MainActivity).isDemoVersion) {
             activity.finish()
             return
         }
@@ -250,7 +242,7 @@ abstract class FragmentBase : Fragment() {
     }
 
     private fun exportAndLogout() {
-        if (dbContext.isEmpty || (activity as MainActivity).isDemoVersion) {
+        if (dbContext.isEmptyItems || (activity as MainActivity).isDemoVersion) {
             navigateTo(LoginRoute())
             return
         }

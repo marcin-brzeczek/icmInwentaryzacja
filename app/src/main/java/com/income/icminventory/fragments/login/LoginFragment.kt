@@ -13,31 +13,30 @@ import com.income.icminventory.fragments.location.ChooseLocationRoute
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.inflate
-import kotlinx.android.synthetic.main.fragment_login.view.btnExportFileAndStartNewEmptyInventory
-import kotlinx.android.synthetic.main.fragment_login.etLogin
-import kotlinx.android.synthetic.main.fragment_login.view.btnExportFileAndStartNewInventory
-import kotlinx.android.synthetic.main.fragment_login.view.btnStartNewInventoryOrContinue
+import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_login.view.*
 
 const val READ_REQUEST_CODE = 99
 
 class LoginFragment : FragmentBase() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.fragment_login, container) {
-                val isEmptyDatabase: Boolean = dbContext.isEmpty
-                if (isEmptyDatabase) {
-                    btnStartNewInventoryOrContinue.setText(context.getString(R.string.start_new_inventory))
-                    btnExportFileAndStartNewInventory.visibility = View.GONE
-                } else {
-                    btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
-                    btnExportFileAndStartNewInventory.visibility = View.VISIBLE
-                }
-                btnExportFileAndStartNewEmptyInventory.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndStartEpmtyInventory;exportFileAndStartNewEmptyInventory(isEmptyDatabase) }
-                btnExportFileAndStartNewInventory.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; exportFileAndStartNewInventory() }
-                btnStartNewInventoryOrContinue.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; loadOrOpenDatabase(isEmptyDatabase) }
-                setHasOptionsMenu(true)
-                activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        inflater.inflate(R.layout.fragment_login, container) {
+            setActionBar(this@LoginFragment)
+            val isEmptyDatabase: Boolean = dbContext.isEmptyItems
+            if (isEmptyDatabase) {
+                btnStartNewInventoryOrContinue.setText(context.getString(R.string.start_new_inventory))
+                btnExportFileAndStartNewInventory.visibility = View.GONE
+            } else {
+                btnStartNewInventoryOrContinue.setText(context.getString(R.string.continue_current_inventory))
+                btnExportFileAndStartNewInventory.visibility = View.VISIBLE
             }
+            btnExportFileAndStartNewEmptyInventory.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndStartEpmtyInventory;exportFileAndStartNewEmptyInventory(isEmptyDatabase) }
+            btnExportFileAndStartNewInventory.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; exportFileAndStartNewInventory() }
+            btnStartNewInventoryOrContinue.setOnClickListener { modeOfSavingCSV = ModeCSV.ExportAndOpenNew; loadOrOpenDatabase(isEmptyDatabase) }
+            setHasOptionsMenu(true)
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        }
 
     private fun validateInput() = alsoUnless({ etLogin.text.trim().isNotEmpty() }) {
         if (etLogin.text.isBlank()) etLogin.text.clear()
@@ -51,7 +50,7 @@ class LoginFragment : FragmentBase() {
         } else {
             navigateTo(ChooseLocationRoute())
         }
-        User(etLogin.text.toString()).save()
+        User(name = etLogin.text.toString()).save()
     }
 
     private fun exportFileAndStartNewEmptyInventory(isEmptyDatabase: Boolean) {
@@ -61,12 +60,12 @@ class LoginFragment : FragmentBase() {
         } else {
             requestPermissionAndHandleCSV()
         }
-        User(etLogin.text.toString()).save()
+        User(name = etLogin.text.toString()).save()
     }
 
     private fun exportFileAndStartNewInventory() {
         if (!validateInput()) return
         requestPermissionAndHandleCSV()
-        User(etLogin.text.toString()).save()
+        User(name = etLogin.text.toString()).save()
     }
 }
