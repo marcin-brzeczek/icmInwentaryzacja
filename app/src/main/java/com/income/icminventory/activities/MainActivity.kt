@@ -24,7 +24,7 @@ class MainActivity : ActivityBase() {
     var isDialogShowed = false
 
     /*właściwość ustawiajaca skaner ZEBRA,CIPHERLAB, CAMERA*/
-    var scannerType = ScannerType.HONEYWELL
+    var scannerType = ScannerType.ZEBRA
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
     val isDemoVersion = false
