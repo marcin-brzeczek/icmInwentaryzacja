@@ -11,15 +11,16 @@ import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
 
 class ItemAdapter(var items: MutableList<ViewModel>, val typeFactory: ITypesFactory, val fragmentBase: FragmentBase) : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
 
+
     override fun getItemCount(): Int {
         return items.count()
     }
 
-    override fun onBindViewHolder(holder: GenericViewHolder<ViewModel>?, position: Int) {
-        holder?.bind(items[position], fragmentBase)
+    override fun onBindViewHolder(holder: GenericViewHolder<ViewModel>, position: Int) {
+        holder.bind(items[position], fragmentBase)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): GenericViewHolder<ViewModel> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder<ViewModel> {
         if (parent != null) {
             val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
             return typeFactory.holder(viewType, view) as GenericViewHolder<ViewModel>

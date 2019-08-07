@@ -23,23 +23,23 @@ class ChangeAmountDialogFragment(val item: Item, val onReloadAdapterListener: IO
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val alertDialog = AlertDialog.Builder(activity)
+        val alertDialog = AlertDialog.Builder(context)
         val alert = alertDialog.create()
         alert.setCanceledOnTouchOutside(false)
-        val inflater = activity.layoutInflater
-        val v = inflater.inflate(R.layout.dialog_change_amount, null)
-        v.find<TextView>(R.id.tvCode).text = item.code
-        v.find<TextView>(R.id.tvName).text = item.name
-        val bOK = v.find<TextView>(R.id.bOK) as Button
-        val imgRemove = v.find<ImageView>(R.id.imgRemoveAmount)
-        val imgAdd = v.find<ImageView>(R.id.imgAddAmount)
-        tvAmount = v.find<TextView>(R.id.tvAmount)
+        val inflater = activity?.layoutInflater
+        val v = inflater?.inflate(R.layout.dialog_change_amount, null)
+        v?.find<TextView>(R.id.tvCode)?.text = item.code
+        v?.find<TextView>(R.id.tvName)?.text = item.name
+        val bOK = v?.find<TextView>(R.id.bOK) as Button
+        val imgRemove = v?.find<ImageView>(R.id.imgRemoveAmount)
+        val imgAdd = v?.find<ImageView>(R.id.imgAddAmount)
+        tvAmount = v?.find<TextView>(R.id.tvAmount)
         tvAmount.text = item.endNumber.toString()
 
         bOK.setOnClickListener {
             removeView()
             item.endNumber = tvAmount.text.toString().toDouble()
-            item.itemState = activity.getString(R.string.handle)
+            item.itemState = context.getString(R.string.handle)
             item.save()
             onReloadAdapterListener.reload()
             alert.cancel()

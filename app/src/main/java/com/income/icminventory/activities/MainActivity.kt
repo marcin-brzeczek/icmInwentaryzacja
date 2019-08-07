@@ -24,10 +24,10 @@ class MainActivity : ActivityBase() {
     var isDialogShowed = false
 
     /*właściwość ustawiajaca skaner ZEBRA,CIPHERLAB, CAMERA*/
-    var scannerType = ScannerType.CIPHERLAB
+    var scannerType = ScannerType.HONEYWELL
 
     /*właściwość deklarująca czy wersja jest DEMO (bez opcji exportu pliku csv)*/
-    val isDemoVersion = true
+    val isDemoVersion = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -5,11 +5,11 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 'Zebra Technologies Corp:EMDK APIs:23'
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "com.income.icminventory"
+        applicationId "com.income.icminventory_zebra"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 15
@@ -74,4 +74,6 @@ dependencies {
     compile 'org.jetbrains.anko:anko-common:0.10.6'
     implementation files('libs/platform_sdk_v2.3.602.jar')
     implementation files('libs/datalogic.jar')
+
+    compileOnly 'com.symbol:emdk:7.0+'
 }
