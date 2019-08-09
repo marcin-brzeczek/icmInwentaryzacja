@@ -142,7 +142,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             tvLokalization.setText(it.oldLocation)
             it.itemState = let { if (it.equals(activity.getString(R.string.handle))) activity.getString(R.string.handle) else activity.getString(R.string.scanner) }
             it.save()
-        } ?: showNewPositionDialog(tvCode.text.toString())
+//        } ?: showNewPositionDialog(tvCode.text.toString())
+        } ?: showNewPositionDialog(code)
     }
 
     fun showNewPositionDialog(codePos: String) {
