@@ -1,7 +1,11 @@
 package com.income.icminventory.fragments.scan_positions
 
 import android.os.Bundle
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
@@ -12,6 +16,7 @@ import com.income.icminventory.emkd_scan.ScanWrapper
 import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.fragments.new_position.NewItemRoute
 import com.income.icminventory.utilities.hideKeyboard
+import com.income.icminventory.utilities.toast
 import com.income.icminventory.views.NewPositionDialogFragment
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
@@ -115,7 +120,15 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         Toast.makeText(activity.baseContext, text, Toast.LENGTH_LONG).show();
     }
 
-    private fun getPositionByCode(code: String) {
+    private fun getPositionByCode(scannedCode: String) {
+        /*Code */
+        val data = scannedCode.split("#")
+        val code = data.get(1)
+        val supplierId = data.get(2)
+        val orderId = data.get(3)
+
+        toast("code: $code supplier: $supplierId order: $orderId")
+
         item = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
         item?.let {
             sectionLogo.visibility = View.GONE
