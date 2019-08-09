@@ -36,6 +36,7 @@ repositories {
 }
 
 def dbflow_version = "4.0.2"
+def fabmenu_version = '1.6.4'
 
 dependencies {
     //noinspection GradleCompatible
@@ -72,6 +73,9 @@ dependencies {
     compile project(':DataCollectionLib')
     /*Anko*/
     compile 'org.jetbrains.anko:anko-common:0.10.6'
+    /*Floating Menu*/
+    implementation "com.github.clans:fab:$fabmenu_version"
+
     implementation files('libs/platform_sdk_v2.3.602.jar')
     implementation files('libs/datalogic.jar')
 

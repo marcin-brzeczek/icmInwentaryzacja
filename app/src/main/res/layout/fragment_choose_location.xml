@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              android:background="@color/grey1">
@@ -36,6 +35,46 @@
         android:clipToPadding="false"
         android:paddingBottom="85dp">
     </android.support.v7.widget.RecyclerView>
+
+    <!--<com.github.clans.fab.FloatingActionMenu-->
+        <!--android:id="@+id/addNewLocationMenu"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginEnd="@dimen/default_margin"-->
+        <!--android:layout_marginBottom="21dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:menu_buttonSpacing="@dimen/x_small_margin"-->
+        <!--app:menu_colorNormal="@color/grenade"-->
+        <!--app:menu_colorPressed="@color/grenade_dark"-->
+        <!--app:menu_labels_colorNormal="@color/white"-->
+        <!--app:menu_labels_cornerRadius="@dimen/default_margin"-->
+        <!--app:menu_labels_position="left"-->
+        <!--app:menu_labels_style="@style/TimeLineAddEventsMenuLabel">-->
+
+    <!--<com.github.clans.fab.FloatingActionButton-->
+        <!--android:id="@+id/add_medication_intake"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/ic_timeline_medication_purple"-->
+        <!--app:fab_colorNormal="@android:color/transparent"-->
+        <!--app:fab_colorPressed="@android:color/transparent"-->
+        <!--app:fab_label="@string/medicament_intake"-->
+        <!--app:fab_showShadow="false"-->
+        <!--app:fab_size="mini" />-->
+
+    <!--<com.github.clans.fab.FloatingActionButton-->
+        <!--android:id="@+id/add_medical_visit"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/ic_medical_visit_timeline"-->
+        <!--app:fab_colorNormal="@android:color/transparent"-->
+        <!--app:fab_colorPressed="@android:color/transparent"-->
+        <!--app:fab_label="@string/medical_visit"-->
+        <!--app:fab_showShadow="false"-->
+        <!--app:fab_size="mini" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addNewLocation"
