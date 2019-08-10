@@ -8,7 +8,7 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import com.raizlabs.android.dbflow.structure.BaseModel
 import paperparcel.PaperParcel
-import java.util.*
+import java.util.UUID
 
 
 @PaperParcel
@@ -23,8 +23,6 @@ data class Location(
         var id: UUID = UUID.randomUUID()
 
 ) : BaseModel(), ParcelableLite {
-    @Deprecated("Do not use this method! Used only to materialize the object by database provider.")
-    internal constructor () : this(name = "")
 
     companion object {
         @JvmField

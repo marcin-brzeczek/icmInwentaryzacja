@@ -15,6 +15,8 @@ class ReadFileController(val fragmentBase: FragmentBase) {
 
     private val items = mutableListOf<Item>()
 
+    private val locations = mutableListOf<Location>()
+
     fun readPositionsFileContent(uri: Uri?): String {
         val inputStream = fragmentBase.activity.contentResolver.openInputStream(uri)
         val reader = LineNumberReader(InputStreamReader(inputStream))
@@ -42,27 +44,53 @@ class ReadFileController(val fragmentBase: FragmentBase) {
     }
 
     fun readLocationsFileContent(uri: Uri?): String {
-        return ""
+        val inputStream = fragmentBase.activity.contentResolver.openInputStream(uri)
+        val reader = LineNumberReader(InputStreamReader(inputStream))
+        val stringBuilder = StringBuilder()
+        reader.readLine() // read first line - the headers of columns
+
+        var currentline = reader.readLine()
+        while (currentline != null && reader.lineNumber > 1) {
+            val arrayLine = currentline.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val location = Location()
+            location.name = arrayLine[1]
+            locations.add(location)
+            currentline = reader.readLine()
+        }
+        inputStream.close()
+        println(stringBuilder.toString())
+        storageLocations()
+        return stringBuilder.toString()
     }
 
-    private fun storageItems() {
-        FlowManager.getDatabase(AppDatabase::class.java)
-            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-            .error { transaction, error -> }
-            .success {
-                storageLocations()
-            }.build().execute()
-    }
+private fun storageItems() {
+    FlowManager.getDatabase(AppDatabase::class.java)
+        .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+            ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+        .error { transaction, error -> }
+        .success {
+            saveLocationsOfItems()
+        }.build().execute()
+}
 
     private fun storageLocations() {
         FlowManager.getDatabase(AppDatabase::class.java)
             .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(locations).build())  // add elements (can also handle multiple)
             .error { transaction, error -> }
             .success {
-                fragmentBase.navigateTo(ChooseLocationRoute())
-
+//                saveLocationsOfItems()
             }.build().execute()
     }
+
+private fun saveLocationsOfItems() {
+    FlowManager.getDatabase(AppDatabase::class.java)
+        .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+            ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+        .error { transaction, error -> }
+        .success {
+            fragmentBase.navigateTo(ChooseLocationRoute())
+
+        }.build().execute()
+}
 }

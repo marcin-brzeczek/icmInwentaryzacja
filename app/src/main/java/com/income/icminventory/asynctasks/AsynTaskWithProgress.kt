@@ -7,6 +7,7 @@ import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
 import com.income.icminventory.views.InfoDialogFragment
 import com.income.icminventory.views.ProgressDialogFragment
+import timber.log.Timber
 
 @SuppressLint("StaticFieldLeak")
 class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: () -> Unit, private val onPostExecute: () -> Unit) : AsyncTask<Void, Void, Boolean>() {
@@ -32,8 +33,9 @@ class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: 
 
     override fun onPostExecute(result: Boolean) {
         if (result) {
-            if((activity as MainActivity).isActivityResume)
-            InfoDialogFragment({ progressDialogFragment?.dismiss() }, activity.baseContext.getString(R.string.error_ocurred) + " ${exc.toString()}").show((activity as MainActivity).fragmentManager, "dialog")
+            if ((activity as MainActivity).isActivityResume)
+                InfoDialogFragment({ progressDialogFragment?.dismiss() }, activity.baseContext.getString(R.string.error_ocurred) + " ${exc?.toString()}").show((activity as MainActivity).fragmentManager, "dialog")
+            Timber.d("Error: ${exc?.printStackTrace()}")
         } else {
             onPostExecute.invoke()
             progressDialogFragment?.dismiss()

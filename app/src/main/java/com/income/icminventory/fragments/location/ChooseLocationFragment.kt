@@ -14,10 +14,8 @@ import com.income.icminventory.fragments.adapter.TypesFactoryImpl
 import com.income.icminventory.fragments.adapter.viewmodel.LocationViewModel
 import com.income.icminventory.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminventory.utilities.inflate
-import kotlinx.android.synthetic.main.fragment_choose_location.rv_locations
-import kotlinx.android.synthetic.main.fragment_choose_location.view.addNewLocation
-import kotlinx.android.synthetic.main.fragment_choose_location.view.importLocationFile
-import kotlinx.android.synthetic.main.fragment_choose_location.view.scanNewLocation
+import kotlinx.android.synthetic.main.fragment_choose_location.*
+import kotlinx.android.synthetic.main.fragment_choose_location.view.*
 import javax.inject.Inject
 
 class ChooseLocationFragment : FragmentBase() {
@@ -33,7 +31,7 @@ class ChooseLocationFragment : FragmentBase() {
             setHasOptionsMenu(true)
             addNewLocation.setOnClickListener { navigateTo(NewLocationRoute()) }
             scanNewLocation.setOnClickListener { navigateTo(ScanPositionsRoute()) }
-            importLocationFile.setOnClickListener { selectPositionsCSVFile() }
+            importLocationFile.setOnClickListener { selectLocationsCSVFile() }
         }
 
     override fun onStart() {
