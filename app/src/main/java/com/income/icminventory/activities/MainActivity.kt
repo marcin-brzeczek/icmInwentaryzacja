@@ -19,6 +19,7 @@ class MainActivity : ActivityBase() {
     override val layoutId = R.layout.activity_main
     override val startRoute get() = ReportRoute()
     var currentLocation = ""
+    var scannedLocation = ""
     var progressDialogFragment: ProgressDialogFragment? = null
     var isActivityResume = false
     var isDialogShowed = false

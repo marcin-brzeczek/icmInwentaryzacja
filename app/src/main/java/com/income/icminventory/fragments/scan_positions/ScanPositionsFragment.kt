@@ -14,15 +14,28 @@ import com.income.icminventory.database.dto.Item_Table
 import com.income.icminventory.emkd_scan.OnScannerRead
 import com.income.icminventory.emkd_scan.ScanWrapper
 import com.income.icminventory.fragments.abstraction.FragmentBase
+import com.income.icminventory.fragments.location.NewLocationRoute
 import com.income.icminventory.fragments.new_position.NewItemRoute
 import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.utilities.toast
 import com.income.icminventory.views.NewPositionDialogFragment
-import kotlinx.android.synthetic.main.fragment_scan_positions.*
+import kotlinx.android.synthetic.main.fragment_scan_positions.addNewItem
+import kotlinx.android.synthetic.main.fragment_scan_positions.back
+import kotlinx.android.synthetic.main.fragment_scan_positions.etAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.imgAddAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.imgRemoveAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionLogo
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionScann
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionSupportCode
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvCode
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvLokalization
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvName
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvSupportCode
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     var currentAmount: Double = 0.0
+    var scanningLocalization = false
     private var amount = ""
     private var item: Item? = null
 
@@ -41,8 +54,12 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         super.onViewCreated(view, savedInstanceState)
         setActionBar(this@ScanPositionsFragment)
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        setLocalizationTitle()
+        setListeners()
+    }
+
+    private fun setListeners() {
         addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
-        tvLokalization.text = activity.baseContext.getString(R.string.location).plus((activity as MainActivity).currentLocation)
         back.setOnClickListener {
             sectionLogo.visibility = View.VISIBLE
             sectionScann.visibility = View.GONE
@@ -65,6 +82,16 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         })
     }
 
+    private fun setLocalizationTitle() {
+        val existLocation = (activity as MainActivity).currentLocation
+        scanningLocalization = existLocation.isEmpty()
+
+        if (scanningLocalization) {
+            addNewItem.visibility = View.GONE
+            tvLokalization.text = getString(R.string.scan_localization)
+        } else
+            tvLokalization.text = activity.baseContext.getString(R.string.location).plus(existLocation)
+    }
 
     private fun setAmount() {
         amount = if (etAmount.getText().toString() != null && etAmount.getText().toString().length > 1)
@@ -110,7 +137,16 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         val enterSuffix = "\n"
         val finishData = if (data.contains(enterSuffix)) data.removeSuffix(enterSuffix) else data
         tvCode.setText(data)
-        getPositionByCode(finishData)
+        if (scanningLocalization) {
+            getLocalizationByCode(finishData)
+        } else {
+            getPositionByCode(finishData)
+        }
+    }
+
+    private fun getLocalizationByCode(localizationName: String) {
+        (activity as MainActivity).scannedLocation = localizationName
+        navigateTo(NewLocationRoute())
     }
 
     override fun onReadStatus(text: String) {
@@ -147,6 +183,11 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     fun showNewPositionDialog(codePos: String) {
-        NewPositionDialogFragment({ navigateTo(NewItemRoute(code = codePos, itemState = activity.getString(R.string.scanner))) }).show((activity as MainActivity).fragmentManager, "dialog")
+        NewPositionDialogFragment {
+            navigateTo(
+                NewItemRoute(code = codePos, itemState = activity.getString(R.string.scanner))
+            )
+        }
+            .show((activity as MainActivity).fragmentManager, "dialog")
     }
 }
