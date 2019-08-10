@@ -15,7 +15,7 @@ class ReadFileController(val fragmentBase: FragmentBase) {
 
     private val items = mutableListOf<Item>()
 
-     fun readFileContent(uri: Uri?): String {
+    fun readPositionsFileContent(uri: Uri?): String {
         val inputStream = fragmentBase.activity.contentResolver.openInputStream(uri)
         val reader = LineNumberReader(InputStreamReader(inputStream))
         val stringBuilder = StringBuilder()
@@ -41,24 +41,28 @@ class ReadFileController(val fragmentBase: FragmentBase) {
         return stringBuilder.toString()
     }
 
-   private fun storageItems() {
+    fun readLocationsFileContent(uri: Uri?): String {
+        return ""
+    }
+
+    private fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-                        ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    storageLocations()
-                }.build().execute()
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                storageLocations()
+            }.build().execute()
     }
 
     private fun storageLocations() {
         FlowManager.getDatabase(AppDatabase::class.java)
-                .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                        ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
-                .error { transaction, error -> }
-                .success {
-                    fragmentBase.navigateTo(ChooseLocationRoute())
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                fragmentBase.navigateTo(ChooseLocationRoute())
 
-                }.build().execute()
+            }.build().execute()
     }
 }

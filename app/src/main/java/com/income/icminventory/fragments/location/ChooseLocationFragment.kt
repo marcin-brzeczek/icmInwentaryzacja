@@ -16,6 +16,7 @@ import com.income.icminventory.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminventory.utilities.inflate
 import kotlinx.android.synthetic.main.fragment_choose_location.rv_locations
 import kotlinx.android.synthetic.main.fragment_choose_location.view.addNewLocation
+import kotlinx.android.synthetic.main.fragment_choose_location.view.importLocationFile
 import kotlinx.android.synthetic.main.fragment_choose_location.view.scanNewLocation
 import javax.inject.Inject
 
@@ -27,12 +28,13 @@ class ChooseLocationFragment : FragmentBase() {
     private lateinit var _adapter: ItemAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.fragment_choose_location, container) {
-                setActionBar(this@ChooseLocationFragment)
-                setHasOptionsMenu(true)
-                addNewLocation.setOnClickListener { navigateTo(NewLocationRoute()) }
-                scanNewLocation.setOnClickListener { navigateTo(ScanPositionsRoute()) }
-            }
+        inflater.inflate(R.layout.fragment_choose_location, container) {
+            setActionBar(this@ChooseLocationFragment)
+            setHasOptionsMenu(true)
+            addNewLocation.setOnClickListener { navigateTo(NewLocationRoute()) }
+            scanNewLocation.setOnClickListener { navigateTo(ScanPositionsRoute()) }
+            importLocationFile.setOnClickListener { selectPositionsCSVFile() }
+        }
 
     override fun onStart() {
         super.onStart()

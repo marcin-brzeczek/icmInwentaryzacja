@@ -13,10 +13,13 @@ import com.income.icminventory.fragments.location.ChooseLocationRoute
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.inflate
-import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_login.view.*
+import kotlinx.android.synthetic.main.fragment_login.etLogin
+import kotlinx.android.synthetic.main.fragment_login.view.btnExportFileAndStartNewEmptyInventory
+import kotlinx.android.synthetic.main.fragment_login.view.btnExportFileAndStartNewInventory
+import kotlinx.android.synthetic.main.fragment_login.view.btnStartNewInventoryOrContinue
 
-const val READ_REQUEST_CODE = 99
+const val READ_POSITIONS_CSV_CODE = 99
+const val READ_LOCATIONS_CSV_CODE = 100
 
 class LoginFragment : FragmentBase() {
 
@@ -46,7 +49,7 @@ class LoginFragment : FragmentBase() {
     private fun loadOrOpenDatabase(isEmptyDatabase: Boolean) {
         if (!validateInput()) return
         if (isEmptyDatabase) {
-            selectCSVFile()
+            selectPositionsCSVFile()
         } else {
             navigateTo(ChooseLocationRoute())
         }

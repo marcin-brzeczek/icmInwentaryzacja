@@ -20,24 +20,24 @@ import com.income.icminventory.backstack.ROUTE_ARGUMENTS_KEY
 import com.income.icminventory.database.DBContext
 import com.income.icminventory.database.dto.Item
 import com.income.icminventory.fragments.ModeCSV
-import com.income.icminventory.fragments.information.InfoFragment
 import com.income.icminventory.fragments.information.InfoFragmentRoute
 import com.income.icminventory.fragments.location.ChooseLocationFragment
 import com.income.icminventory.fragments.location.ChooseLocationRoute
 import com.income.icminventory.fragments.login.LoginFragment
 import com.income.icminventory.fragments.login.LoginRoute
-import com.income.icminventory.fragments.login.READ_REQUEST_CODE
+import com.income.icminventory.fragments.login.READ_LOCATIONS_CSV_CODE
+import com.income.icminventory.fragments.login.READ_POSITIONS_CSV_CODE
 import com.income.icminventory.fragments.positions_list.empty_list.EmptyListFragment
 import com.income.icminventory.fragments.positions_list.empty_list.EmptyListRoute
 import com.income.icminventory.fragments.positions_list.scanned_list.ScannedListFragment
 import com.income.icminventory.fragments.positions_list.scanned_list.ScannedListRoute
 import com.income.icminventory.fragments.scan_positions.ScanPositionsFragment
-import com.income.icminventory.views.InfoDialogFragment
 import com.income.icminventory.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminventory.handling_file.ReadFileController
 import com.income.icminventory.handling_file.SaveFileController
 import com.income.icminventory.utilities.toast
 import com.income.icminventory.utilities.todayDate
+import com.income.icminventory.views.InfoDialogFragment
 import com.raizlabs.android.dbflow.sql.language.Delete
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -120,17 +120,25 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
     }
 
     /********** Wybranie i  czytanie z pliku csv z telefonu */
-    fun selectCSVFile() {
+    fun selectPositionsCSVFile() {
         dbContext.deleteOldLocations()
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "*/*"
-        startActivityForResult(Intent.createChooser(intent, "Open CSV"), READ_REQUEST_CODE)
+        startActivityForResult(Intent.createChooser(intent, "Open CSV"), READ_POSITIONS_CSV_CODE)
+    }
+
+    fun selectLocationsCSVFile() {
+        dbContext.deleteOldLocations()
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        startActivityForResult(Intent.createChooser(intent, "Open CSV"), READ_LOCATIONS_CSV_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            READ_REQUEST_CODE -> {
+            READ_POSITIONS_CSV_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     data?.data?.let {
                         if (!it.path.contains(".csv")) {
@@ -138,7 +146,24 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
                             return
                         } else {
                             try {
-                                readController?.readFileContent(it)
+                                readController?.readPositionsFileContent(it)
+                            } catch (e: Exception) {
+                                toast(getString(R.string.incorrect_file))
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }
+            }
+            READ_LOCATIONS_CSV_CODE ->{
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.data?.let {
+                        if (!it.path.contains(".csv")) {
+                            toast(getString(R.string.incorrect_file_format))
+                            return
+                        } else {
+                            try {
+                                readController?.readLocationsFileContent(it)
                             } catch (e: Exception) {
                                 toast(getString(R.string.incorrect_file))
                                 e.printStackTrace()
@@ -175,7 +200,7 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
     private fun showIfSavedAndSelectFile() {
         toast(getString(R.string.saved))
         deleteItemAndLocations()
-        selectCSVFile()
+        selectPositionsCSVFile()
     }
 
     fun requestPermissionAndHandleCSV() {
@@ -210,7 +235,7 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
 
     private fun exportAndOpenNew() {
         if ((activity as MainActivity).isDemoVersion)
-            InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ selectPositionsCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
             InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { showIfSavedAndSelectFile() }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
@@ -224,7 +249,7 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
 
     private fun exportOrOpenNew() {
         if ((activity as MainActivity).isDemoVersion)
-            InfoDialogFragment({ selectCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
+            InfoDialogFragment({ selectPositionsCSVFile() }, getString(R.string.version_demo_not_save_file), isWebLink = true).show((activity as MainActivity).fragmentManager, "dialog")
         else
             InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
