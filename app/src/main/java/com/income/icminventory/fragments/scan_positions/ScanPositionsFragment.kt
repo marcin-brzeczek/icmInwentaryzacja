@@ -177,6 +177,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             tvSupportCode.setText(it.supportCode)
             tvLokalization.setText(it.oldLocation)
             it.itemState = let { if (it.equals(activity.getString(R.string.handle))) activity.getString(R.string.handle) else activity.getString(R.string.scanner) }
+            it.supplierId = supplierId
+            it.orderId = orderId
             it.save()
 //        } ?: showNewPositionDialog(tvCode.text.toString())
         } ?: showNewPositionDialog(code)

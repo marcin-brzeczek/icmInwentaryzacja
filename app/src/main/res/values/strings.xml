@@ -6,6 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="exit_message">To leave the application, click again</string>
     <string name="header_of_exported_file">Id;Kod;KodPomocniczy;NazwaSkrocona;Nazwa;LokalizacjaStara;IloscPoczatkowa;IloscKoncowa;Przetworzona;Spisujacy;</string>
+    <string name="header_of_exported_file_for_es_systems_k">Id;Kod;IdDostawcy;IdZamowienia;KodPomocniczy;NazwaSkrocona;Nazwa;LokalizacjaStara;IloscPoczatkowa;IloscKoncowa;Przetworzona;Spisujacy;</string>
     <string name="fill_value">Complete the value!</string>
     <string name="incorrect_file_format">The selected file is not csv!</string>
     <string name="saved">Saved</string>
