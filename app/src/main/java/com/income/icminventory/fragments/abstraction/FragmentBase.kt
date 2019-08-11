@@ -267,7 +267,7 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
     }
 
     private fun exportAndLogout() {
-        if (dbContext.isEmptyItems || (activity as MainActivity).isDemoVersion) {
+        if (dbContext.isEmptyScannedItems || (activity as MainActivity).isDemoVersion) {
             navigateTo(LoginRoute())
             return
         }

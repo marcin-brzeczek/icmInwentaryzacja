@@ -20,7 +20,7 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
     private fun preparePosToSave(isEmptyFile: Boolean): String {
         val sb = StringBuilder()
 
-        sb.append(fragmentBase.activity.baseContext.resources.getString(R.string.header_of_exported_file) + "\n")
+        sb.append(fragmentBase.activity.baseContext.resources.getString(R.string.header_of_exported_file_for_es_systems_k) + "\n")
 
         if (!isEmptyFile) {
             val iterator = dbContext.items.queryList().iterator()
@@ -28,6 +28,12 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
                 val item = iterator.next()
                 sb.append(item.id.toString() + ";") /*id*/
                 sb.append(item.code + ";")
+
+                /*region for es systems k company*/
+                sb.append(item.supplierId + ";")
+                sb.append(item.orderId + ";")
+                /*endregion*/
+
                 sb.append(item.supportCode + ";")
                 sb.append(item.shortName + ";")
                 sb.append(item.name + ";")

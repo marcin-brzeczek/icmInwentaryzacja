@@ -63,34 +63,46 @@ class ReadFileController(val fragmentBase: FragmentBase) {
         return stringBuilder.toString()
     }
 
-private fun storageItems() {
-    FlowManager.getDatabase(AppDatabase::class.java)
-        .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
-            ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
-        .error { transaction, error -> }
-        .success {
-            saveLocationsOfItems()
-        }.build().execute()
-}
-
-    private fun storageLocations() {
+    private fun storageItems() {
         FlowManager.getDatabase(AppDatabase::class.java)
-            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(locations).build())  // add elements (can also handle multiple)
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Item>(
+                ProcessModelTransaction.ProcessModel<Item> { model, wrapper -> model?.save() }).addAll(items).build())  // add elements (can also handle multiple)
             .error { transaction, error -> }
             .success {
-//                saveLocationsOfItems()
+                saveLocationsOfItems()
             }.build().execute()
     }
 
-private fun saveLocationsOfItems() {
-    FlowManager.getDatabase(AppDatabase::class.java)
-        .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
-            ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
-        .error { transaction, error -> }
-        .success {
-            fragmentBase.navigateTo(ChooseLocationRoute())
+    private fun storageLocations() {
+        val existLocations = fragmentBase.dbContext.locations.queryList()
+        FlowManager.getDatabase(AppDatabase::class.java)
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model.save() })
+                .addAll(
+                    locations
+                        .distinctBy { it.name }
+                        .filterNot { newLocation ->
+                            existLocations.find { existLocation ->
+                                newLocation.name == existLocation.name
+                            } != null
+                        }
 
-        }.build().execute()
-}
+                ).build())  // add elements (can also handle multiple)
+
+            .error { transaction, error -> }
+            .success {
+                //                saveLocationsOfItems()
+            }.build().execute()
+    }
+
+    private fun saveLocationsOfItems() {
+        FlowManager.getDatabase(AppDatabase::class.java)
+            .beginTransactionAsync(ProcessModelTransaction.Builder<Location>(
+                ProcessModelTransaction.ProcessModel<Location> { model, wrapper -> model?.save() }).addAll(items.distinctBy { it.oldLocation }.map { Location(name = it.oldLocation) }).build())  // add elements (can also handle multiple)
+            .error { transaction, error -> }
+            .success {
+                fragmentBase.navigateTo(ChooseLocationRoute())
+
+            }.build().execute()
+    }
 }

@@ -41,6 +41,9 @@ class DBContext @Inject constructor() {
     val isEmptyItems: Boolean
         get() = !items.hasData()
 
+    val isEmptyScannedItems: Boolean
+       get() = !items.where(Item_Table.endNumber.greaterThan(0.0)).hasData()
+
     val isEmptyUsers: Boolean
         get() = !users.hasData()
 

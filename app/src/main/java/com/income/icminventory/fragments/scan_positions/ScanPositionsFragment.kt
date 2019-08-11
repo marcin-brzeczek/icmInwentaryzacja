@@ -19,18 +19,8 @@ import com.income.icminventory.fragments.new_position.NewItemRoute
 import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.utilities.toast
 import com.income.icminventory.views.NewPositionDialogFragment
-import kotlinx.android.synthetic.main.fragment_scan_positions.addNewItem
-import kotlinx.android.synthetic.main.fragment_scan_positions.back
-import kotlinx.android.synthetic.main.fragment_scan_positions.etAmount
-import kotlinx.android.synthetic.main.fragment_scan_positions.imgAddAmount
-import kotlinx.android.synthetic.main.fragment_scan_positions.imgRemoveAmount
-import kotlinx.android.synthetic.main.fragment_scan_positions.sectionLogo
-import kotlinx.android.synthetic.main.fragment_scan_positions.sectionScann
-import kotlinx.android.synthetic.main.fragment_scan_positions.sectionSupportCode
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvCode
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvLokalization
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvName
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvSupportCode
+import com.income.icminventory.views.YesOrNotDialogFragment
+import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
@@ -136,7 +126,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     override fun onReadData(data: String) {
         val enterSuffix = "\n"
         val finishData = if (data.contains(enterSuffix)) data.removeSuffix(enterSuffix) else data
-        tvCode.setText(data)
+
         if (scanningLocalization) {
             getLocalizationByCode(finishData)
         } else {
@@ -153,35 +143,55 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     override fun exceptionMessage(text: String) {
-        Toast.makeText(activity.baseContext, text, Toast.LENGTH_LONG).show();
+        Toast.makeText(activity.baseContext, text, Toast.LENGTH_LONG).show()
     }
 
     private fun getPositionByCode(scannedCode: String) {
-        /*Code */
+        /*regionFor es system k company */
         val data = scannedCode.split("#")
         val code = data.get(1)
         val supplierId = data.get(2)
         val orderId = data.get(3)
+        /*endregion*/
 
         toast("code: $code supplier: $supplierId order: $orderId")
 
-        item = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
-        item?.let {
-            sectionLogo.visibility = View.GONE
-            sectionScann.visibility = View.VISIBLE
-            back.visibility = View.VISIBLE
-            sectionSupportCode.visibility.let { if (item?.supportCode!!.trim().isNotEmpty()) View.VISIBLE else View.GONE }
-            tvName.setText(it.name)
-            etAmount.setText((++it.endNumber).toString())
-            tvCode.setText(it.code)
-            tvSupportCode.setText(it.supportCode)
-            tvLokalization.setText(it.oldLocation)
-            it.itemState = let { if (it.equals(activity.getString(R.string.handle))) activity.getString(R.string.handle) else activity.getString(R.string.scanner) }
-            it.supplierId = supplierId
-            it.orderId = orderId
-            it.save()
-//        } ?: showNewPositionDialog(tvCode.text.toString())
-        } ?: showNewPositionDialog(code)
+        item = dbContext.items.where(
+            Item_Table.code.eq(code))
+            .or(Item_Table.supportCode.eq(code))
+            .or(Item_Table.code.eq(scannedCode)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
+
+        item?.let { createOrUpdateItem(it, code,supplierId, orderId) }
+            ?: getItemWihoutLocalization(scannedCode)?.let { showMoveItemToLocalizationDialog(it, code,supplierId, orderId) }
+            ?: showNewPositionDialog(code)
+    }
+
+    private fun getItemWihoutLocalization(code: String): Item? = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).querySingle()
+
+    private fun createOrUpdateItem(item: Item, correctedCode:String, supplierId: String, orderId: String) = with(item) {
+        this.oldLocation = (activity as MainActivity).currentLocation
+        this.supplierId = supplierId
+        this.orderId = orderId
+        sectionLogo.visibility = View.GONE
+        sectionScann.visibility = View.VISIBLE
+        back.visibility = View.VISIBLE
+        sectionSupportCode.visibility.let { if (supportCode.trim().isNotEmpty()) View.VISIBLE else View.GONE }
+        tvName.setText(name)
+        etAmount.setText((++endNumber).toString())
+        tvCode.setText(correctedCode)
+        tvSupportCode.setText(supportCode)
+        tvLokalization.setText(oldLocation)
+        itemState = let { if (it.equals(activity.getString(R.string.handle))) activity.getString(R.string.handle) else activity.getString(R.string.scanner) }
+        this.save()
+    }
+
+    fun showMoveItemToLocalizationDialog(item: Item, code:String,supplierId: String, orderId: String) {
+        YesOrNotDialogFragment( blockYesClick =
+            {
+                createOrUpdateItem(item, code,supplierId, orderId)
+            }, blockNoClick = {}
+            , text =  getString(R.string.assing_to_localization))
+            .show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     fun showNewPositionDialog(codePos: String) {
