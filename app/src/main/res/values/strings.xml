@@ -7,6 +7,7 @@
     <string name="exit_message">To leave the application, click again</string>
     <string name="header_of_exported_file">Id;Kod;KodPomocniczy;NazwaSkrocona;Nazwa;LokalizacjaStara;IloscPoczatkowa;IloscKoncowa;Przetworzona;Spisujacy;</string>
     <string name="header_of_exported_file_for_es_systems_k">Id;Kod;IdDostawcy;IdZamowienia;KodPomocniczy;NazwaSkrocona;Nazwa;Lokalizacja;IloscPoczatkowa;IloscKoncowa;Przetworzona;Spisujacy;</string>
+    <string name="header_of_exported_locations_file_es_systems_k">Id;Lokalizacja;</string>
     <string name="fill_value">Complete the value!</string>
     <string name="incorrect_file_format">The selected file is not csv!</string>
     <string name="saved">Saved</string>
@@ -55,10 +56,11 @@
     <string name="enter_support_code">Enter support code</string>
     <string name="name_without_asterisk">Name:</string>
     <string name="support_code_without_asterisk">Code 2:</string>
-    <string name="company_info">Producer: \n INCOME Sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Poland\n \n  income@income.pl \n \n All informations about this application:</string>
+    <string name="company_info">Producer: \n icMobile Systems sp. z o.o.\n  Al. J.Piłsudskiego 46 \n 33-300 Nowy Sącz \n Poland\n \n icmobile@icmobile.pl \n \n All informations about this application:</string>
     <string name="back">Back</string>
     <string name="empty_inventory">New inventory without data</string>
-    <string name="generate_empty_file_csv">Generate empty file CSV</string>
+    <string name="generate_empty_file_positions_csv">Generate empty items file CSV</string>
+    <string name="generate_empty_file_locations_csv">Generate empty locations file CSV</string>
     <string name="version_demo_not_save_file">You have a DEMO version that does not support write data to a file. We encourage you to purchase the full version of the application on Google Play.</string>
     <string name="go_to_google_play_link">https://play.google.com/store/apps/developer?id=Income+sp.+z+o.o."</string>
     <string name="go_to_google_play">Go to Google Play</string>

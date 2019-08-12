@@ -10,14 +10,20 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 
+enum class FileType { POSITIONS, LOCATIONS }
+
 /***********Zapis pliku CSV do telefonu (pusty plik albo z pozycjami)*****/
 class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContext) {
 
     fun saveItems(isEmptyFile: Boolean = false) {
-        saveItemsToCSV(isEmptyFile, preparePosToSave(isEmptyFile))
+        saveToCSV(FileType.POSITIONS, isEmptyFile, preparePositionsToSave(isEmptyFile))
     }
 
-    private fun preparePosToSave(isEmptyFile: Boolean): String {
+    fun saveLocations(isEmptyFile: Boolean) {
+        saveToCSV(FileType.LOCATIONS, isEmptyFile, prepareLocationsToSave(isEmptyFile))
+    }
+
+    private fun preparePositionsToSave(isEmptyFile: Boolean): String {
         val sb = StringBuilder()
 
         sb.append(fragmentBase.activity.baseContext.resources.getString(R.string.header_of_exported_file_for_es_systems_k) + "\n")
@@ -48,8 +54,31 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
         return sb.toString()
     }
 
+    private fun prepareLocationsToSave(isEmptyFile: Boolean): String {
+        val sb = StringBuilder()
+
+        sb.append(fragmentBase.activity.baseContext.resources.getString(R.string.header_of_exported_locations_file_es_systems_k) + "\n")
+
+        if (!isEmptyFile) {
+            val iterator = dbContext.locations.queryList().iterator()
+            while (iterator.hasNext()) {
+                val location = iterator.next()
+                sb.append(location.id.toString() + ";") /*id*/
+                sb.append(location.name + ";")
+                sb.append("\n")
+            }
+        }
+        return sb.toString()
+    }
+
     /* Internal storageItems */
-    private fun saveItemsToCSV(isEmptyFile: Boolean, content: String) {
+    private fun saveToCSV(fileType: FileType, isEmptyFile: Boolean, content: String) {
+        val empty = "empty_"
+        val fileTitle = when (fileType) {
+            FileType.POSITIONS -> "/Export_positions_"
+            FileType.LOCATIONS -> "/Export_locations_"
+        }
+
         val date = todayDate(fragmentBase.activity.baseContext)
         val path = Environment.getExternalStorageDirectory().toString()
 
@@ -62,16 +91,16 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
             }
         }
 
-        val pathNotEmptyString = path + "/Export_" + date.replace(":", "_") + ".csv"
-        val pathEmptyString = path + "/Export_empty_" + date.replace(":", "_") + ".csv"
+        val pathNotEmptyString = path + fileTitle + date.replace(":", "_") + ".csv"
+        val pathEmptyString = path + fileTitle + empty + date.replace(":", "_") + ".csv"
 
         val file = File(if (isEmptyFile) pathEmptyString else pathNotEmptyString)
         val out: FileOutputStream
         val myOutWriter: OutputStreamWriter
-            out = FileOutputStream(file)
-            myOutWriter = OutputStreamWriter(out)
-            myOutWriter.append(content)
-            myOutWriter.close()
-            out.close()
+        out = FileOutputStream(file)
+        myOutWriter = OutputStreamWriter(out)
+        myOutWriter.append(content)
+        myOutWriter.close()
+        out.close()
     }
 }

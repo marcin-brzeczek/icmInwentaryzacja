@@ -148,10 +148,24 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     private fun getPositionByCode(scannedCode: String) {
         /*regionFor es system k company */
+
+        var code = ""
+        var supplierId = ""
+        var orderId = ""
+
+        if (scannedCode.startsWith("#")) {
+            toast("Błąd odczytu: kod nie może zaczynać się od znaku '#'", Toast.LENGTH_LONG)
+            return
+        }
+
         val data = scannedCode.split("#")
-        val code = data.get(1)
-        val supplierId = data.get(2)
-        val orderId = data.get(3)
+        if (data.size >= 3) {
+            code = data.get(0)
+            supplierId = data.get(1)
+            orderId = data.get(2)
+        } else {
+            return
+        }
         /*endregion*/
 
         toast("code: $code supplier: $supplierId order: $orderId")
@@ -161,14 +175,14 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             .or(Item_Table.supportCode.eq(code))
             .or(Item_Table.code.eq(scannedCode)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
 
-        item?.let { createOrUpdateItem(it, code,supplierId, orderId) }
-            ?: getItemWihoutLocalization(scannedCode)?.let { showMoveItemToLocalizationDialog(it, code,supplierId, orderId) }
+        item?.let { createOrUpdateItem(it, code, supplierId, orderId) }
+            ?: getItemWihoutLocalization(scannedCode)?.let { showMoveItemToLocalizationDialog(it, code, supplierId, orderId) }
             ?: showNewPositionDialog(code)
     }
 
     private fun getItemWihoutLocalization(code: String): Item? = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).querySingle()
 
-    private fun createOrUpdateItem(item: Item, correctedCode:String, supplierId: String, orderId: String) = with(item) {
+    private fun createOrUpdateItem(item: Item, correctedCode: String, supplierId: String, orderId: String) = with(item) {
         this.oldLocation = (activity as MainActivity).currentLocation
         this.supplierId = supplierId
         this.orderId = orderId
@@ -185,12 +199,12 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         this.save()
     }
 
-    fun showMoveItemToLocalizationDialog(item: Item, code:String,supplierId: String, orderId: String) {
-        YesOrNotDialogFragment( blockYesClick =
-            {
-                createOrUpdateItem(item, code,supplierId, orderId)
-            }, blockNoClick = {}
-            , text =  getString(R.string.assing_to_localization))
+    fun showMoveItemToLocalizationDialog(item: Item, code: String, supplierId: String, orderId: String) {
+        YesOrNotDialogFragment(blockYesClick =
+        {
+            createOrUpdateItem(item, code, supplierId, orderId)
+        }, blockNoClick = {}
+            , text = getString(R.string.assing_to_localization))
             .show((activity as MainActivity).fragmentManager, "dialog")
     }
 

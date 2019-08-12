@@ -79,7 +79,8 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
                 menu.findItem(R.id.moveToScan).isVisible = false
                 menu.findItem(R.id.listEmpty).isVisible = false
                 menu.findItem(R.id.listDesc).isVisible = false
-                menu.findItem(R.id.generateEmptyCSV).isVisible = true
+                menu.findItem(R.id.generateEmptyPositionsCSV).isVisible = true
+                menu.findItem(R.id.generateEmptyLocationsCSV).isVisible = true
                 menu.findItem(R.id.exportToCSV).isVisible = false
             }
 
@@ -97,8 +98,12 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
                 modeOfSavingCSV = ModeCSV.ExportAndExitApp
                 requestPermissionAndHandleCSV()
             }
-            R.id.generateEmptyCSV -> {
-                modeOfSavingCSV = ModeCSV.GenerateEmptyCSV
+            R.id.generateEmptyPositionsCSV -> {
+                modeOfSavingCSV = ModeCSV.GenerateEmptyPositionsCSV
+                requestPermissionAndHandleCSV()
+            }
+            R.id.generateEmptyLocationsCSV-> {
+                modeOfSavingCSV = ModeCSV.GenerateEmptyLocationsCSV
                 requestPermissionAndHandleCSV()
             }
             R.id.exportToCSV -> {
@@ -215,7 +220,8 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
                 ModeCSV.ExportAndExitApp -> exportAndExitApp()
                 ModeCSV.ExportAndLogout -> exportAndLogout()
                 ModeCSV.ExportAndStartEpmtyInventory -> exportStartNewEmptyInventory()
-                ModeCSV.GenerateEmptyCSV -> generateEmptyCSV()
+                ModeCSV.GenerateEmptyPositionsCSV -> generateEmptyPositionsCSV()
+                ModeCSV.GenerateEmptyLocationsCSV-> generateEmptyLocationsCSV()
             }
         }
     }
@@ -254,8 +260,12 @@ abstract class FragmentBase : Fragment(), ActionBarManager {
             InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems() }, { toast(getString(R.string.saved)) }).execute() }, "Export_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
-    private fun generateEmptyCSV() {
-        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+    private fun generateEmptyPositionsCSV() {
+        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveItems(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_positions_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
+    private fun generateEmptyLocationsCSV() {
+        InfoDialogFragment({ AsyncTaskWithProgress(activity, { saveController?.saveLocations(isEmptyFile = true) }, { toast(getString(R.string.saved)) }).execute() }, "Export_empty_locations_" + todayDate(activity.baseContext) + ".csv").show((activity as MainActivity).fragmentManager, "dialog")
     }
 
     private fun exportAndExitApp() {

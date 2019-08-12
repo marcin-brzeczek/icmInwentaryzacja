@@ -17,8 +17,13 @@
         android:visible="true"
         />
     <item
-        android:id="@+id/generateEmptyCSV"
-        android:title="@string/generate_empty_file_csv"
+        android:id="@+id/generateEmptyPositionsCSV"
+        android:title="@string/generate_empty_file_positions_csv"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/generateEmptyLocationsCSV"
+        android:title="@string/generate_empty_file_locations_csv"
         android:visible="false"
         />
     <item
