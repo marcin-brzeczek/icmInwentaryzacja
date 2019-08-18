@@ -173,19 +173,22 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         item = dbContext.items.where(
             Item_Table.code.eq(code))
             .or(Item_Table.supportCode.eq(code))
-            .or(Item_Table.code.eq(scannedCode)).and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
+            .or(Item_Table.code.eq(scannedCode))
+            .and(Item_Table.supplierId.eq(supplierId))
+            .and(Item_Table.orderId.eq(orderId))
+            .and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
 
         item?.let { createOrUpdateItem(it, code, supplierId, orderId) }
             ?: getItemWihoutLocalization(scannedCode)?.let { showMoveItemToLocalizationDialog(it, code, supplierId, orderId) }
-            ?: showNewPositionDialog(code)
+            ?: showNewPositionDialog(code, supplierId, orderId)
     }
 
     private fun getItemWihoutLocalization(code: String): Item? = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).querySingle()
 
-    private fun createOrUpdateItem(item: Item, correctedCode: String, supplierId: String, orderId: String) = with(item) {
+    private fun createOrUpdateItem(item: Item, correctedCode: String, scannedSupplierId: String, scannedOrderId: String) = with(item) {
         this.oldLocation = (activity as MainActivity).currentLocation
-        this.supplierId = supplierId
-        this.orderId = orderId
+        this.supplierId = scannedSupplierId
+        this.orderId = scannedOrderId
         sectionLogo.visibility = View.GONE
         sectionScann.visibility = View.VISIBLE
         back.visibility = View.VISIBLE
@@ -208,10 +211,14 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             .show((activity as MainActivity).fragmentManager, "dialog")
     }
 
-    fun showNewPositionDialog(codePos: String) {
+    fun showNewPositionDialog(codePos: String, supplierId: String, orderId: String) {
         NewPositionDialogFragment {
             navigateTo(
-                NewItemRoute(code = codePos, itemState = activity.getString(R.string.scanner))
+                NewItemRoute(
+                    code = codePos,
+                    supplierId = supplierId,
+                    orderId = orderId,
+                    itemState = activity.getString(R.string.scanner))
             )
         }
             .show((activity as MainActivity).fragmentManager, "dialog")

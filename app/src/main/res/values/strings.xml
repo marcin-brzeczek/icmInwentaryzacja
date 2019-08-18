@@ -70,6 +70,7 @@
     <string name="start_screen">Start screen</string>
     <string name="scan_localization" translatable="false">Skanowanie lokalizacji</string>
     <string name="assing_to_localization">Znaleziono pozycję nie przypisaną do obecnej lokalizacji. Czy przypisać do obecnej lokalizacji?</string>
+    <string name="no_item_with__supplier_id_or_order_id">Brak pozycji o takim Id dostawcy lub Id zamówienia. Utworzyć nową?</string>
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>

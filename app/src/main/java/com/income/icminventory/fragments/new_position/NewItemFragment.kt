@@ -1,7 +1,11 @@
 package com.income.icminventory.fragments.new_position
 
 import android.os.Bundle
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
@@ -18,7 +22,9 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
 
     var currentAmount: Double = 0.0
     private var amount = ""
-    private var itemState=""
+    private var itemSupplierId = ""
+    private var itemOrderId = ""
+    private var itemState = ""
     private var item: Item? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,6 +44,8 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
 
         val itemCode: String? = arguments.getString(NEW_ITEM_CODE)
         itemState = arguments?.getString(NEW_ITEM_STATE) ?: getString(R.string.handle)
+        itemSupplierId = arguments?.getString(NEW_ITEM_SUPPLIER_ID) ?: ""
+        itemOrderId = arguments?.getString(NEW_ITEM_ORDER_ID) ?: ""
 
         tvLocation.text = (activity as MainActivity).currentLocation
         etCode.setText(itemCode)
@@ -51,6 +59,8 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 item?.endNumber = (etAmount.text.toString().toDouble())
                 item?.itemState = activity.getString(R.string.handle)
+                item?.supplierId = itemSupplierId
+                item?.orderId = itemOrderId
                 item?.save()
                 hideKeyboard(etAmount)
                 return@OnKeyListener true
@@ -115,14 +125,16 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
     private fun saveItem() {
         if (!validateInput()) return
         Item(code = etCode.text.toString().trim(),
-                supportCode = etSupportCode.text.toString().trim(),
-                shortName = "",
-                name = etName.text.toString().trim(),
-                oldLocation = tvLocation.text.toString(),
-                startNumber = 0.0,
-                endNumber = etAmount.text.toString().toDouble(),
-                itemState = activity.getString(R.string.handle),
-                user = ""
+            supportCode = etSupportCode.text.toString().trim(),
+            shortName = "",
+            supplierId = itemSupplierId,
+            orderId = itemOrderId,
+            name = etName.text.toString().trim(),
+            oldLocation = tvLocation.text.toString(),
+            startNumber = 0.0,
+            endNumber = etAmount.text.toString().toDouble(),
+            itemState = activity.getString(R.string.handle),
+            user = ""
         ).insert()
         Toast.makeText(activity.baseContext, getString(R.string.saved), Toast.LENGTH_SHORT).show()
         navigateBack()
