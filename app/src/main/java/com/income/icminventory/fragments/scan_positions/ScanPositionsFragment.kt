@@ -20,18 +20,7 @@ import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.utilities.toast
 import com.income.icminventory.views.NewPositionDialogFragment
 import com.income.icminventory.views.YesOrNotDialogFragment
-import kotlinx.android.synthetic.main.fragment_scan_positions.addNewItem
-import kotlinx.android.synthetic.main.fragment_scan_positions.back
-import kotlinx.android.synthetic.main.fragment_scan_positions.etAmount
-import kotlinx.android.synthetic.main.fragment_scan_positions.imgAddAmount
-import kotlinx.android.synthetic.main.fragment_scan_positions.imgRemoveAmount
-import kotlinx.android.synthetic.main.fragment_scan_positions.sectionLogo
-import kotlinx.android.synthetic.main.fragment_scan_positions.sectionScann
-import kotlinx.android.synthetic.main.fragment_scan_positions.sectionSupportCode
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvCode
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvLokalization
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvName
-import kotlinx.android.synthetic.main.fragment_scan_positions.tvSupportCode
+import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
@@ -183,8 +172,6 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
         item = dbContext.items.where(
             Item_Table.code.eq(code))
-            .or(Item_Table.supportCode.eq(code))
-            .or(Item_Table.code.eq(scannedCode))
             .and(Item_Table.supplierId.eq(supplierId))
             .and(Item_Table.orderId.eq(orderId))
             .and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
