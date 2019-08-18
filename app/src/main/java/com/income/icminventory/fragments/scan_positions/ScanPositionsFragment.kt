@@ -20,7 +20,18 @@ import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.utilities.toast
 import com.income.icminventory.views.NewPositionDialogFragment
 import com.income.icminventory.views.YesOrNotDialogFragment
-import kotlinx.android.synthetic.main.fragment_scan_positions.*
+import kotlinx.android.synthetic.main.fragment_scan_positions.addNewItem
+import kotlinx.android.synthetic.main.fragment_scan_positions.back
+import kotlinx.android.synthetic.main.fragment_scan_positions.etAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.imgAddAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.imgRemoveAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionLogo
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionScann
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionSupportCode
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvCode
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvLokalization
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvName
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvSupportCode
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
