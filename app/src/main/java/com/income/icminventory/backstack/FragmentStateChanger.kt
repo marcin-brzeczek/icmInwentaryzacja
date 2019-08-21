@@ -1,10 +1,9 @@
 package com.income.icminventory.backstack
 
 import android.app.FragmentManager
+import android.os.Build
 import android.support.annotation.IdRes
-import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.zhuinden.simplestack.StateChange
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 /** Class handling fragmentManager and each transition.
@@ -13,6 +12,9 @@ class FragmentStateChanger(private val fragmentManager: FragmentManager, @IdRes 
 
     fun handleStateChange(stateChange: StateChange) {
         val fragmentTransaction = fragmentManager.beginTransaction().disallowAddToBackStack()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            fragmentTransaction.setReorderingAllowed(false)
 
         /** set transaction animations here */
         stateChange.getPreviousState<BaseRoute>().filter {
