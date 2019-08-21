@@ -158,14 +158,21 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             return
         }
 
-        val data = scannedCode.split("#")
-        if (data.size >= 3) {
-            code = data.get(0)
-            supplierId = data.get(1)
-            orderId = data.get(2)
+        if (!scannedCode.contains("#")) {
+            code = scannedCode
+            supplierId = " "
+            orderId = " "
         } else {
-            return
+            val data = scannedCode.split("#")
+            if (data.isNotEmpty()) {
+                code = data.get(0)
+                supplierId = data.getOrNull(1) ?: " "
+                orderId = data.getOrNull(2) ?: " "
+            } else {
+                return
+            }
         }
+
         /*endregion*/
 
         toast("code: $code supplier: $supplierId order: $orderId")

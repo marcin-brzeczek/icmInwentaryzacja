@@ -5,19 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
 import com.income.icminventory.database.dto.Location
+import com.income.icminventory.emkd_scan.OnScannerRead
+import com.income.icminventory.emkd_scan.ScanWrapper
 import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.fragments.scan_positions.ScanPositionsRoute
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.inflate
 import com.income.icminventory.utilities.toast
-import kotlinx.android.synthetic.main.fragment_new_location.btnSave
-import kotlinx.android.synthetic.main.fragment_new_location.etName
+import kotlinx.android.synthetic.main.fragment_new_location.*
 
-class NewLocationFragment : FragmentBase() {
+class NewLocationFragment : FragmentBase(), OnScannerRead {
 
     private var isScannedLocalization = false
 
@@ -25,6 +27,11 @@ class NewLocationFragment : FragmentBase() {
         inflater.inflate(R.layout.fragment_new_location, container) {
             setActionBar(this@NewLocationFragment)
             setHasOptionsMenu(true)
+            try {
+                ScanWrapper.initScanner(activity.baseContext, (activity as MainActivity).scannerType)
+            } catch (e: Exception) {
+                exceptionMessage(context.getString(R.string.error_init_scanner) + e.message)
+            }
 
         }
 
@@ -34,6 +41,44 @@ class NewLocationFragment : FragmentBase() {
         setLocalizationIfScanned()
     }
 
+    override fun onStart() {
+        super.onStart()
+        ScanWrapper.registerBarcodeListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        try {
+            ScanWrapper.registerScannerListener(this)
+        } catch (e: Exception) {
+            exceptionMessage(getString(R.string.error_registry_scanner) + e.message)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            ScanWrapper.unregisterScannerListener()
+        } catch (e: Exception) {
+            exceptionMessage(getString(R.string.error_unregistry_scanner) + e.message)
+        }
+    }
+
+    override fun onReadData(data: String) {
+        etName.setText(data)
+    }
+
+    override fun onReadStatus(text: String) {
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        try {
+            ScanWrapper.deinitScanner()
+        } catch (e: Exception) {
+            exceptionMessage(getString(R.string.cant_release_scanner) + e.message)
+        }
+    }
     private fun setListeners() {
         btnSave.setOnClickListener { saveLocation() }
         etName.setOnEditorActionListener { textView, action, event ->
@@ -69,6 +114,10 @@ class NewLocationFragment : FragmentBase() {
         } else {
             navigateBack()
         }
+    }
+
+    override fun exceptionMessage(text: String) {
+        Toast.makeText(activity.baseContext, text, Toast.LENGTH_LONG).show()
     }
 
     private fun validateInput() = alsoUnless({ etName.text.trim().isNotEmpty() }) {
