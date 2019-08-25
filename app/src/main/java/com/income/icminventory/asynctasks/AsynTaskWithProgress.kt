@@ -33,9 +33,10 @@ class AsyncTaskWithProgress(val activity: Activity, private val doInBackground: 
 
     override fun onPostExecute(result: Boolean) {
         if (result) {
-            if ((activity as MainActivity).isActivityResume)
+            if ((activity as MainActivity).isActivityResume) {
                 InfoDialogFragment({ progressDialogFragment?.dismiss() }, activity.baseContext.getString(R.string.error_ocurred) + " ${exc?.toString()}").show((activity as MainActivity).fragmentManager, "dialog")
-            Timber.d("Error: ${exc?.printStackTrace()}")
+                Timber.d("Error: ${exc?.localizedMessage?.toString()}")
+            }
         } else {
             onPostExecute.invoke()
             progressDialogFragment?.dismiss()

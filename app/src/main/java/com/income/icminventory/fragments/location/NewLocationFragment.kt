@@ -17,6 +17,7 @@ import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.inflate
 import com.income.icminventory.utilities.toast
+import com.income.icminventory.views.YesOrNotDialogFragment
 import kotlinx.android.synthetic.main.fragment_new_location.*
 
 class NewLocationFragment : FragmentBase(), OnScannerRead {
@@ -65,7 +66,11 @@ class NewLocationFragment : FragmentBase(), OnScannerRead {
     }
 
     override fun onReadData(data: String) {
-        etName.setText(data)
+        if (dbContext.locations.queryList().map { it.name }.contains(data)) {
+            showExistLocationDialog(data)
+        } else {
+            etName.setText(data)
+        }
     }
 
     override fun onReadStatus(text: String) {
@@ -79,6 +84,7 @@ class NewLocationFragment : FragmentBase(), OnScannerRead {
             exceptionMessage(getString(R.string.cant_release_scanner) + e.message)
         }
     }
+
     private fun setListeners() {
         btnSave.setOnClickListener { saveLocation() }
         etName.setOnEditorActionListener { textView, action, event ->
@@ -91,6 +97,17 @@ class NewLocationFragment : FragmentBase(), OnScannerRead {
         }
     }
 
+    fun showExistLocationDialog(scannedData:String) {
+        YesOrNotDialogFragment(blockYesClick =
+        {
+            (activity as MainActivity).currentLocation = etName.text.toString()
+            etName.setText(scannedData)
+            navigateBack()
+        }, blockNoClick = {}
+            , text = getString(R.string.exist_location))
+            .show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
     private fun setLocalizationIfScanned() {
         val scannedLocalizationName = (activity as MainActivity).scannedLocation
         isScannedLocalization = scannedLocalizationName.isNotEmpty()
@@ -101,10 +118,7 @@ class NewLocationFragment : FragmentBase(), OnScannerRead {
 
     private fun saveLocation() {
         if (!validateInput()) return
-        if (dbContext.locations.queryList().map { it.name }.contains(etName.text.toString())) {
-            toast(getString(R.string.location_already_exists))
-            return
-        }
+
         Location(name = etName.text.toString().trim()).insert()
         toast(getString(R.string.saved))
         if (isScannedLocalization) {

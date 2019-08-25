@@ -11,6 +11,7 @@ import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
 import com.income.icminventory.database.dto.Item
 import com.income.icminventory.database.dto.Item_Table
+import com.income.icminventory.database.dto.Location_Table
 import com.income.icminventory.emkd_scan.OnScannerRead
 import com.income.icminventory.emkd_scan.ScanWrapper
 import com.income.icminventory.fragments.abstraction.FragmentBase
@@ -50,6 +51,10 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     private fun setListeners() {
         addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
+        scanLocation.setOnClickListener {
+            (activity as MainActivity).currentLocation = ""
+            setLocalizationTitle()
+        }
         back.setOnClickListener {
             sectionLogo.visibility = View.VISIBLE
             sectionScann.visibility = View.GONE
@@ -136,7 +141,11 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
     private fun getLocalizationByCode(localizationName: String) {
         (activity as MainActivity).scannedLocation = localizationName
-        navigateTo(NewLocationRoute())
+
+        val location = dbContext.locations.where(Location_Table.name.eq(localizationName)).querySingle()
+        if (location == null) {
+            showExistLocationDialog()
+        }
     }
 
     override fun onReadStatus(text: String) {
@@ -213,6 +222,15 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             createOrUpdateItem(item, code, supplierId, orderId)
         }, blockNoClick = {}
             , text = getString(R.string.assing_to_localization))
+            .show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
+    fun showExistLocationDialog() {
+        YesOrNotDialogFragment(blockYesClick =
+        {
+            navigateTo(NewLocationRoute())
+        }, blockNoClick = {}
+            , text = getString(R.string.add_new_location))
             .show((activity as MainActivity).fragmentManager, "dialog")
     }
 

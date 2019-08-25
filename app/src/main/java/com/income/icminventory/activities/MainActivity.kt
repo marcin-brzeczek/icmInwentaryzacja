@@ -65,7 +65,6 @@ class MainActivity : ActivityBase() {
         var barcodeReader: BarcodeReader? = null
     }
 
-
     override fun onStart() {
         super.onStart()
         progressDialogFragment = ProgressDialogFragment()
@@ -86,7 +85,6 @@ class MainActivity : ActivityBase() {
         super.onResume()
         isActivityResume = true
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

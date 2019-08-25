@@ -41,8 +41,8 @@
             android:id="@+id/tvScanCode"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/imgScann"
+            android:layout_alignParentStart="true"
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="@string/scan_code"
@@ -50,6 +50,7 @@
             android:textSize="26dp"
             android:textStyle="bold"/>
     </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/sectionScann"
@@ -64,8 +65,8 @@
             android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/tvLokalization"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="20dp"
             android:background="@drawable/cell_shape_grey2">
 
@@ -103,9 +104,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@+id/layoutLogin"
                 android:inputType="textPersonName"
-                android:layout_marginStart="10dp"
                 android:singleLine="true"
                 android:textColor="@color/white"
                 android:textSize="16dp"
@@ -144,8 +145,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/txtSupportCodeLabel"
                     android:gravity="start|center_vertical"
                     android:inputType="textMultiLine"
@@ -161,8 +162,8 @@
             android:id="@+id/sectionName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/relativeLayout1"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="22dp"
             android:background="@drawable/cell_shape_grey2"
             android:visibility="visible">
@@ -192,8 +193,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/txtNameLabel"
                     android:gravity="start|center_vertical"
                     android:inputType="textMultiLine"
@@ -218,8 +219,8 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_toEndOf="@+id/textAmount"
                 android:layout_toRightOf="@+id/textAmount"
                 android:background="@drawable/circle_shape"
@@ -236,8 +237,8 @@
                 android:gravity="center"
                 android:inputType="numberDecimal"
                 android:maxWidth="110dp"
-                android:minEms="5"
                 android:minWidth="30dp"
+                android:minEms="5"
                 android:singleLine="true"
                 android:text="1"
                 android:textColor="@color/greyText"
@@ -250,8 +251,8 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignTop="@+id/imgRemoveAmount"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_toEndOf="@+id/etAmount"
                 android:layout_toRightOf="@+id/etAmount"
                 android:alpha="1"
@@ -264,8 +265,8 @@
                 android:id="@+id/textAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:alpha="1"
                 android:text="@string/amount"
@@ -275,34 +276,46 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="end"
-        android:orientation="vertical"
         >
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addNewItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/back"
-            android:layout_alignEnd="@+id/sectionLogo"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/ic_plus_white_18dp"
-            app:backgroundTint="@color/colorLogo"/>
+            app:backgroundTint="@color/colorLogo"
+            app:layout_constraintBottom_toTopOf="@id/back"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/scanLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_location"
+            app:backgroundTint="@color/colorLogo"
+            app:layout_constraintBottom_toTopOf="@id/back"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
             android:id="@+id/back"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
             android:text="@string/back"
             android:textSize="17dp"
-            android:visibility="gone"/>
-    </LinearLayout>
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+
 </RelativeLayout>

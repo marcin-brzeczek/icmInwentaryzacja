@@ -29,10 +29,12 @@ class ReadFileController(val fragmentBase: FragmentBase) {
             val item = Item()
             item.code = arrayLine[1]
             item.supportCode = arrayLine[2]
-            item.shortName = arrayLine[3]
-            item.name = arrayLine[4]
-            item.oldLocation = arrayLine[5]
-            item.startNumber = arrayLine[6].toDouble()
+            item.supplierId = arrayLine[3]
+            item.orderId = arrayLine[4]
+            item.shortName = arrayLine[5]
+            item.name = arrayLine[6]
+            item.oldLocation = arrayLine[7]
+            item.startNumber = arrayLine[8].toDouble()
             item.itemState = ""
             items.add(item)
             currentline = reader.readLine()

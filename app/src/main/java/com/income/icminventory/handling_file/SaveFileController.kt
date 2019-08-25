@@ -30,6 +30,7 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
 
         if (!isEmptyFile) {
             val iterator = dbContext.items.queryList().iterator()
+            val user = if (dbContext.isEmptyUsers) "" else dbContext.users.queryList().last().name
             while (iterator.hasNext()) {
                 val item = iterator.next()
                 sb.append(item.id.toString() + ";") /*id*/
@@ -47,7 +48,7 @@ class SaveFileController(val fragmentBase: FragmentBase, val dbContext: DBContex
                 sb.append(item.startNumber.toString() + ";")
                 sb.append(item.endNumber.toString() + ";")
                 sb.append(item.itemState + ";")
-                sb.append(dbContext.users.queryList().last().name + ";")
+                sb.append(user + ";")
                 sb.append("\n")
             }
         }
