@@ -25,6 +25,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
     private var itemSupplierId = ""
     private var itemOrderId = ""
     private var itemState = ""
+    private var itemName = ""
     private var item: Item? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,9 +47,11 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
         itemState = arguments?.getString(NEW_ITEM_STATE) ?: getString(R.string.handle)
         itemSupplierId = arguments?.getString(NEW_ITEM_SUPPLIER_ID) ?: ""
         itemOrderId = arguments?.getString(NEW_ITEM_ORDER_ID) ?: ""
+        itemName = arguments?.getString(NEW_ITEM_NAME) ?: ""
 
         tvLocation.text = (activity as MainActivity).currentLocation
         etCode.setText(itemCode)
+        etName.setText(itemName)
 
         btnSave.setOnClickListener { saveItem() }
         setHasOptionsMenu(true)

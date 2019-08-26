@@ -214,9 +214,13 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             .and(Item_Table.orderId.eq(orderId))
             .and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
 
+        var itemName = ""
         item?.let { createOrUpdateItem(it, code, supplierId, orderId) }
-            ?: getItemWihoutLocalization(scannedCode)?.let { addNewItem(it, code, supplierId, orderId) }
-            ?: navigateTo(NewItemRoute(code, supplierId, orderId, activity.getString(R.string.scanner)))
+            ?: getItemWihoutLocalization(code)?.let {
+                itemName = it.name
+                addNewItem(it, code, supplierId, orderId)
+            }
+            ?: navigateTo(NewItemRoute(code, supplierId, orderId, itemName, activity.getString(R.string.scanner)))
         addNewItem.visibility = View.GONE
     }
 
@@ -250,6 +254,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         )
         tvName.setText(newItem.name)
         tvCode.setText(newItem.code)
+        etAmount.setText(newItem.endNumber.toString())
         newItem.insert()
     }
 
