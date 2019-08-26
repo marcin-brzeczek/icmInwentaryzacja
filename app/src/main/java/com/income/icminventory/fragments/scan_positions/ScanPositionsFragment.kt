@@ -19,7 +19,6 @@ import com.income.icminventory.fragments.location.NewLocationRoute
 import com.income.icminventory.fragments.new_position.NewItemRoute
 import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.utilities.toast
-import com.income.icminventory.views.NewPositionDialogFragment
 import com.income.icminventory.views.YesOrNotDialogFragment
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
@@ -59,9 +58,10 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             sectionLogo.visibility = View.VISIBLE
             sectionScann.visibility = View.GONE
             it.visibility = View.GONE
+            addNewItem.visibility = View.VISIBLE
+            scanLocation.visibility = View.VISIBLE
             item?.endNumber = (etAmount.text.toString().toDouble())
             item?.save()
-
         }
         imgRemoveAmount.setOnClickListener { setAmount();etAmount.setText(if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0") }
         imgAddAmount.setOnClickListener { setAmount();etAmount.setText((++currentAmount).toString() + "") }
@@ -82,8 +82,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         scanningLocalization = existLocation.isEmpty()
 
         if (scanningLocalization) {
-            addNewItem.visibility = View.GONE
             tvLokalization.text = getString(R.string.scan_localization)
+            addNewItem.visibility = View.GONE
         } else
             tvLokalization.text = activity.baseContext.getString(R.string.location).plus(existLocation)
     }
@@ -132,6 +132,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         val enterSuffix = "\n"
         val finishData = if (data.contains(enterSuffix)) data.removeSuffix(enterSuffix) else data
 
+        setViewsForScanningLocation()
+
         if (scanningLocalization) {
             getLocalizationByCode(finishData)
         } else {
@@ -139,12 +141,32 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         }
     }
 
+    private fun setViewsForScanningLocation() {
+        sectionLogo.visibility = if (scanningLocalization) View.VISIBLE else View.GONE
+        scanLocation.visibility = if (scanningLocalization) View.VISIBLE else View.GONE
+        sectionScann.visibility = if (scanningLocalization) View.GONE else View.VISIBLE
+        back.visibility = if (scanningLocalization) View.GONE else View.VISIBLE
+    }
+
+    private fun showViewsForScanningLPosition() {
+        sectionLogo.visibility = View.VISIBLE
+        scanLocation.visibility = View.VISIBLE
+        sectionScann.visibility = View.GONE
+        addNewItem.visibility = View.VISIBLE
+        back.visibility = View.GONE
+    }
+
     private fun getLocalizationByCode(localizationName: String) {
         (activity as MainActivity).scannedLocation = localizationName
 
         val location = dbContext.locations.where(Location_Table.name.eq(localizationName)).querySingle()
         if (location == null) {
-            showExistLocationDialog()
+            showNewLocationDialog()
+        } else {
+            showViewsForScanningLPosition()
+            scanningLocalization = false
+            (activity as MainActivity).currentLocation = location.name
+            tvLokalization.setText(location.name)
         }
     }
 
@@ -193,8 +215,9 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             .and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
 
         item?.let { createOrUpdateItem(it, code, supplierId, orderId) }
-            ?: getItemWihoutLocalization(scannedCode)?.let { showMoveItemToLocalizationDialog(it, code, supplierId, orderId) }
-            ?: showNewPositionDialog(code, supplierId, orderId)
+            ?: getItemWihoutLocalization(scannedCode)?.let { addNewItem(it, code, supplierId, orderId) }
+            ?: navigateTo(NewItemRoute(code, supplierId, orderId, activity.getString(R.string.scanner)))
+        addNewItem.visibility = View.GONE
     }
 
     private fun getItemWihoutLocalization(code: String): Item? = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).querySingle()
@@ -216,34 +239,26 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         this.save()
     }
 
-    fun showMoveItemToLocalizationDialog(item: Item, code: String, supplierId: String, orderId: String) {
-        YesOrNotDialogFragment(blockYesClick =
-        {
-            createOrUpdateItem(item, code, supplierId, orderId)
-        }, blockNoClick = {}
-            , text = getString(R.string.assing_to_localization))
-            .show((activity as MainActivity).fragmentManager, "dialog")
+    fun addNewItem(item: Item, code: String, supplierId: String, orderId: String) {
+        val newItem = item.copy(
+            code = code,
+            id = item.id + 1,
+            supplierId = supplierId,
+            orderId = orderId,
+            endNumber = 1.0,
+            oldLocation = (activity as MainActivity).currentLocation
+        )
+        tvName.setText(newItem.name)
+        tvCode.setText(newItem.code)
+        newItem.insert()
     }
 
-    fun showExistLocationDialog() {
+    fun showNewLocationDialog() {
         YesOrNotDialogFragment(blockYesClick =
         {
             navigateTo(NewLocationRoute())
         }, blockNoClick = {}
             , text = getString(R.string.add_new_location))
-            .show((activity as MainActivity).fragmentManager, "dialog")
-    }
-
-    fun showNewPositionDialog(codePos: String, supplierId: String, orderId: String) {
-        NewPositionDialogFragment {
-            navigateTo(
-                NewItemRoute(
-                    code = codePos,
-                    supplierId = supplierId,
-                    orderId = orderId,
-                    itemState = activity.getString(R.string.scanner))
-            )
-        }
             .show((activity as MainActivity).fragmentManager, "dialog")
     }
 }

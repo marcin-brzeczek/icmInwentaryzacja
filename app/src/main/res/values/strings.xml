@@ -25,7 +25,7 @@
     <string name="sum">Sum</string>
     <string name="scan_code">Scan code</string>
     <string name="scan_ean">Scan code EAN</string>
-    <string name="name">Name *</string>
+    <string name="name">Name</string>
     <string name="scanned_amount">Scanned amount:</string>
     <string name="no_tem_for_code">No item for this code. Would you like create new item?</string>
     <string name="amount">Amount:</string>
@@ -76,4 +76,5 @@
     <string-array name="report_fragment_tab_names">
         <item name="timeline">oś czasu</item>
     </string-array>
+    <string name="scanning">Scanning</string>
 </resources>

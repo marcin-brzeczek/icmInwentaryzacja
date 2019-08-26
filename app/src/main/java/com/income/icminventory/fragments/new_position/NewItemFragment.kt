@@ -129,7 +129,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
             shortName = "",
             supplierId = itemSupplierId,
             orderId = itemOrderId,
-            name = etName.text.toString().trim(),
+            name = if (etName.text.isBlank()) etCode.text.toString() else etName.text.toString(),
             oldLocation = tvLocation.text.toString(),
             startNumber = 0.0,
             endNumber = etAmount.text.toString().toDouble(),
@@ -140,7 +140,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
         navigateBack()
     }
 
-    private fun validateInput() = alsoUnless({ etCode.text.trim().isNotEmpty() && etName.text.trim().isNotEmpty() }) {
+    private fun validateInput() = alsoUnless({ etCode.text.trim().isNotEmpty() }) {
         if (etCode.text.isBlank()) etCode.text.clear()
         if (etName.text.isBlank()) etName.text.clear()
         displayError(etCode, etName, context = activity.baseContext)

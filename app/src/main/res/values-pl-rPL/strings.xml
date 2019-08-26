@@ -23,7 +23,7 @@
     <string name="sum">Suma sztuk</string>
     <string name="scan_code">Zeskanuj Kod</string>
     <string name="scan_ean">Zeskanuj kod EAN</string>
-    <string name="name">Nazwa *</string>
+    <string name="name">Nazwa </string>
     <string name="scanned_amount">Ilość Zeskanowana:</string>
     <string name="no_tem_for_code">Brak pozycji o takim kodzie. Utworzyć nową?</string>
     <string name="amount">Ilosc:</string>
@@ -70,4 +70,5 @@
         <item name="timeline">oś czasu</item>
     </string-array>
     <string name="header_of_exported_file_for_es_systems_k">Id;Kod;IdDostawcy;IdZamowienia;KodPomocniczy;NazwaSkrocona;Nazwa;LokalizacjaStara;IloscPoczatkowa;IloscKoncowa;Przetworzona;Spisujacy;</string>
+    <string name="scanning">Skanowanie</string>
 </resources>

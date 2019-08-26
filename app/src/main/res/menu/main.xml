@@ -8,7 +8,7 @@
         />
     <item
         android:id="@+id/moveToScan"
-        android:title="@string/scanning_items"
+        android:title="@string/scanning"
         android:visible="true"
         />
     <item
