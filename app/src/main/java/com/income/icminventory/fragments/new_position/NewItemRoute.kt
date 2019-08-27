@@ -9,14 +9,12 @@ const val NEW_ITEM_CODE = "item_code"
 const val NEW_ITEM_SUPPLIER_ID= "supplier_id"
 const val NEW_ITEM_ORDER_ID= "order_id"
 const val NEW_ITEM_STATE = "item_state"
-const val NEW_ITEM_NAME = "item_name"
 
 @PaperParcel
 data class NewItemRoute(
     val code: String? = null,
     val supplierId: String? = null,
     val orderId: String? = null,
-    val itemName: String? = null,
     val itemState: String? = null,
     val tag: String = NewItemRoute::javaClass.name
 ) : BaseRoute() {
@@ -27,7 +25,6 @@ data class NewItemRoute(
             putString(NEW_ITEM_SUPPLIER_ID, supplierId)
             putString(NEW_ITEM_ORDER_ID, orderId)
             putString(NEW_ITEM_STATE, itemState)
-            putString(NEW_ITEM_NAME, itemName)
         }
     }
 

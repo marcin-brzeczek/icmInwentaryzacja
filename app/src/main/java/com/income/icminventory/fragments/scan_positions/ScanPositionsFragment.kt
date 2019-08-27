@@ -19,6 +19,7 @@ import com.income.icminventory.fragments.location.NewLocationRoute
 import com.income.icminventory.fragments.new_position.NewItemRoute
 import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.utilities.toast
+import com.income.icminventory.views.NewPositionDialogFragment
 import com.income.icminventory.views.YesOrNotDialogFragment
 import kotlinx.android.synthetic.main.fragment_scan_positions.*
 
@@ -206,7 +207,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
         /*endregion*/
 
-        toast("code: $code supplier: $supplierId order: $orderId")
+        addNewItem.visibility = View.GONE
 
         item = dbContext.items.where(
             Item_Table.code.eq(code))
@@ -214,14 +215,9 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             .and(Item_Table.orderId.eq(orderId))
             .and(Item_Table.oldLocation.eq((activity as MainActivity).currentLocation)).querySingle()
 
-        var itemName = ""
         item?.let { createOrUpdateItem(it, code, supplierId, orderId) }
-            ?: getItemWihoutLocalization(code)?.let {
-                itemName = it.name
-                addNewItem(it, code, supplierId, orderId)
-            }
-            ?: navigateTo(NewItemRoute(code, supplierId, orderId, itemName, activity.getString(R.string.scanner)))
-        addNewItem.visibility = View.GONE
+            ?: getItemWihoutLocalization(code)?.let { addNewItem(it, code, supplierId, orderId) }
+            ?: showNewPositionDialog(code, supplierId, orderId).also {  showViewsForScanningLPosition() }
     }
 
     private fun getItemWihoutLocalization(code: String): Item? = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).querySingle()
@@ -264,6 +260,19 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             navigateTo(NewLocationRoute())
         }, blockNoClick = {}
             , text = getString(R.string.add_new_location))
+            .show((activity as MainActivity).fragmentManager, "dialog")
+    }
+
+    fun showNewPositionDialog(codePos: String, supplierId: String, orderId: String) {
+        NewPositionDialogFragment {
+            navigateTo(
+                NewItemRoute(
+                    code = codePos,
+                    supplierId = supplierId,
+                    orderId = orderId,
+                    itemState = activity.getString(R.string.scanner))
+            )
+        }
             .show((activity as MainActivity).fragmentManager, "dialog")
     }
 }
