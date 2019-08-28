@@ -45,6 +45,5 @@ class DBContext @Inject constructor() {
        get() = !items.where(Item_Table.endNumber.greaterThan(0.0)).hasData()
 
     val isEmptyUsers: Boolean
-        get() = !users.hasData()
-
+        get() = users.queryList().isEmpty()
 }
