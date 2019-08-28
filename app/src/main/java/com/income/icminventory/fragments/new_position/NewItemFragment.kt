@@ -16,7 +16,14 @@ import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.hideKeyboard
-import kotlinx.android.synthetic.main.fragment_new_position.*
+import kotlinx.android.synthetic.main.fragment_new_position.btnSave
+import kotlinx.android.synthetic.main.fragment_new_position.etAmount
+import kotlinx.android.synthetic.main.fragment_new_position.etCode
+import kotlinx.android.synthetic.main.fragment_new_position.etName
+import kotlinx.android.synthetic.main.fragment_new_position.etSupportCode
+import kotlinx.android.synthetic.main.fragment_new_position.imgAddAmount
+import kotlinx.android.synthetic.main.fragment_new_position.imgRemoveAmount
+import kotlinx.android.synthetic.main.fragment_new_position.tvLocation
 
 class NewItemFragment : FragmentBase(), OnScannerRead {
 
@@ -61,6 +68,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
                 item?.itemState = activity.getString(R.string.handle)
                 item?.supplierId = itemSupplierId
                 item?.orderId = itemOrderId
+                item?.user = (activity as MainActivity).currentUser
                 item?.save()
                 hideKeyboard(etAmount)
                 return@OnKeyListener true
@@ -134,7 +142,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
             startNumber = 0.0,
             endNumber = etAmount.text.toString().toDouble(),
             itemState = activity.getString(R.string.handle),
-            user = ""
+            user = (activity as MainActivity).currentUser
         ).insert()
         Toast.makeText(activity.baseContext, getString(R.string.saved), Toast.LENGTH_SHORT).show()
         navigateBack()

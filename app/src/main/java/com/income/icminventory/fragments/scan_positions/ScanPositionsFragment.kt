@@ -259,6 +259,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         tvSupportCode.setText(supportCode)
         tvLokalization.setText(oldLocation)
         itemState = let { if (it.equals(activity.getString(R.string.handle))) activity.getString(R.string.handle) else activity.getString(R.string.scanner) }
+        user = (activity as MainActivity).currentUser
         this.save()
     }
 
@@ -269,7 +270,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             supplierId = supplierId,
             orderId = orderId,
             endNumber = 1.0,
-            oldLocation = (activity as MainActivity).currentLocation
+            oldLocation = (activity as MainActivity).currentLocation,
+            user = (activity as MainActivity).currentUser
         )
         tvName.setText(newItem.name)
         tvCode.setText(newItem.code)

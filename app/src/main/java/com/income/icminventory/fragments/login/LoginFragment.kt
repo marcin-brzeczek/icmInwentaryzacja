@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import com.income.icminventory.R
+import com.income.icminventory.activities.MainActivity
 import com.income.icminventory.database.dto.User
 import com.income.icminventory.fragments.ModeCSV
 import com.income.icminventory.fragments.abstraction.FragmentBase
@@ -47,28 +48,31 @@ class LoginFragment : FragmentBase() {
     }
 
     private fun loadOrOpenDatabase(isEmptyDatabase: Boolean) {
-        User(name = etLogin.text.toString()).insert()
         if (!validateInput()) return
         if (isEmptyDatabase) {
             selectPositionsCSVFile()
         } else {
             navigateTo(ChooseLocationRoute())
         }
+        User(name = etLogin.text.toString()).insert()
+        (activity as MainActivity).currentUser = etLogin.text.toString()
     }
 
     private fun exportFileAndStartNewEmptyInventory(isEmptyDatabase: Boolean) {
-        User(name = etLogin.text.toString()).insert()
         if (!validateInput()) return
         if (isEmptyDatabase) {
             navigateTo(ChooseLocationRoute())
         } else {
             requestPermissionAndHandleCSV()
         }
+        User(name = etLogin.text.toString()).insert()
+        (activity as MainActivity).currentUser = etLogin.text.toString()
     }
 
     private fun exportFileAndStartNewInventory() {
-        User(name = etLogin.text.toString()).insert()
         if (!validateInput()) return
         requestPermissionAndHandleCSV()
+        User(name = etLogin.text.toString()).insert()
+        (activity as MainActivity).currentUser = etLogin.text.toString()
     }
 }

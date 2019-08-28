@@ -39,7 +39,7 @@ class DBContext @Inject constructor() {
     }
 
     val isEmptyItems: Boolean
-        get() = !items.hasData()
+        get() = items.queryList().isEmpty()
 
     val isEmptyScannedItems: Boolean
        get() = !items.where(Item_Table.endNumber.greaterThan(0.0)).hasData()
