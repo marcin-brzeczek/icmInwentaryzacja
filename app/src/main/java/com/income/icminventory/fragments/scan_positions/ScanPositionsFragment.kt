@@ -21,7 +21,19 @@ import com.income.icminventory.utilities.hideKeyboard
 import com.income.icminventory.utilities.toast
 import com.income.icminventory.views.NewPositionDialogFragment
 import com.income.icminventory.views.YesOrNotDialogFragment
-import kotlinx.android.synthetic.main.fragment_scan_positions.*
+import kotlinx.android.synthetic.main.fragment_scan_positions.addNewItem
+import kotlinx.android.synthetic.main.fragment_scan_positions.back
+import kotlinx.android.synthetic.main.fragment_scan_positions.etAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.imgAddAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.imgRemoveAmount
+import kotlinx.android.synthetic.main.fragment_scan_positions.scanLocation
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionLogo
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionScann
+import kotlinx.android.synthetic.main.fragment_scan_positions.sectionSupportCode
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvCode
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvLokalization
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvName
+import kotlinx.android.synthetic.main.fragment_scan_positions.tvSupportCode
 
 class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
@@ -163,6 +175,12 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     }
 
     private fun getLocalizationByCode(localizationName: String) {
+
+        if (!localizationName.startsWith("M")) {
+            toast(getString(R.string.incorrect_location_code), Toast.LENGTH_LONG)
+            return
+        }
+
         (activity as MainActivity).scannedLocation = localizationName
 
         val location = dbContext.locations.where(Location_Table.name.eq(localizationName)).querySingle()
@@ -191,7 +209,12 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         var orderId = ""
 
         if (scannedCode.startsWith("#")) {
-            toast("Błąd odczytu: kod nie może zaczynać się od znaku '#'", Toast.LENGTH_LONG)
+            toast(getString(R.string.code_cannot_start_with_hash), Toast.LENGTH_LONG)
+            return
+        }
+
+        if (scannedCode.startsWith("M")) {
+            toast(getString(R.string.incorrect_item_code), Toast.LENGTH_LONG)
             return
         }
 
@@ -241,6 +264,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         tvSupportCode.setText(supportCode)
         tvLokalization.setText(oldLocation)
         itemState = let { if (it.equals(activity.getString(R.string.handle))) activity.getString(R.string.handle) else activity.getString(R.string.scanner) }
+        user = (activity as MainActivity).currentUser
         this.save()
     }
 
@@ -251,7 +275,8 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             supplierId = supplierId,
             orderId = orderId,
             endNumber = 1.0,
-            oldLocation = (activity as MainActivity).currentLocation
+            oldLocation = (activity as MainActivity).currentLocation,
+            user = (activity as MainActivity).currentUser
         )
         tvName.setText(newItem.name)
         tvCode.setText(newItem.code)
