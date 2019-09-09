@@ -10,12 +10,14 @@ import android.widget.Toast
 import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
 import com.income.icminventory.database.dto.Item
+import com.income.icminventory.database.dto.Item_Table
 import com.income.icminventory.emkd_scan.OnScannerRead
 import com.income.icminventory.emkd_scan.ScanWrapper
 import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.utilities.alsoUnless
 import com.income.icminventory.utilities.displayError
 import com.income.icminventory.utilities.hideKeyboard
+import com.income.icminventory.utilities.toast
 import kotlinx.android.synthetic.main.fragment_new_position.*
 
 class NewItemFragment : FragmentBase(), OnScannerRead {
@@ -53,7 +55,7 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
         btnSave.setOnClickListener { saveItem() }
         setHasOptionsMenu(true)
 
-        imgRemoveAmount.setOnClickListener { setAmount();etAmount.setText(if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0") }
+        imgRemoveAmount.setOnClickListener { setAmount();etAmount.setText(if (currentAmount > 0.0) (--currentAmount).toString() + "" else "0.0") }
         imgAddAmount.setOnClickListener { setAmount();etAmount.setText((++currentAmount).toString() + "") }
         etAmount.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -144,6 +146,12 @@ class NewItemFragment : FragmentBase(), OnScannerRead {
         if (etCode.text.isBlank()) etCode.text.clear()
         if (etName.text.isBlank()) etName.text.clear()
         displayError(etCode, etName, context = activity.baseContext)
+    }.run {
+        val existItem = dbContext.items.where(Item_Table.code.eq(etCode.text.toString())).querySingle()
+        existItem?.let {
+            toast("Już istnieje pozycja o takim kodzie w bazie")
+            false
+        } ?: true
     }
 
     private fun setAmount() {

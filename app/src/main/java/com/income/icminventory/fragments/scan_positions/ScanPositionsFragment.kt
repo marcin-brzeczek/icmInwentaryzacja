@@ -49,6 +49,11 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
         setListeners()
     }
 
+    private fun updateAmountOfItem() {
+        item?.endNumber = (etAmount.text.toString().toDouble())
+        item?.save()
+    }
+
     private fun setListeners() {
         addNewItem.setOnClickListener { navigateTo(NewItemRoute()) }
         scanLocation.setOnClickListener {
@@ -61,10 +66,9 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
             it.visibility = View.GONE
             addNewItem.visibility = View.VISIBLE
             scanLocation.visibility = View.VISIBLE
-            item?.endNumber = (etAmount.text.toString().toDouble())
-            item?.save()
+            updateAmountOfItem()
         }
-        imgRemoveAmount.setOnClickListener { setAmount();etAmount.setText(if (currentAmount > 1.0) (--currentAmount).toString() + "" else "1.0") }
+        imgRemoveAmount.setOnClickListener { setAmount();etAmount.setText(if (currentAmount > 0.0) (--currentAmount).toString() + "" else "0.0") }
         imgAddAmount.setOnClickListener { setAmount();etAmount.setText((++currentAmount).toString() + "") }
         etAmount.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -123,6 +127,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
     override fun onDestroyView() {
         super.onDestroyView()
         try {
+            updateAmountOfItem()
             ScanWrapper.deinitScanner()
         } catch (e: Exception) {
             exceptionMessage(getString(R.string.cant_release_scanner) + e.message)
@@ -217,7 +222,7 @@ class ScanPositionsFragment : FragmentBase(), OnScannerRead {
 
         item?.let { createOrUpdateItem(it, code, supplierId, orderId) }
             ?: getItemWihoutLocalization(code)?.let { addNewItem(it, code, supplierId, orderId) }
-            ?: showNewPositionDialog(code, supplierId, orderId).also {  showViewsForScanningLPosition() }
+            ?: showNewPositionDialog(code, supplierId, orderId).also { showViewsForScanningLPosition() }
     }
 
     private fun getItemWihoutLocalization(code: String): Item? = dbContext.items.where(Item_Table.code.eq(code)).or(Item_Table.supportCode.eq(code)).querySingle()
