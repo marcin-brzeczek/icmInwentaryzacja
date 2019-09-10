@@ -75,6 +75,9 @@ dependencies {
     compile 'org.jetbrains.anko:anko-common:0.10.6'
     /*Floating Menu*/
     implementation "com.github.clans:fab:$fabmenu_version"
+    /*Glide*/
+    implementation 'com.github.bumptech.glide:glide:4.3.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
 
     implementation files('libs/platform_sdk_v2.3.602.jar')
     implementation files('libs/datalogic.jar')

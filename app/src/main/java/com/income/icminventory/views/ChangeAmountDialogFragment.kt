@@ -39,7 +39,7 @@ class ChangeAmountDialogFragment(val item: Item, val onReloadAdapterListener: IO
         bOK.setOnClickListener {
             removeView()
             item.endNumber = tvAmount.text.toString().toDouble()
-            item.itemState = context.getString(R.string.handle)
+            item.itemState = context!!.getString(R.string.handle)
             item.save()
             onReloadAdapterListener.reload()
             alert.cancel()

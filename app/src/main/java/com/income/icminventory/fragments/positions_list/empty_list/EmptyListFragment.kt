@@ -9,10 +9,7 @@ import com.income.icminventory.fragments.FragmentType
 import com.income.icminventory.fragments.abstraction.FragmentSearch
 import com.income.icminventory.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
-import kotlinx.android.synthetic.main.fragment_list.etSearch
-import kotlinx.android.synthetic.main.fragment_list.imgClear
-import kotlinx.android.synthetic.main.fragment_list.tvLocation
-import kotlinx.android.synthetic.main.fragment_list.tvTitle
+import kotlinx.android.synthetic.main.fragment_list.*
 
 class EmptyListFragment : FragmentSearch() {
 
@@ -26,8 +23,17 @@ class EmptyListFragment : FragmentSearch() {
         tvTitle.text = activity.getString(R.string.entry_list)
         tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
         imgClear.setOnClickListener {
-            etSearch.text.clear()
-            loadAllData(loadItemViewModels())
+//            etSearch.text.clear()
+//            loadAllData(loadItemViewModels())
+         filter { viewModel ->
+
+            /*Filter manually added positions*/
+//             (viewModel as ItemViewModel).item.user.isBlank()
+
+             /*Filter scanned positions*/
+             (viewModel as ItemViewModel).item.user.isNotBlank()
+
+         }
         }
     }
 }

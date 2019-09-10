@@ -3,7 +3,6 @@ package com.income.icminventory.fragments.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.income.icminventory.fragments.FragmentType
 import com.income.icminventory.fragments.abstraction.FragmentBase
 import com.income.icminventory.fragments.adapter.holder.GenericViewHolder
 import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
@@ -11,6 +10,11 @@ import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
 
 class ItemAdapter(var items: MutableList<ViewModel>, val typeFactory: ITypesFactory, val fragmentBase: FragmentBase) : RecyclerView.Adapter<GenericViewHolder<ViewModel>>() {
 
+    val allItems: MutableList<ViewModel>
+
+    init {
+        allItems = items
+    }
 
     override fun getItemCount(): Int {
         return items.count()

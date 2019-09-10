@@ -13,7 +13,11 @@ import com.income.icminventory.R
 import com.income.icminventory.activities.MainActivity
 import com.income.icminventory.database.dto.Item_Table
 import com.income.icminventory.fragments.FragmentType
-import com.income.icminventory.fragments.adapter.*
+import com.income.icminventory.fragments.adapter.IOnReloadAdapterListener
+import com.income.icminventory.fragments.adapter.ItemAdapter
+import com.income.icminventory.fragments.adapter.ItemSwipeHelper
+import com.income.icminventory.fragments.adapter.SearchEngine
+import com.income.icminventory.fragments.adapter.TypesFactoryImpl
 import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -46,6 +50,13 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
         initAdapter()
     }
 
+    fun filter(predicate: (ViewModel) -> Boolean) {
+        val adapterItems = _adapter.allItems
+        val filteredItems = adapterItems.filter { predicate(it) }.toMutableList()
+        _adapter.setListItem(filteredItems)
+    }
+
+
     fun loadAdapter() {
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
         val itemAdapter = ItemAdapter(loadItemViewModels(), TypesFactoryImpl(), this)
@@ -56,7 +67,7 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
         itemAdapter.notifyDataSetChanged()
     }
 
-     fun loadAllData(items: MutableList<ViewModel>) {
+    fun loadAllData(items: MutableList<ViewModel>) {
         _adapter.setListItem(items)
     }
 
