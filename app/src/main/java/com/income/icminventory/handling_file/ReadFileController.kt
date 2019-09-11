@@ -28,14 +28,16 @@ class ReadFileController(val fragmentBase: FragmentBase) {
             val arrayLine = currentline.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val item = Item()
             item.code = arrayLine[1]
-            item.supportCode = arrayLine[2]
-            item.supplierId = arrayLine[3]
-            item.orderId = arrayLine[4]
+            item.supplierId = arrayLine[2]
+            item.orderId = arrayLine[3]
+            item.supportCode = arrayLine[4]
             item.shortName = arrayLine[5]
             item.name = arrayLine[6]
             item.oldLocation = arrayLine[7]
             item.startNumber = arrayLine[8].toDouble()
-            item.itemState = ""
+            item.endNumber = arrayLine[9].toDouble()
+            item.itemState = arrayLine[10]
+            item.user = arrayLine.getOrNull(11) ?: ""
             items.add(item)
             currentline = reader.readLine()
         }

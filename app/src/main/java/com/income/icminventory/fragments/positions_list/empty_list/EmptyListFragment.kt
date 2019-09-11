@@ -24,32 +24,27 @@ class EmptyListFragment : FragmentSearch() {
         tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
 
         checkBoxHandle.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                filter { viewModel ->
-                    (viewModel as ItemViewModel).item.user.isBlank()
-                }
-            } else {
-                filter { viewModel ->
-                    (viewModel as ItemViewModel).item.user.isNotBlank()
-                }
+            when {
+                isChecked && !checkBoxScanned.isChecked -> filter { vm -> (vm as ItemViewModel).item.user.isBlank() }
+                !isChecked && checkBoxScanned.isChecked -> filter { vm -> (vm as ItemViewModel).item.user.isNotBlank() }
+                !isChecked && !checkBoxScanned.isChecked -> filter { vm -> false }
+                isChecked && checkBoxScanned.isChecked -> filter { vm -> true }
             }
         }
 
         checkBoxScanned.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                filter { viewModel ->
-                    (viewModel as ItemViewModel).item.user.isNotBlank()
-                }
-            } else {
-                filter { viewModel ->
-                    (viewModel as ItemViewModel).item.user.isBlank()
-                }
+            when {
+                isChecked && !checkBoxHandle.isChecked -> filter { vm -> (vm as ItemViewModel).item.user.isNotBlank() }
+                !isChecked && checkBoxHandle.isChecked -> filter { vm -> (vm as ItemViewModel).item.user.isBlank() }
+                !isChecked && !checkBoxHandle.isChecked -> filter { vm -> false }
+                isChecked && checkBoxHandle.isChecked -> filter { vm -> true }
             }
         }
 
         imgClear.setOnClickListener {
             etSearch.text.clear()
-            filter { viewModel -> true }
+//           checkBoxHandle.isChecked = true
+//            checkBoxHandle.isChecked = true
         }
 //            loadAllData(loadItemViewModels())
     }

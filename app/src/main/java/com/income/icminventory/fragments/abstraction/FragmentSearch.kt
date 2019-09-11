@@ -76,7 +76,7 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
         rv_items.layoutManager = LinearLayoutManager(activity.baseContext)
         _adapter = ItemAdapter(viewModels.toMutableList(), TypesFactoryImpl(), this)
         rv_items.adapter = _adapter
-        searchEngine = SearchEngine(viewModels)
+        searchEngine = SearchEngine()
         if (getFragmenType() == FragmentType.ScannedListFragment) {
             val itemTouchHelper = ItemTouchHelper(ItemSwipeHelper(_adapter, activity, this))
             itemTouchHelper.attachToRecyclerView(rv_items)
@@ -92,8 +92,11 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
         if (userVisibleHint) {
             etSearch.text.clear()
             disposable = textSearchObservable.observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { showProgressBar() }.observeOn(Schedulers.io())
-                .map<MutableList<ViewModel>> { s -> searchEngine.search(s) }.observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+
+                    showProgressBar()
+                }.observeOn(Schedulers.io())
+                .map<MutableList<ViewModel>> { s -> searchEngine.search(s, _adapter.items) }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe { list ->
                     hideProgressBar()
                     showResult(list)
@@ -116,7 +119,7 @@ abstract class FragmentSearch : FragmentBase(), IOnReloadAdapterListener {
             etSearch.addTextChangedListener(textWatcher)
             emitter.setCancellable { etSearch.removeTextChangedListener(textWatcher) }
 
-        }).filter { s -> s.length >= 2 }.debounce(500, TimeUnit.MILLISECONDS)
+        }).debounce(500, TimeUnit.MILLISECONDS)
     }
 
     override fun onPause() {

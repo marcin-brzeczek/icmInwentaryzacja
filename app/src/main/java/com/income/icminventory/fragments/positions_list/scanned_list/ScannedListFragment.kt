@@ -10,10 +10,7 @@ import com.income.icminventory.fragments.abstraction.FragmentSearch
 import com.income.icminventory.fragments.adapter.IOnReloadAdapterListener
 import com.income.icminventory.fragments.adapter.viewmodel.ItemViewModel
 import com.income.icminventory.fragments.adapter.viewmodel.ViewModel
-import kotlinx.android.synthetic.main.fragment_list.etSearch
-import kotlinx.android.synthetic.main.fragment_list.imgClear
-import kotlinx.android.synthetic.main.fragment_list.tvLocation
-import kotlinx.android.synthetic.main.fragment_list.tvTitle
+import kotlinx.android.synthetic.main.fragment_list.*
 
 class ScannedListFragment : FragmentSearch(), IOnReloadAdapterListener {
 
@@ -26,6 +23,11 @@ class ScannedListFragment : FragmentSearch(), IOnReloadAdapterListener {
         setActionBar(this@ScannedListFragment)
         tvTitle.text = activity.getString(R.string.scanned_list)
         tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
+        checkBoxScanned.visibility = View.GONE
+        checkBoxHandle.visibility = View.GONE
+        labelHandle.visibility = View.GONE
+        labelScanned.visibility = View.GONE
+
         imgClear.setOnClickListener {
             etSearch.text.clear()
             loadAllData(loadItemViewModels())
