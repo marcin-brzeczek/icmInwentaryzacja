@@ -1,48 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey1"
-    android:orientation="vertical"
->
+    android:background="@color/grey1">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/grey2"
+        app:layout_constraintBottom_toBottomOf="@id/labelScanned"
+        app:layout_constraintTop_toTopOf="@id/tvTitle"/>
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
         android:layout_marginTop="55dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/grey2"
         android:gravity="center"
         android:text="   Lista"
         android:textColor="@color/clearWhite"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/tvLocation"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/tvTitle"
-        android:background="@color/grey2"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
         android:gravity="center"
         android:text="@string/location"
         android:textColor="@color/clearWhite"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"/>
 
+    <CheckBox
+        android:id="@+id/checkBoxScanned"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@id/tvLocation"
+        android:layout_marginTop="8dp"
+        android:buttonTint="@color/grey1"
+        app:layout_constraintEnd_toEndOf="@+id/labelScanned"
+        app:layout_constraintStart_toStartOf="@+id/labelScanned"
+        app:layout_constraintTop_toBottomOf="@+id/tvLocation"/>
+
+    <TextView
+        android:id="@+id/labelScanned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zeskanowane"
+        android:textColor="@color/clearWhite"
+        app:layout_constraintStart_toStartOf="@+id/relativeLayout1"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxScanned"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxHandle"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@id/tvLocation"
+        android:layout_marginTop="8dp"
+        android:buttonTint="@color/grey1"
+        app:layout_constraintEnd_toEndOf="@+id/labelHandle"
+        app:layout_constraintStart_toStartOf="@+id/labelHandle"
+        app:layout_constraintTop_toBottomOf="@+id/tvLocation"/>
+
+    <TextView
+        android:id="@+id/labelHandle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wpisane z ręki"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout1"
+        android:textColor="@color/clearWhite"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxScanned"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/tvLocation"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@drawable/cell_shape_grey2">
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:background="@drawable/cell_shape_grey2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelScanned"
+        app:layout_constraintStart_toStartOf="parent">
 
 
         <ImageView
@@ -53,7 +103,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:alpha="1"
-            android:src="@android:drawable/ic_search_category_default" />
+            android:src="@android:drawable/ic_search_category_default"/>
 
         <EditText
             android:id="@+id/etSearch"
@@ -68,7 +118,7 @@
             android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="@color/clearWhite"
-            android:textSize="18dp" />
+            android:textSize="18dp"/>
 
         <ImageView
             android:id="@+id/imgClear"
@@ -77,64 +127,64 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:alpha="1"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@android:drawable/ic_menu_close_clear_cancel"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_items"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/rlSumList"
-        android:layout_below="@+id/relativeLayout1"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="4dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
-        android:fadingEdge="horizontal"/>
+        android:fadingEdge="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/txtSumListLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout1"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="180dp"
-        android:indeterminate="false"
-        android:visibility="gone" />
-
-    <RelativeLayout
-        android:id="@+id/rlSumList"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:indeterminate="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/txtSumListLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:text="@string/sum"
-            android:textColor="@color/grey3"
-            android:textSize="18dp"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvSumItems"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:text="0.0"
-            android:textColor="@color/grey3"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtSumListLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/sum"
+        android:textColor="@color/grey3"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rv_items"/>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tvSumItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="5dp"
+        android:text="0.0"
+        android:textColor="@color/grey3"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</android.support.constraint.ConstraintLayout>

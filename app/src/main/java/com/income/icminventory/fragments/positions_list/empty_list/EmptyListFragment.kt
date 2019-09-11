@@ -22,18 +22,35 @@ class EmptyListFragment : FragmentSearch() {
         setActionBar(this@EmptyListFragment)
         tvTitle.text = activity.getString(R.string.entry_list)
         tvLocation.text = activity.getString(R.string.location).plus((activity as MainActivity).currentLocation)
-        imgClear.setOnClickListener {
-//            etSearch.text.clear()
-//            loadAllData(loadItemViewModels())
-         filter { viewModel ->
 
-            /*Filter manually added positions*/
-//             (viewModel as ItemViewModel).item.user.isBlank()
-
-             /*Filter scanned positions*/
-             (viewModel as ItemViewModel).item.user.isNotBlank()
-
-         }
+        checkBoxHandle.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                filter { viewModel ->
+                    (viewModel as ItemViewModel).item.user.isBlank()
+                }
+            } else {
+                filter { viewModel ->
+                    (viewModel as ItemViewModel).item.user.isNotBlank()
+                }
+            }
         }
+
+        checkBoxScanned.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                filter { viewModel ->
+                    (viewModel as ItemViewModel).item.user.isNotBlank()
+                }
+            } else {
+                filter { viewModel ->
+                    (viewModel as ItemViewModel).item.user.isBlank()
+                }
+            }
+        }
+
+        imgClear.setOnClickListener {
+            etSearch.text.clear()
+            filter { viewModel -> true }
+        }
+//            loadAllData(loadItemViewModels())
     }
 }
