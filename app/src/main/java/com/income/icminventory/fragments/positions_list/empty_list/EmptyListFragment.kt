@@ -43,8 +43,9 @@ class EmptyListFragment : FragmentSearch() {
 
         imgClear.setOnClickListener {
             etSearch.text.clear()
-//           checkBoxHandle.isChecked = true
-//            checkBoxHandle.isChecked = true
+            checkBoxHandle.isChecked = true
+            checkBoxScanned.isChecked = true
+            filter { vm -> true }
         }
 //            loadAllData(loadItemViewModels())
     }
